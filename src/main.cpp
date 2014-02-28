@@ -1,8 +1,12 @@
+#include "framework.h"
 #include <QCoreApplication>
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
+    QCoreApplication app(argc, argv);
 
-    return a.exec();
+    CFramework framework(&app);
+    QMetaObject::invokeMethod(&framework, "main", Qt::QueuedConnection);
+
+    return app.exec();
 }

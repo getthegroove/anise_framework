@@ -5,6 +5,7 @@ QT       -= gui
 TARGET = anids-framework
 CONFIG   += console
 CONFIG   -= app_bundle
+QMAKE_CXXFLAGS += -std=c++11
 
 TEMPLATE = app
 
@@ -29,9 +30,28 @@ CONFIG(debug,debug|release) {
   UI_SOURCES_DIR = src/forms
   MOC_DIR = build/release/moc
   RCC_DIR = build/release/rcc
-  DEFINES += NDEBUG
+  DEFINES += QT_NO_DEBUG_OUTPUT
   #QMAKE_CXXFLAGS_RELEASE += -O2
 }
 
 
-SOURCES += src/main.cpp
+SOURCES += src/main.cpp \
+    src/framework.cpp \
+    src/node.cpp \
+    src/message.cpp \
+    src/nodeconfig.cpp \
+    src/gatebox.cpp \
+    src/gate.cpp \
+    src/nodes/filenode.cpp \
+    src/nodes/splitnode.cpp
+
+HEADERS += \
+    src/framework.h \
+    src/node.h \
+    src/message.h \
+    src/nodeconfig.h \
+    src/gatebox.h \
+    src/gate.h \
+    src/nodes/filenode.h \
+    src/nodeinfo.h \
+    src/nodes/splitnode.h
