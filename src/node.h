@@ -6,6 +6,7 @@
 #include "message.h"
 #include "nodeinfo.h"
 #include <QObject>
+#include <QSharedPointer>
 
 class CNode : public QObject
 {
@@ -13,9 +14,9 @@ class CNode : public QObject
 
   protected:
     // Collection of input gates.
-    CGateBox m_input_box;
+    QList<QSharedPointer<CGateBox>> m_input_boxes;
     // Collection of output gates.
-    CGateBox m_output_box;
+    QList<QSharedPointer<CGateBox>> m_output_boxes;
 
   public:
     explicit CNode(const CNodeConfig &config, QObject *parent = 0);
@@ -42,7 +43,7 @@ class CNode : public QObject
 
     // Establish the Gate arrangements in the node, e.g., number of inputs,
     // ... outputs, type of messages received by gates, etc
-    void setup(const CNodeConfig &config);
+    void setupGates(const CNodeConfig &config);
 };
 
 #endif // NODE_H

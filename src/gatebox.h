@@ -1,13 +1,21 @@
 #ifndef GATEBOX_H
 #define GATEBOX_H
 
+#include "gate.h"
 #include <QObject>
+#include <QSharedPointer>
 
 class CGateBox : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
+
+  private:
+    bool m_sync;
+    QList<QSharedPointer<CGate>> m_gates;
+
   public:
-    explicit CGateBox(QObject *parent = 0);
+    explicit CGateBox(bool sync = true, QObject *parent = 0);
+    void addGate(QSharedPointer<CGate> gate);
 
   signals:
 

@@ -3,11 +3,16 @@
 
 #include <QObject>
 
-class CMessage : public QObject
+class CMessage
 {
-    Q_OBJECT
   public:
-    explicit CMessage(QObject *parent = 0);
+    enum class TYPE {
+
+    };
+    QString m_type;
+
+  public:
+    explicit CMessage();
 
   signals:
 

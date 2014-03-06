@@ -19,17 +19,17 @@ class CNodeConfig
             , value()
             , description() {}
     };
-    struct SGate {
+    struct SGateTemplate {
         QString name;
         QString msg_type;
-        SGate(QString p_name, QString p_msg_type)
+        SGateTemplate(QString p_name, QString p_msg_type)
             : name(p_name)
             , msg_type(p_msg_type) {}
     };
-    struct SGateBox {
+    struct SBoxTemplate {
         bool sync;
-        QList<SGate> gates;
-        SGateBox(bool p_sync = true): sync(p_sync) {}
+        QList<SGateTemplate> gates;
+        SBoxTemplate(bool p_sync = true): sync(p_sync) {}
     };
 
   private:
@@ -38,8 +38,8 @@ class CNodeConfig
     // ... the value type of the parameters while disallowing the addition
     // ... or deletion of parameters to the configuration template.
     mutable QMap<QString, SParameter> m_parameters_map;
-    mutable QList<SGateBox> m_input_boxes;
-    mutable QList<SGateBox> m_output_boxes;
+    mutable QList<SBoxTemplate> m_input_boxes;
+    mutable QList<SBoxTemplate> m_output_boxes;
 
   public:
     CNodeConfig();
@@ -56,6 +56,11 @@ class CNodeConfig
     void addInputGate(int gate_box_id, QString name, QString msg_type);
     int addOutputBox(bool sync = true);
     void addOutputGate(int gate_box_id, QString name, QString msg_type);
+
+    // Getters und Setters.
+    const SParameter *getParameter(QString key);
+    const QList<SBoxTemplate> &getInputBoxTemplate() const;
+    const QList<SBoxTemplate> &getOutputBoxTemplate() const;
 };
 
 #endif // NODECONFIG_H
