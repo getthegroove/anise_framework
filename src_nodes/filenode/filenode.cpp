@@ -1,4 +1,21 @@
 #include "filenode.h"
+#include <QDebug>
+
+const char *name()
+{
+    return "File";
+}
+
+void configure(CNodeConfig &config)
+{
+    CFileNode::configure(config);
+}
+
+CNode *maker(const CNodeConfig &config)
+{
+    return new CFileNode(config);
+}
+
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
@@ -36,7 +53,7 @@ void CFileNode::configure(CNodeConfig &config)
 
 void CFileNode::process()
 {
-
+    qDebug() << "Hello from the deep space of the dynamic library loading thing.";
 }
 
 
