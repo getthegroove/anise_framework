@@ -3,7 +3,7 @@
 
 const char *name()
 {
-    return "File";
+    return CFileNode::name();
 }
 
 void configure(CNodeConfig &config)
@@ -22,6 +22,7 @@ CNode *maker(const CNodeConfig &config)
 
 CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
     : CNode(config, parent)
+    , CNodeInfo<CFileNode>(config)
 {
 
 }
@@ -29,6 +30,11 @@ CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
 
 //------------------------------------------------------------------------------
 // Public Functions
+
+const char *CFileNode::name()
+{
+    return "File";
+}
 
 void CFileNode::configure(CNodeConfig &config)
 {

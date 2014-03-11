@@ -84,6 +84,7 @@ bool CNodeFactory::configTemplate(QString node_name, CNodeConfig &config)
 
     configure_fnc configure = m_config_makers.value(node_name);
     configure(config);
+
     return true;
 }
 

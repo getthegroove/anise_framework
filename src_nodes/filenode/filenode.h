@@ -19,8 +19,10 @@ class CFileNode : public CNode, public CNodeInfo<CFileNode>
   Q_OBJECT
 
   public:
-    //explicit CFileNode();
+    // Constructor
     explicit CFileNode(const CNodeConfig &config, QObject *parent = 0);
+    // Static Node Functions
+    static const char *name();
     static void configure(CNodeConfig &config);
 
   protected:

@@ -10,24 +10,28 @@ template<class T>
 class CNodeInfo
 {
   private:
-    static CNodeConfig m_node_config;
+    const CNodeConfig m_node_config;
 
   public:
-    static void prepareConfigTemplate()
+    explicit CNodeInfo(const CNodeConfig &config)
+    : m_node_config(config) {}
+
+    static const char *name()
+    {
+        return T::name();
+    }
+
+    static void configure(CNodeConfig &config)
     {
         // Here the node is able to specify configuration options such
         // as the algorithm parameters, file inputs, node visual icon, etc.
-        T::configure(m_node_config);
+        T::configure(config);
     }
 
-    static const CNodeConfig& getConfigTemplate()
+    const CNodeConfig& getConfig()
     {
         return m_node_config;
     }
 };
-
-
-// Static member initializations.
-template<class T> CNodeConfig CNodeInfo<T>::m_node_config;
 
 #endif // NODEINFO_H
