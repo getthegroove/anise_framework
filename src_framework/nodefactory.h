@@ -1,6 +1,7 @@
 #ifndef NODEFACTORY_H
 #define NODEFACTORY_H
 
+#include "dynamicfactory.h"
 #include <QString>
 #include <QMap>
 
@@ -8,22 +9,22 @@ class QObject;
 class CNodeConfig;
 class CNode;
 
-typedef const char *(*name_fnc)();
-typedef void *(*configure_fnc)(CNodeConfig &);
-typedef CNode *(*maker_fnc)(const CNodeConfig &config);
+typedef const char *(*node_name_fnc)();
+typedef void *(*node_configure_fnc)(CNodeConfig &);
+typedef CNode *(*node_maker_fnc)(const CNodeConfig &config);
 
-class CNodeFactory
+class CNodeFactory: public CDynamicFactory
 {
   private:
+    // Singleton member variable.
     static CNodeFactory *m_instance;
-    QMap<QString, maker_fnc> m_makers;
-    QMap<QString, configure_fnc> m_config_makers;
+    // Map of functions found in the loaded dynamic libraries.
+    QMap<QString, node_maker_fnc> m_makers;
+    QMap<QString, node_configure_fnc> m_config_makers;
 
   public:
     static CNodeFactory &instance();
 
-    // Load all nodes found in the given directory.
-    void loadNodes(QString folder);
     // Obtain the configuration template of the supplied node name.
     // ... Return true if the config was created, false if the node
     // ... was not found.
@@ -36,6 +37,8 @@ class CNodeFactory
   private:
     // Singleton class.
     explicit CNodeFactory();
+    // Load the dynamic nodes coming from external libraries.
+    void addLibrary(void *library_handle, QString filename);
 };
 
 #endif // NODEFACTORY_H

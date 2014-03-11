@@ -42,7 +42,9 @@ SOURCES += main.cpp \
     nodeconfig.cpp \
     gatebox.cpp \
     gate.cpp \
-    nodefactory.cpp
+    nodefactory.cpp \
+    messagefactory.cpp \
+    dynamicfactory.cpp
 
 HEADERS += \
     framework.h \
@@ -52,4 +54,6 @@ HEADERS += \
     gatebox.h \
     gate.h \
     nodeinfo.h \
-    nodefactory.h
+    nodefactory.h \
+    messagefactory.h \
+    dynamicfactory.h

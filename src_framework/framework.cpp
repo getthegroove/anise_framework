@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "nodefactory.h"
+#include "messagefactory.h"
 #include "nodeconfig.h"
 #include "node.h"
 #include <QDebug>
@@ -21,8 +22,9 @@ void CFramework::main()
 {
     qDebug("CFramework.main() Info:: Starting the framework.");
 
-    // Load the available nodes in their .so file format.
-    CNodeFactory::instance().loadNodes("./nodes");
+    // Load dynamic nodes and messages into their corresponsing factories.
+    CNodeFactory::instance().loadLibraries("./nodes");
+    CMessageFactory::instance().loadLibraries("./messages");
 
     CNodeConfig conf;
     if(!CNodeFactory::instance().configTemplate("File", conf)) {
