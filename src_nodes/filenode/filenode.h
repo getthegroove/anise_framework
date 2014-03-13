@@ -26,6 +26,7 @@ class CFileNode : public CNode, public CNodeInfo<CFileNode>
     static void configure(CNodeConfig &config);
 
   protected:
+    //virtual void data(CData &data);
     virtual void process();
 };
 

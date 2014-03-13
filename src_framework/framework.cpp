@@ -1,6 +1,6 @@
 #include "framework.h"
 #include "nodefactory.h"
-#include "messagefactory.h"
+#include "datafactory.h"
 #include "nodeconfig.h"
 #include "node.h"
 #include <QDebug>
@@ -24,7 +24,7 @@ void CFramework::main()
 
     // Load dynamic nodes and messages into their corresponsing factories.
     CNodeFactory::instance().loadLibraries("./nodes");
-    CMessageFactory::instance().loadLibraries("./messages");
+    CDataFactory::instance().loadLibraries("./data");
 
     CNodeConfig conf;
     if(!CNodeFactory::instance().configTemplate("File", conf)) {

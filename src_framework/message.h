@@ -1,22 +1,19 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include <QObject>
+#include <QSharedDataPointer>
+#include <QString>
 
 class CMessage
 {
-  public:
-    enum class TYPE {
-
-    };
-    QString m_type;
+  private:
+    QString m_name;
 
   public:
     explicit CMessage();
 
-  signals:
-
-  public slots:
+  private:
+    //QSharedPointer<CMessageData> m_message_data;
 
 };
 

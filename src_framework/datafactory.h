@@ -1,5 +1,5 @@
-#ifndef MESSAGEFACTORY_H
-#define MESSAGEFACTORY_H
+#ifndef DATAFACTORY_H
+#define DATAFACTORY_H
 
 #include "dynamicfactory.h"
 #include <QMap>
@@ -7,18 +7,18 @@
 
 class CMessage;
 
-typedef CMessage *(*message_maker_fnc)();
-typedef const char *(*message_name_fnc)();
+typedef CMessage *(*data_maker_fnc)();
+typedef const char *(*data_name_fnc)();
 
-class CMessageFactory: public CDynamicFactory
+class CDataFactory: public CDynamicFactory
 {
   private:
     // Singleton member variable.
-    static CMessageFactory *m_instance;
-    QMap<QString, message_maker_fnc> m_makers;
+    static CDataFactory *m_instance;
+    QMap<QString, data_maker_fnc> m_makers;
 
   public:
-    static CMessageFactory &instance();
+    static CDataFactory &instance();
 
   protected:
     // For every library found, this function is called to add
@@ -27,7 +27,7 @@ class CMessageFactory: public CDynamicFactory
 
   private:
     // We are a singleton.
-    explicit CMessageFactory();
+    explicit CDataFactory();
 
 };
 

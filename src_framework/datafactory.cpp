@@ -1,15 +1,15 @@
-#include "messagefactory.h"
+#include "datafactory.h"
 #include <dlfcn.h>
 #include <QDebug>
 
 
-CMessageFactory *CMessageFactory::m_instance = nullptr;
+CDataFactory *CDataFactory::m_instance = nullptr;
 
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
-CMessageFactory::CMessageFactory()
+CDataFactory::CDataFactory()
 {
 
 }
@@ -17,10 +17,10 @@ CMessageFactory::CMessageFactory()
 //------------------------------------------------------------------------------
 // Public Functions
 
-CMessageFactory &CMessageFactory::instance()
+CDataFactory &CDataFactory::instance()
 {
     if(m_instance == nullptr) {
-        m_instance = new CMessageFactory();
+        m_instance = new CDataFactory();
     }
 
     return *m_instance;
@@ -30,10 +30,10 @@ CMessageFactory &CMessageFactory::instance()
 //------------------------------------------------------------------------------
 // Protected Functions
 
-void CMessageFactory::addLibrary(void *library_handle, QString filename)
+void CDataFactory::addLibrary(void *library_handle, QString filename)
 {
     // Obtain the name of the message.
-    message_name_fnc name = (message_name_fnc)dlsym(library_handle, "name");
+    data_name_fnc name = (data_name_fnc)dlsym(library_handle, "name");
     const char *name_chars = name();
     qDebug() << "CMessageFactory::addLibrary() Info:"
              << "Loaded Message:" << name_chars << endl;
@@ -48,5 +48,5 @@ void CMessageFactory::addLibrary(void *library_handle, QString filename)
     }
 
     // Register the maker of the message.
-    m_makers[name_chars] = (message_maker_fnc)dlsym(library_handle, "maker");
+    m_makers[name_chars] = (data_maker_fnc)dlsym(library_handle, "maker");
 }
