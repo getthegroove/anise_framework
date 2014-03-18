@@ -2,8 +2,8 @@
 #define NODE_H
 
 #include "nodeconfig.h"
-#include "gatebox.h"
 #include "message.h"
+#include "gate.h"
 #include "nodeinfo.h"
 #include <QObject>
 #include <QSharedPointer>
@@ -14,9 +14,9 @@ class CNode : public QObject
 
   protected:
     // Collection of input gates.
-    QList<QSharedPointer<CGateBox>> m_input_boxes;
+    QList<QSharedPointer<CGate>> m_input_gates;
     // Collection of output gates.
-    QList<QSharedPointer<CGateBox>> m_output_boxes;
+    QList<QSharedPointer<CGate>> m_output_gates;
 
   public:
     explicit CNode(const CNodeConfig &config, QObject *parent = 0);

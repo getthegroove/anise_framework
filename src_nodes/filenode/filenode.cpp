@@ -41,12 +41,9 @@ void CFileNode::configure(CNodeConfig &config)
     // Add parameters
     config.addFilename("file", "Input File", "File to be read from disk.");
 
-    // Add the gates.
-    int inputbox = config.addInputBox();
-    config.addInputGate(inputbox, "Start", "start_msg");
-
-    int outputbox = config.addOutputBox();
-    config.addOutputGate(outputbox, "File Table", "table_msg");
+    // Add inputs and outputs
+    config.addInput("Start", "start_data");
+    config.addOutput("File Table", "table_data");
 }
 
 

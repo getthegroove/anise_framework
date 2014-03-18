@@ -8,12 +8,12 @@ class CNodeConfig
 {
   public:
     // The structure that defined the details of a parameter.
-    struct SParameter {
+    struct SParameterTemplate {
         QString name;
         QVariant::Type type; // Type expected for the value.
         QVariant value;      // The value this parameter will hold.
         QString description;
-        SParameter()
+        SParameterTemplate()
             : name()
             , type(QVariant::Invalid)
             , value()
@@ -26,20 +26,15 @@ class CNodeConfig
             : name(p_name)
             , msg_type(p_msg_type) {}
     };
-    struct SBoxTemplate {
-        bool sync;
-        QList<SGateTemplate> gates;
-        SBoxTemplate(bool p_sync = true): sync(p_sync) {}
-    };
 
   private:
     // The collection of configuration parameters of the Node.
-    // ... It's mutable to allow the user of the Node clases to modify
+    // ... They're mutable to allow the user of the Node clases to modify
     // ... the value type of the parameters while disallowing the addition
     // ... or deletion of parameters to the configuration template.
-    mutable QMap<QString, SParameter> m_parameters_map;
-    mutable QList<SBoxTemplate> m_input_boxes;
-    mutable QList<SBoxTemplate> m_output_boxes;
+    mutable QMap<QString, SParameterTemplate> m_parameter_template_map;
+    mutable QList<SGateTemplate> m_input_templates;
+    mutable QList<SGateTemplate> m_output_templates;
 
   public:
     CNodeConfig();
@@ -52,15 +47,13 @@ class CNodeConfig
 
     // Facilities for defining the need of gate boxes and gates.
     // Create a GateBox and return it's gate id.
-    int addInputBox(bool sync = true);
-    void addInputGate(int gate_box_id, QString name, QString msg_type);
-    int addOutputBox(bool sync = true);
-    void addOutputGate(int gate_box_id, QString name, QString msg_type);
+    void addInput(QString name, QString msg_type);
+    void addOutput(QString name, QString msg_type);
 
     // Getters und Setters.
-    const SParameter *getParameter(QString key);
-    const QList<SBoxTemplate> &getInputBoxTemplate() const;
-    const QList<SBoxTemplate> &getOutputBoxTemplate() const;
+    const SParameterTemplate *getParameter(QString key);
+    const QList<SGateTemplate> &getInputTemplates() const;
+    const QList<SGateTemplate> &getOutputTemplates() const;
 };
 
 #endif // NODECONFIG_H

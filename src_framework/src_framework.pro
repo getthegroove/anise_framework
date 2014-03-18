@@ -40,7 +40,6 @@ SOURCES += main.cpp \
     node.cpp \
     message.cpp \
     nodeconfig.cpp \
-    gatebox.cpp \
     gate.cpp \
     nodefactory.cpp \
     dynamicfactory.cpp \
@@ -51,7 +50,6 @@ HEADERS += \
     node.h \
     message.h \
     nodeconfig.h \
-    gatebox.h \
     gate.h \
     nodeinfo.h \
     nodefactory.h \

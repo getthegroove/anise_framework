@@ -16,80 +16,67 @@ CNodeConfig::CNodeConfig()
 bool CNodeConfig::setParameter(QString key, QVariant value) const
 {
     // Key exists?
-    if(!m_parameters_map.contains(key)) {
+    if(!m_parameter_template_map.contains(key)) {
         qDebug() << "CNodeConfig::setParameter() Error:"
                  << "The parameter" << key << "has not been defined"
                  << "in the configuration template." << endl;
         return false;
     }
 
-    SParameter param = m_parameters_map[key];
+    SParameterTemplate param_template = m_parameter_template_map[key];
 
     // Verify that the supplied value matches the required value.
-    if(value.type() != param.type) {
+    if(value.type() != param_template.type) {
         qDebug() << "CNodeConfig::setParameter() Error:"
                  << "The value specified for" << key
                  << "has an incorrect type." << endl;
         return false;
     }
 
-    param.value = value;
+    param_template.value = value;
 
     return true;
 }
 
 void CNodeConfig::addFilename(QString key, QString name, QString description)
 {
-    struct SParameter param;
-    param.name = name;
-    param.type = QVariant::String;
-    param.description = description;
+    struct SParameterTemplate param_template;
+    param_template.name = name;
+    param_template.type = QVariant::String;
+    param_template.description = description;
 
-    m_parameters_map.insert(key, param);
+    m_parameter_template_map.insert(key, param_template);
 }
 
-int CNodeConfig::addInputBox(bool sync/* = true */)
+void CNodeConfig::addInput(QString name, QString msg_type)
 {
-    m_input_boxes.append(SBoxTemplate(sync));
-    return m_input_boxes.size() - 1;
+    m_input_templates.append(SGateTemplate(name, msg_type));
 }
 
-void CNodeConfig::addInputGate(int gate_box_id, QString name, QString msg_type)
+void CNodeConfig::addOutput(QString name, QString msg_type)
 {
-    m_input_boxes[gate_box_id].gates.append(SGateTemplate(name, msg_type));
+    m_output_templates.append(SGateTemplate(name, msg_type));
 }
 
-
-int CNodeConfig::addOutputBox(bool sync/* = true */)
+const CNodeConfig::SParameterTemplate *CNodeConfig::getParameter(QString key)
 {
-    m_output_boxes.append(SBoxTemplate(sync));
-    return m_output_boxes.size() - 1;
-}
-
-void CNodeConfig::addOutputGate(int gate_box_id, QString name, QString msg_type)
-{
-    m_output_boxes[gate_box_id].gates.append(SGateTemplate(name, msg_type));
-}
-
-const CNodeConfig::SParameter *CNodeConfig::getParameter(QString key)
-{
-    if(!m_parameters_map.contains(key)) {
+    if(!m_parameter_template_map.contains(key)) {
         qDebug() << "CNodeConfig::getParameter() Error:"
                  << "The parameter" << key << "has not been found." << endl;
         return nullptr;
     }
 
-    return &m_parameters_map[key];
+    return &m_parameter_template_map[key];
 }
 
-const QList<CNodeConfig::SBoxTemplate> &CNodeConfig::getInputBoxTemplate() const
+const QList<CNodeConfig::SGateTemplate> &CNodeConfig::getInputTemplates() const
 {
-    return m_input_boxes;
+    return m_input_templates;
 }
 
-const QList<CNodeConfig::SBoxTemplate> &CNodeConfig::getOutputBoxTemplate() const
+const QList<CNodeConfig::SGateTemplate> &CNodeConfig::getOutputTemplates() const
 {
-    return m_output_boxes;
+    return m_output_templates;
 }
 
 
