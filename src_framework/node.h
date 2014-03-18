@@ -22,7 +22,6 @@ class CNode : public QObject
     explicit CNode(const CNodeConfig &config, QObject *parent = 0);
     virtual ~CNode();
 
-  protected:
     // Functions that must be overwritten by derived nodes.
     // -----------------------------------------------------------
 

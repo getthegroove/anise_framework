@@ -28,7 +28,7 @@ class CNodeInfo
         T::configure(config);
     }
 
-    const CNodeConfig& getConfig()
+    const CNodeConfig& getConfig() const
     {
         return m_node_config;
     }

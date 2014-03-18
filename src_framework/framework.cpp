@@ -33,6 +33,7 @@ void CFramework::main()
     }
     conf.setParameter("file", "/home/boy/test");
     CNode *node = CNodeFactory::instance().createNode("File", conf);
+    node->process();
 
     qDebug("CFramework.main() Info:: Exiting the framework.");
     QCoreApplication::exit();

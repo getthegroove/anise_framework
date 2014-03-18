@@ -37,7 +37,7 @@ class CNodeConfig
     mutable QList<SGateTemplate> m_output_templates;
 
   public:
-    CNodeConfig();
+    explicit CNodeConfig();
 
     bool setParameter(QString key, QVariant value) const;
 
