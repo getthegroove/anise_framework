@@ -6,7 +6,8 @@ TEMPLATE = lib
 CONFIG += plugin
 QMAKE_CXXFLAGS += -std=c++11
 
-INCLUDEPATH += ../../src_framework
+INCLUDEPATH += ../../src_framework \
+               ../../src_data
 
 CONFIG(debug,debug|release) {
   # Debug...
@@ -23,8 +24,12 @@ CONFIG(debug,debug|release) {
   DEFINES += QT_NO_DEBUG_OUTPUT
 }
 
+QMAKE_CLEAN += $$DESTDIR/*$$TARGET*
+
 HEADERS += \
-           filenode.h
+    filenode.h \
+    interface.h
 
 SOURCES += \
-           filenode.cpp
+    filenode.cpp \
+    interface.cpp

@@ -8,9 +8,14 @@
 #include <QObject>
 #include <QSharedPointer>
 
+class CNodeFactory;
+class CDataFactory;
+
 class CNode : public QObject
 {
   Q_OBJECT
+
+  friend CNodeFactory;
 
   protected:
     // Collection of input gates.
@@ -35,10 +40,13 @@ class CNode : public QObject
     // Facilities for sending messages to the outputs.
     // -----------------------------------------------------------
 
+  protected:
+    virtual void init(const CDataFactory &data_factory) = 0;
+
   private:
     // Do not allow instantiations of this class through the default
     // ... constructor.
-    explicit CNode() {};
+    explicit CNode() {}
 
     // Establish the Gate arrangements in the node, e.g., number of inputs,
     // ... outputs, type of messages received by gates, etc

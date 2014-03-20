@@ -35,6 +35,8 @@ CONFIG(debug,debug|release) {
   #QMAKE_CXXFLAGS_RELEASE += -O2
 }
 
+QMAKE_CLEAN += $$DESTDIR/*$$TARGET*
+
 SOURCES += main.cpp \
     framework.cpp \
     node.cpp \
@@ -43,7 +45,8 @@ SOURCES += main.cpp \
     gate.cpp \
     nodefactory.cpp \
     dynamicfactory.cpp \
-    datafactory.cpp
+    datafactory.cpp \
+    data.cpp
 
 HEADERS += \
     framework.h \
@@ -54,4 +57,6 @@ HEADERS += \
     nodeinfo.h \
     nodefactory.h \
     dynamicfactory.h \
-    datafactory.h
+    datafactory.h \
+    data.h \
+    datainfo.h

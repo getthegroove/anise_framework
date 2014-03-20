@@ -5,9 +5,9 @@
 #include <QMap>
 #include <QString>
 
-class CMessage;
+class CData;
 
-typedef CMessage *(*data_maker_fnc)();
+typedef CData *(*data_maker_fnc)();
 typedef const char *(*data_name_fnc)();
 
 class CDataFactory: public CDynamicFactory
@@ -19,6 +19,10 @@ class CDataFactory: public CDynamicFactory
 
   public:
     static CDataFactory &instance();
+    // Overwrite the loadLibraries function to add another flag.
+    virtual void loadLibraries(QString folder);
+
+    CData *createData(QString data_name) const;
 
   protected:
     // For every library found, this function is called to add

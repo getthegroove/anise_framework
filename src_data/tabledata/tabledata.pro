@@ -23,8 +23,12 @@ CONFIG(debug,debug|release) {
   DEFINES += QT_NO_DEBUG_OUTPUT
 }
 
+QMAKE_CLEAN += $$DESTDIR/*$$TARGET*
+
 HEADERS += \
-    tabledata.h
+    tabledata.h \
+    interface.h
 
 SOURCES += \
-    tabledata.cpp
+    tabledata.cpp \
+    interface.cpp

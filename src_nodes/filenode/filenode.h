@@ -7,16 +7,14 @@
 #include <QObject>
 #include <QString>
 
-extern "C"
-{
-    const char *name();
-    void configure(CNodeConfig &config);
-    CNode *maker(const CNodeConfig &config);
-}
+class CTableData;
 
 class CFileNode : public CNode, public CNodeInfo<CFileNode>
 {
   Q_OBJECT
+
+  private:
+    CTableData *m_table;
 
   public:
     // Constructor
@@ -25,9 +23,12 @@ class CFileNode : public CNode, public CNodeInfo<CFileNode>
     static const char *name();
     static void configure(CNodeConfig &config);
 
-  protected:
+  public:
     //virtual void data(CData &data);
     virtual void process();
+
+  protected:
+    virtual void init(const CDataFactory &data_factory);
 };
 
 #endif // FILENODE_H

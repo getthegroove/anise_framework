@@ -1,21 +1,7 @@
 #include "filenode.h"
+#include "datafactory.h"
+#include "tabledata/tabledata.h"
 #include <QDebug>
-
-const char *name()
-{
-    return CFileNode::name();
-}
-
-void configure(CNodeConfig &config)
-{
-    CFileNode::configure(config);
-}
-
-CNode *maker(const CNodeConfig &config)
-{
-    return new CFileNode(config);
-}
-
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
@@ -23,6 +9,7 @@ CNode *maker(const CNodeConfig &config)
 CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
     : CNode(config, parent)
     , CNodeInfo<CFileNode>(config)
+    , m_table(nullptr)
 {
 
 }
@@ -46,19 +33,17 @@ void CFileNode::configure(CNodeConfig &config)
     config.addOutput("File Table", "table_data");
 }
 
-
-//------------------------------------------------------------------------------
-// Public Slots
-
-
-//------------------------------------------------------------------------------
-// Protected Functions
-
 void CFileNode::process()
 {
     qDebug() << "Hello from the deep space of the dynamic library loading thing.";
 }
 
-
 //------------------------------------------------------------------------------
-// Private Slots
+// Protected Functions
+
+void CFileNode::init(const CDataFactory &data_factory)
+{
+    m_table = static_cast<CTableData *>(data_factory.createData("Table"));
+}
+
+

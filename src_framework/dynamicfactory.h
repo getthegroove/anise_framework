@@ -1,12 +1,13 @@
 #ifndef DYNAMICFACTORY_H
 #define DYNAMICFACTORY_H
 
+#include <dlfcn.h>
 #include <QString>
 
 class CDynamicFactory
 {
   public:
-    void loadLibraries(QString folder);
+    void loadLibraries(QString folder, int flags);
 
   protected:
     // Process a library by its handler. Also receive the file that was used

@@ -1,9 +1,9 @@
-#include "tabledata.h"
+#include "data.h"
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
-CTableData::CTableData()
+CData::CData()
 {
 
 }
@@ -12,10 +12,6 @@ CTableData::CTableData()
 //------------------------------------------------------------------------------
 // Public Functions
 
-const char *CTableData::name()
-{
-    return "Table";
-}
 
 //------------------------------------------------------------------------------
 // Public Slots

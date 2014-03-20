@@ -1,5 +1,4 @@
 #include "dynamicfactory.h"
-#include <dlfcn.h>
 #include <QDir>
 #include <QStringList>
 #include <QDebug>
@@ -16,7 +15,7 @@ CDynamicFactory::CDynamicFactory()
 //------------------------------------------------------------------------------
 // Public Functions
 
-void CDynamicFactory::loadLibraries(QString folder)
+void CDynamicFactory::loadLibraries(QString folder, int flags)
 {
     // Look in the given dictionary.
     QDir dir(folder);
@@ -33,7 +32,7 @@ void CDynamicFactory::loadLibraries(QString folder)
         QString filename;
         filename = folder + "/" + (*it).toLocal8Bit().constData();
         // Open the library file.
-        void *handle = dlopen(filename.toLocal8Bit().constData(), RTLD_NOW);
+        void *handle = dlopen(filename.toLocal8Bit().constData(), flags);
         if(handle == NULL) {
             qDebug() << "CDynamicFactory::loadLibraries() Error:" << endl
                      << "There was an error loading the library '"

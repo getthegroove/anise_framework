@@ -1,10 +1,16 @@
 #ifndef TABLEDATA_H
 #define TABLEDATA_H
 
-class CTableData
+#include "data.h"
+#include "datainfo.h"
+
+class CTableData: public CData, public CDataInfo<CTableData>
 {
   public:
-    CTableData();
+    explicit CTableData();
+
+    // The name of this type of data.
+    static const char *name();
 };
 
 #endif // TABLEDATA_H

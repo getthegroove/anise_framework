@@ -25,6 +25,8 @@ class CNodeFactory: public CDynamicFactory
   public:
     static CNodeFactory &instance();
 
+    void loadLibraries(QString folder);
+
     // Obtain the configuration template of the supplied node name.
     // ... Return true if the config was created, false if the node
     // ... was not found.
