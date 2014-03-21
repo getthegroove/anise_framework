@@ -17,6 +17,17 @@ const char *CTableData::name()
     return "Table";
 }
 
+void CTableData::addRow(QList<int> row)
+{
+    m_table.append(row);
+}
+
+
+const QList<int> &CTableData::getRow(int i_row) const
+{
+    return m_table.at(i_row);
+}
+
 //------------------------------------------------------------------------------
 // Public Slots
 
@@ -27,3 +38,4 @@ const char *CTableData::name()
 
 //------------------------------------------------------------------------------
 // Private Slots
+

@@ -20,7 +20,7 @@ CFramework::CFramework(QObject *parent/*= 0*/): QObject(parent)
 
 void CFramework::main()
 {
-    qDebug("CFramework.main() Info:: Starting the framework.");
+    qDebug() << "CFramework.main() Info:: Starting the framework." << endl;
 
     // Load dynamic nodes and messages into their corresponsing factories.
     // ... The data nodes should be loaded first as the nodes might use them.
@@ -29,15 +29,15 @@ void CFramework::main()
 
     CNodeConfig conf;
     if(!CNodeFactory::instance().configTemplate("File", conf)) {
-        qDebug() << "CFramework::main() Error:" << "File Node not found.";
+        qDebug() << "CFramework::main() Error:" << "File Node not found." << endl;
         QCoreApplication::exit(1);
     }
     conf.setParameter("file", "/home/boy/test");
+
     CNode *node = CNodeFactory::instance().createNode("File", conf);
-    node->process();
     delete node;
 
-    qDebug("CFramework.main() Info:: Exiting the framework.");
+    qDebug() << "CFramework.main() Info:: Exiting the framework." << endl;
     QCoreApplication::exit();
 }
 

@@ -15,22 +15,38 @@ CGate::CGate(QString name_id, QString msg_type, QObject *parent)
 //------------------------------------------------------------------------------
 // Public Functions
 
+bool CGate::link(QObject *receiver, const char *slot)
+{
+    return QObject::connect(this, SIGNAL(processData()), receiver, slot);
+}
+
+bool CGate::link(QSharedPointer<CGate> gate)
+{
+    if(type() != gate->type()) {
+        qWarning() << "CGate::link() Warning: Uncompatible gates linked."
+                   << "(" << type() << ") -> (" << gate->type() << ")" << endl;
+        return false;
+    }
+
+    return QObject::connect(this, SIGNAL(processData()),
+        gate.data(), SLOT(inputData()));
+}
+
 
 //------------------------------------------------------------------------------
 // Public Slots
 
-void CGate::processMessage(QString msg_type)
+void CGate::inputData()
 {
     // Compare the message types to see if it's the expected type.
-    // TODO: Replace this with the Message class and logic.
-    if(m_msg_type != msg_type) {
-        // Messages do not match.
-        qDebug() << "CGate::processMessage() Error:"
-                 << "Unexpected Message received.";
-        return;
-    }
+    // if(m_msg_type != msg_type) {
+    //     // Messages do not match.
+    //     qDebug() << "CGate::processMessage() Error:"
+    //              << "Unexpected Message received.";
+    //     return;
+    // }
 
-    //m_message_queue.enqueue(QSharedPointer<CMessage>(new Message()));
+    emit processData();
 }
 
 
@@ -40,4 +56,3 @@ void CGate::processMessage(QString msg_type)
 
 //------------------------------------------------------------------------------
 // Private Slots
-

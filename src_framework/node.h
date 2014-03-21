@@ -2,7 +2,6 @@
 #define NODE_H
 
 #include "nodeconfig.h"
-#include "message.h"
 #include "gate.h"
 #include "nodeinfo.h"
 #include <QObject>
@@ -27,20 +26,13 @@ class CNode : public QObject
     explicit CNode(const CNodeConfig &config, QObject *parent = 0);
     virtual ~CNode();
 
-    // Functions that must be overwritten by derived nodes.
-    // -----------------------------------------------------------
+    // Connect the output of this node to the input of another node.
+    bool connect(QString output_name, CNode &target, QString input_name);
 
-    // This is called whenever the inputs have received something and the
-    // ... received messages are ready to be processed.
-    virtual void process() = 0;
-
-    // Facilities for fetching messages from the inputs.
-    // -----------------------------------------------------------
-
-    // Facilities for sending messages to the outputs.
-    // -----------------------------------------------------------
 
   protected:
+    // Functions that must be overwritten by derived nodes.
+    // -----------------------------------------------------------
     virtual void init(const CDataFactory &data_factory) = 0;
 
   private:
@@ -51,6 +43,8 @@ class CNode : public QObject
     // Establish the Gate arrangements in the node, e.g., number of inputs,
     // ... outputs, type of messages received by gates, etc
     void setupGates(const CNodeConfig &config);
+    // Find a particular gate by name.
+    QSharedPointer<CGate> findGate(QString name);
 };
 
 #endif // NODE_H

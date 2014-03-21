@@ -4,6 +4,8 @@
 #include <QMap>
 #include <QVariant>
 
+class QObject;
+
 class CNodeConfig
 {
   public:
@@ -22,9 +24,11 @@ class CNodeConfig
     struct SGateTemplate {
         QString name;
         QString msg_type;
-        SGateTemplate(QString p_name, QString p_msg_type)
+        const char *slot;
+        SGateTemplate(QString p_name, QString p_msg_type, const char *p_slot)
             : name(p_name)
-            , msg_type(p_msg_type) {}
+            , msg_type(p_msg_type)
+            , slot(p_slot) {}
     };
 
   private:
@@ -45,9 +49,8 @@ class CNodeConfig
     // ... template.
     void addFilename(QString key, QString name, QString description);
 
-    // Facilities for defining the need of gate boxes and gates.
-    // Create a GateBox and return it's gate id.
-    void addInput(QString name, QString msg_type);
+    // Facilities for adding inputs and outputs.
+    void addInput(QString name, QString msg_type, const char *slot);
     void addOutput(QString name, QString msg_type);
 
     // Getters und Setters.

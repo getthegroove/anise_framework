@@ -25,7 +25,10 @@ class CFileNode : public CNode, public CNodeInfo<CFileNode>
 
   public:
     //virtual void data(CData &data);
-    virtual void process();
+    void process();
+
+  public slots:
+    void data();
 
   protected:
     virtual void init(const CDataFactory &data_factory);

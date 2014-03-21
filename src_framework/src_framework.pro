@@ -40,7 +40,6 @@ QMAKE_CLEAN += $$DESTDIR/*$$TARGET*
 SOURCES += main.cpp \
     framework.cpp \
     node.cpp \
-    message.cpp \
     nodeconfig.cpp \
     gate.cpp \
     nodefactory.cpp \
@@ -51,7 +50,6 @@ SOURCES += main.cpp \
 HEADERS += \
     framework.h \
     node.h \
-    message.h \
     nodeconfig.h \
     gate.h \
     nodeinfo.h \

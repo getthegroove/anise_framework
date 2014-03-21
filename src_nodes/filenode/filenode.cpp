@@ -29,13 +29,26 @@ void CFileNode::configure(CNodeConfig &config)
     config.addFilename("file", "Input File", "File to be read from disk.");
 
     // Add inputs and outputs
-    config.addInput("Start", "start_data");
+    config.addInput("Start", "start_data", SLOT(data()));
     config.addOutput("File Table", "table_data");
 }
 
 void CFileNode::process()
 {
-    qDebug() << "Hello from the deep space of the dynamic library loading thing.";
+    qDebug() << "Hello from the deep space of the dynamic library loading thing." << endl;
+
+    QList<int> list;
+    list << 1 << 2 << 3;
+    m_table->addRow(list);
+}
+
+
+//------------------------------------------------------------------------------
+// Public Functions
+
+void CFileNode::data()
+{
+    qDebug() << "Data processing done" << endl;
 }
 
 //------------------------------------------------------------------------------
@@ -43,6 +56,7 @@ void CFileNode::process()
 
 void CFileNode::init(const CDataFactory &data_factory)
 {
+    qDebug() << "CFileNode.init() Info: Init Called." << endl;
     m_table = static_cast<CTableData *>(data_factory.createData("Table"));
 }
 
