@@ -8,7 +8,6 @@
 
 CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
     : CNode(config, parent)
-    , CNodeInfo<CFileNode>(config)
     , m_table(nullptr)
 {
 

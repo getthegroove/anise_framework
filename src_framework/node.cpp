@@ -9,6 +9,7 @@ CNode::CNode(const CNodeConfig &config, QObject *parent/*= 0*/)
  : QObject(parent)
  , m_input_gates()
  , m_output_gates()
+ , m_config(config)
 {
     // Create the gates and gate boxes of this node.
     setupGates(config);
@@ -22,6 +23,10 @@ CNode::~CNode()
 //------------------------------------------------------------------------------
 // Public Functions
 
+const CNodeConfig& CNode::getConfig() const
+{
+    return m_config;
+}
 
 bool CNode::connect(QString output_name, CNode &target, QString input_name)
 {
@@ -38,7 +43,9 @@ bool CNode::connect(QString output_name, CNode &target, QString input_name)
     // Link the output of the src gate with the dest gate of another node.
     if(!src_gate->link(dest_gate)) {
         qWarning() << "CNode::connect() Warning: Could not connect nodes."
-                   << "(" << endl; // TODO: add the node names in here.
+                   << "(" << m_config.getName() << ") -> ("
+                   << target.m_config.getName() << ")" << endl;
+        return false;
     }
     return true;
 }

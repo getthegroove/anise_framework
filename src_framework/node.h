@@ -3,7 +3,6 @@
 
 #include "nodeconfig.h"
 #include "gate.h"
-#include "nodeinfo.h"
 #include <QObject>
 #include <QSharedPointer>
 
@@ -26,6 +25,8 @@ class CNode : public QObject
     explicit CNode(const CNodeConfig &config, QObject *parent = 0);
     virtual ~CNode();
 
+    // Get the configuration parameters of this node.
+    const CNodeConfig &getConfig() const;
     // Connect the output of this node to the input of another node.
     bool connect(QString output_name, CNode &target, QString input_name);
 
@@ -36,6 +37,8 @@ class CNode : public QObject
     virtual void init(const CDataFactory &data_factory) = 0;
 
   private:
+    const CNodeConfig m_config;
+
     // Do not allow instantiations of this class through the default
     // ... constructor.
     explicit CNode() {}

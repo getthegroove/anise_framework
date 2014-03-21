@@ -2,17 +2,16 @@
 #define TABLEDATA_H
 
 #include "data.h"
-#include "datainfo.h"
 #include <QList>
 
-class CTableData: public CData, public CDataInfo<CTableData>
+class CTableData: public CData
 {
 
   private:
     QList<QList<int>> m_table;
 
   public:
-    explicit CTableData();
+    explicit CTableData(QString name);
 
     void addRow(QList<int> row);
     const QList<int> &getRow(int irow) const;

@@ -9,7 +9,7 @@ class CData
     QString m_name;
 
   public:
-    CData();
+    CData(QString name);
 };
 
 #endif // DATA_H

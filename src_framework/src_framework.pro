@@ -52,9 +52,7 @@ HEADERS += \
     node.h \
     nodeconfig.h \
     gate.h \
-    nodeinfo.h \
     nodefactory.h \
     dynamicfactory.h \
     datafactory.h \
-    data.h \
-    datainfo.h
+    data.h

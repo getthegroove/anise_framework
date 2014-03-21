@@ -3,7 +3,8 @@
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
-CData::CData()
+CData::CData(QString name)
+    : m_name(name)
 {
 
 }

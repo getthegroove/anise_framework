@@ -3,8 +3,8 @@
 
 extern "C"
 {
-    CData *maker()
+    CData *maker(QString name)
     {
-        return new CTableData();
+        return new CTableData(name);
     }
 }

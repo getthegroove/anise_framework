@@ -41,7 +41,7 @@ CData *CDataFactory::createData(QString data_name) const
     }
 
     data_maker_fnc make = m_makers.value(data_name);
-    CData *data = make();
+    CData *data = make(data_name);
 
     return data;
 }

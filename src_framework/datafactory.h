@@ -7,7 +7,7 @@
 
 class CData;
 
-typedef CData *(*data_maker_fnc)();
+typedef CData *(*data_maker_fnc)(QString);
 
 class CDataFactory: public CDynamicFactory
 {

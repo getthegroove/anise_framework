@@ -32,6 +32,8 @@ class CNodeConfig
     };
 
   private:
+    // The name assigned by the user to this node.
+    QString m_name;
     // The collection of configuration parameters of the Node.
     // ... They're mutable to allow the user of the Node clases to modify
     // ... the value type of the parameters while disallowing the addition
@@ -43,6 +45,8 @@ class CNodeConfig
   public:
     explicit CNodeConfig();
 
+    void setName(QString name);
+    QString getName() const;
     bool setParameter(QString key, QVariant value) const;
 
     // Facilities for adding different parameters to the configuration

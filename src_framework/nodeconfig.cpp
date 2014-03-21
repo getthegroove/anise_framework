@@ -5,6 +5,7 @@
 // Constructor and Destructor
 
 CNodeConfig::CNodeConfig()
+    : m_name("Node")
 {
 
 }
@@ -12,6 +13,16 @@ CNodeConfig::CNodeConfig()
 
 //------------------------------------------------------------------------------
 // Public Functions
+
+void CNodeConfig::setName(QString name)
+{
+    m_name = name;
+}
+
+QString CNodeConfig::getName() const
+{
+    return m_name;
+}
 
 bool CNodeConfig::setParameter(QString key, QVariant value) const
 {

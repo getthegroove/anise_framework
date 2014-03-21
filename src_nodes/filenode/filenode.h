@@ -2,14 +2,13 @@
 #define FILENODE_H
 
 #include "node.h"
-#include "nodeinfo.h"
 #include "nodeconfig.h"
 #include <QObject>
 #include <QString>
 
 class CTableData;
 
-class CFileNode : public CNode, public CNodeInfo<CFileNode>
+class CFileNode : public CNode
 {
   Q_OBJECT
 
