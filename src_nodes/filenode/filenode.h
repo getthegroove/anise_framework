@@ -20,7 +20,6 @@ class CFileNode : public CNode, public CNodeInfo<CFileNode>
     // Constructor
     explicit CFileNode(const CNodeConfig &config, QObject *parent = 0);
     // Static Node Functions
-    static const char *name();
     static void configure(CNodeConfig &config);
 
   public:

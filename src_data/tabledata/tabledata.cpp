@@ -12,11 +12,6 @@ CTableData::CTableData()
 //------------------------------------------------------------------------------
 // Public Functions
 
-const char *CTableData::name()
-{
-    return "Table";
-}
-
 void CTableData::addRow(QList<int> row)
 {
     m_table.append(row);

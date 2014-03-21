@@ -24,11 +24,11 @@ void CFramework::main()
 
     // Load dynamic nodes and messages into their corresponsing factories.
     // ... The data nodes should be loaded first as the nodes might use them.
-    CDataFactory::instance().loadLibraries("./data");
-    CNodeFactory::instance().loadLibraries("./nodes");
+    CDataFactory::instance().loadLibraries();
+    CNodeFactory::instance().loadLibraries();
 
     CNodeConfig conf;
-    if(!CNodeFactory::instance().configTemplate("File", conf)) {
+    if(!CNodeFactory::instance().configTemplate("file", conf)) {
         qDebug() << "CFramework::main() Error:" << "File Node not found." << endl;
         QCoreApplication::exit(1);
     }

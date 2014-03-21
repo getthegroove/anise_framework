@@ -36,7 +36,10 @@ bool CNode::connect(QString output_name, CNode &target, QString input_name)
     }
 
     // Link the output of the src gate with the dest gate of another node.
-    src_gate.link(dest_gate);
+    if(!src_gate->link(dest_gate)) {
+        qWarning() << "CNode::connect() Warning: Could not connect nodes."
+                   << "(" << endl; // TODO: add the node names in here.
+    }
     return true;
 }
 

@@ -3,11 +3,6 @@
 
 extern "C"
 {
-    const char *name()
-    {
-        return CFileNode::name();
-    }
-
     void configure(CNodeConfig &config)
     {
         CFileNode::configure(config);

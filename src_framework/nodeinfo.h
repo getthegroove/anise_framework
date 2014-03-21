@@ -16,11 +16,6 @@ class CNodeInfo
     explicit CNodeInfo(const CNodeConfig &config)
     : m_node_config(config) {}
 
-    static const char *name()
-    {
-        return T::name();
-    }
-
     static void configure(CNodeConfig &config)
     {
         // Here the node is able to specify configuration options such

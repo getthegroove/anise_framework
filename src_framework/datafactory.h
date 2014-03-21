@@ -8,7 +8,6 @@
 class CData;
 
 typedef CData *(*data_maker_fnc)();
-typedef const char *(*data_name_fnc)();
 
 class CDataFactory: public CDynamicFactory
 {
@@ -20,7 +19,7 @@ class CDataFactory: public CDynamicFactory
   public:
     static CDataFactory &instance();
     // Overwrite the loadLibraries function to add another flag.
-    virtual void loadLibraries(QString folder);
+    void loadLibraries();
 
     CData *createData(QString data_name) const;
 

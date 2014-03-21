@@ -18,11 +18,6 @@ CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
 //------------------------------------------------------------------------------
 // Public Functions
 
-const char *CFileNode::name()
-{
-    return "File";
-}
-
 void CFileNode::configure(CNodeConfig &config)
 {
     // Add parameters
@@ -57,7 +52,7 @@ void CFileNode::data()
 void CFileNode::init(const CDataFactory &data_factory)
 {
     qDebug() << "CFileNode.init() Info: Init Called." << endl;
-    m_table = static_cast<CTableData *>(data_factory.createData("Table"));
+    m_table = static_cast<CTableData *>(data_factory.createData("table"));
 }
 
 

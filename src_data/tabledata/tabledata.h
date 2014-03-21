@@ -14,9 +14,6 @@ class CTableData: public CData, public CDataInfo<CTableData>
   public:
     explicit CTableData();
 
-    // The name of this structure.
-    static const char *name();
-
     void addRow(QList<int> row);
     const QList<int> &getRow(int irow) const;
 };

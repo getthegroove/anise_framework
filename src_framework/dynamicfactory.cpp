@@ -15,16 +15,16 @@ CDynamicFactory::CDynamicFactory()
 //------------------------------------------------------------------------------
 // Public Functions
 
-void CDynamicFactory::loadLibraries(QString folder, int flags)
+void CDynamicFactory::loadLibraries(QString folder, QString filter, int flags)
 {
     // Look in the given dictionary.
     QDir dir(folder);
     // Search only for files.
     dir.setFilter(QDir::Files);
     // Only list files ending with .so
-    QStringList filter;
-    filter << "*.so";
-    dir.setNameFilters(filter);
+    QStringList filterlist;
+    filterlist << filter;
+    dir.setNameFilters(filterlist);
 
     QStringList list = dir.entryList();
 

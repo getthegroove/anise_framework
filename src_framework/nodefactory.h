@@ -9,7 +9,6 @@ class QObject;
 class CNodeConfig;
 class CNode;
 
-typedef const char *(*node_name_fnc)();
 typedef void *(*node_configure_fnc)(CNodeConfig &);
 typedef CNode *(*node_maker_fnc)(const CNodeConfig &config);
 
@@ -25,7 +24,7 @@ class CNodeFactory: public CDynamicFactory
   public:
     static CNodeFactory &instance();
 
-    void loadLibraries(QString folder);
+    void loadLibraries();
 
     // Obtain the configuration template of the supplied node name.
     // ... Return true if the config was created, false if the node

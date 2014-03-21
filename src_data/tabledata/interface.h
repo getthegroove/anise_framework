@@ -5,7 +5,6 @@ class CData;
 
 extern "C"
 {
-    const char *name();
     CData *maker();
 }
 
