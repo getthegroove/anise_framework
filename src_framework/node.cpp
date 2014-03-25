@@ -58,7 +58,24 @@ bool CNode::connect(QString output_name, CNode &target, QString input_name)
 }
 
 //------------------------------------------------------------------------------
-// Public Slots
+// Protected Functions
+
+bool CNode::commit(QString gate_name, QSharedPointer<CData> data)
+{
+    // TODO: program me.
+    auto output_gate = findOutputGate(gate_name);
+    if(output_gate.isNull()) {
+        qDebug() << "CNode.commit() Warning: Could not commit data from within"
+                 << "Node" << m_config.getName() << ". The gate" << gate_name
+                 << "was not found." << endl;
+        return false;
+    }
+
+    // TODO: add the 'data' parameter to the inputData function.
+    output_gate->inputData();
+
+    return true;
+}
 
 
 //------------------------------------------------------------------------------

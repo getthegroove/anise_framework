@@ -45,6 +45,7 @@ void CFramework::main()
                  << "Could not establish node connection." << endl;
     }
 
+    node1->start();
 
     if(node1 != nullptr) delete node1;
     if(node2 != nullptr) delete node2;

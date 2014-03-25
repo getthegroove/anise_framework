@@ -3,33 +3,35 @@
 
 #include "node.h"
 #include "nodeconfig.h"
+#include "tabledata/tabledata.h"
 #include <QObject>
 #include <QString>
-
-class CTableData;
 
 class CFileNode: public CNode
 {
   Q_OBJECT
 
   private:
-    CTableData *m_table;
+    QSharedPointer<CTableData> m_table;
 
   public:
     // Constructor
     explicit CFileNode(const CNodeConfig &config, QObject *parent = 0);
-    // Static Node Functions
+    // Set the configuration template for this Node.
     static void configure(CNodeConfig &config);
 
-  public:
-    //virtual void data(CData &data);
-    void process();
-
   public slots:
+    // Data is sent to this function.
     virtual void data();
 
   protected:
+    // The place where we are able to initialize "Data" data structures which we
+    // ... would like to use within the Node.
     virtual void init(const CDataFactory &data_factory);
+
+  public: // TODO: Remove this line.
+    // Start reading the file the user selected.
+    virtual void start();
 };
 
 #endif // FILENODE_H

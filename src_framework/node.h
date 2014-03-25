@@ -3,8 +3,10 @@
 
 #include "nodeconfig.h"
 #include "gate.h"
+#include "data.h"
 #include <QObject>
 #include <QSharedPointer>
+#include <QString>
 
 class CNodeFactory;
 class CDataFactory;
@@ -39,6 +41,12 @@ class CNode : public QObject
     // Let the Node perform some initialization tasks. Data structures must
     // ... be obtained through the 'data_factory' handle.
     virtual void init(const CDataFactory &data_factory) = 0;
+  public: // TODO: Remove this line.
+    // Function that signal the Nodes that the simulation is starting. Nodes
+    // ... that do not receive messages may start processing information now.
+    virtual void start() = 0;
+    // Forward a message through a particular gate.
+    bool commit(QString gate_name, QSharedPointer<CData> data);
 
   private:
     const CNodeConfig m_config;

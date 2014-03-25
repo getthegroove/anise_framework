@@ -27,18 +27,11 @@ void CFileNode::configure(CNodeConfig &config)
     config.addOutput("out", "misc");
 }
 
-void CFileNode::process()
-{
-    qDebug() << "Hello from the deep space of the dynamic library loading thing." << endl;
-
-}
-
 void CFileNode::data()
 {
-    QList<int> list;
-    list << 1 << 2 << 3;
-    m_table->addRow(list);
-    qDebug() << "Data processing done" << endl;
+    // Empty because data is not received by this node.
+    qDebug() << "CFileNode.data() Info:"  << getConfig().getName()
+             << ": Data received." << endl;
 }
 
 //------------------------------------------------------------------------------
@@ -47,7 +40,21 @@ void CFileNode::data()
 void CFileNode::init(const CDataFactory &data_factory)
 {
     qDebug() << "CFileNode.init() Info: Init Called." << endl;
-    m_table = static_cast<CTableData *>(data_factory.createData("table"));
+    CTableData *table = static_cast<CTableData *>(data_factory.createData("table"));
+    m_table = QSharedPointer<CTableData>(table);
 }
 
+void CFileNode::start()
+{
+    // TODO: Read file supplied by the user.
+
+    QList<int> list;
+    list << 1 << 2 << 3;
+    m_table->addRow(list);
+    qDebug() << "CFileNode.start() Info:"  << getConfig().getName()
+             << "Data processing done" << endl;
+
+    // Commit the file to the "out" gate.
+    commit("out", m_table);
+}
 

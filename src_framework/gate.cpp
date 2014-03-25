@@ -1,12 +1,13 @@
 #include "gate.h"
+#include "node.h"
 #include <QDebug>
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
-CGate::CGate(QString name_id, QString msg_type, QObject *parent)
+CGate::CGate(QString name, QString msg_type, QObject *parent)
     : QObject(parent)
-    , m_name_id(name_id)
+    , m_name(name)
     , m_msg_type(msg_type)
 {
 
@@ -15,11 +16,13 @@ CGate::CGate(QString name_id, QString msg_type, QObject *parent)
 //------------------------------------------------------------------------------
 // Public Functions
 
-bool CGate::link(QObject *receiver, const char *slot)
+// Connect the Gate with an internal function of the Node that owns the gate.
+bool CGate::link(CNode *receiver, const char *slot)
 {
     return QObject::connect(this, SIGNAL(forwardData()), receiver, slot);
 }
 
+// Connect to the gate of another Node.
 bool CGate::link(QSharedPointer<CGate> gate)
 {
     if(type() != gate->type()) {
