@@ -49,6 +49,8 @@ bool CNodeFactory::configTemplate(QString node_name, CNodeConfig &config)
 CNode *CNodeFactory::createNode(QString node_name, const CNodeConfig &config)
 {
     if(!m_makers.contains(node_name)) {
+        qDebug() << "CNodeFactory::createNode() Error: The node" << node_name
+                 << "could not be created." << endl;
         return nullptr;
     }
 

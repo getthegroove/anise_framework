@@ -37,7 +37,7 @@ class CGate : public QObject
   signals:
     // Signal emitted whenever a data object is to be forwarded to the
     // ... object that owns this gate.
-    void processData();
+    void forwardData();
 };
 
 // Inline functions.

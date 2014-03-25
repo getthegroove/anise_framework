@@ -24,11 +24,9 @@ class CNodeConfig
     struct SGateTemplate {
         QString name;
         QString msg_type;
-        const char *slot;
-        SGateTemplate(QString p_name, QString p_msg_type, const char *p_slot)
+        SGateTemplate(QString p_name, QString p_msg_type)
             : name(p_name)
-            , msg_type(p_msg_type)
-            , slot(p_slot) {}
+            , msg_type(p_msg_type) {}
     };
 
   private:
@@ -54,7 +52,7 @@ class CNodeConfig
     void addFilename(QString key, QString name, QString description);
 
     // Facilities for adding inputs and outputs.
-    void addInput(QString name, QString msg_type, const char *slot);
+    void addInput(QString name, QString msg_type);
     void addOutput(QString name, QString msg_type);
 
     // Getters und Setters.

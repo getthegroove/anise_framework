@@ -30,13 +30,20 @@ const CNodeConfig& CNode::getConfig() const
 
 bool CNode::connect(QString output_name, CNode &target, QString input_name)
 {
-    auto src_gate = findGate(output_name);
+    auto src_gate = findOutputGate(output_name);
     if(src_gate.isNull()) {
+        qWarning() << "CNode::connect() Warning: Could not find gate"
+                   << output_name << "in output Node" << m_config.getName() << "."
+                   <<  endl;
         return false;
     }
 
-    auto dest_gate = target.findGate(input_name);
+    auto dest_gate = target.findInputGate(input_name);
     if(dest_gate.isNull()) {
+        qWarning() << "CNode::connect() Warning: Could not find gate"
+                   << input_name << "in input Node"
+                   << target.m_config.getName() << "."
+                   << endl;
         return false;
     }
 
@@ -64,7 +71,7 @@ void CNode::setupGates(const CNodeConfig &config)
     for(auto it = input_templates.begin(); it != input_templates.end(); ++it) {
         CGate *gate = new CGate(it->name, it->msg_type);
         // Point the gate to this object, as it owns the gate.
-        gate->link(this, it->slot);
+        gate->link(this, SLOT(data()));
         m_input_gates.append(QSharedPointer<CGate>(gate));
     }
 
@@ -76,8 +83,21 @@ void CNode::setupGates(const CNodeConfig &config)
     }
 }
 
+QSharedPointer<CGate> CNode::findInputGate(QString name)
+{
+    // Use C++11 for range loops.
+    for(auto gate : m_input_gates) {
+        if(gate->name() == name) {
+            // Connect the node with the other node.
+            return gate;
+        }
+    }
 
-QSharedPointer<CGate> CNode::findGate(QString name)
+    // Nothing found, return a null pointer.
+    return QSharedPointer<CGate>();
+}
+
+QSharedPointer<CGate> CNode::findOutputGate(QString name)
 {
     // Use C++11 for range loops.
     for(auto gate : m_output_gates) {

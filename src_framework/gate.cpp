@@ -17,7 +17,7 @@ CGate::CGate(QString name_id, QString msg_type, QObject *parent)
 
 bool CGate::link(QObject *receiver, const char *slot)
 {
-    return QObject::connect(this, SIGNAL(processData()), receiver, slot);
+    return QObject::connect(this, SIGNAL(forwardData()), receiver, slot);
 }
 
 bool CGate::link(QSharedPointer<CGate> gate)
@@ -28,7 +28,7 @@ bool CGate::link(QSharedPointer<CGate> gate)
         return false;
     }
 
-    return QObject::connect(this, SIGNAL(processData()),
+    return QObject::connect(this, SIGNAL(forwardData()),
         gate.data(), SLOT(inputData()));
 }
 
@@ -46,7 +46,7 @@ void CGate::inputData()
     //     return;
     // }
 
-    emit processData();
+    emit forwardData();
 }
 
 

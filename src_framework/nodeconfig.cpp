@@ -59,14 +59,14 @@ void CNodeConfig::addFilename(QString key, QString name, QString description)
     m_parameter_template_map.insert(key, param_template);
 }
 
-void CNodeConfig::addInput(QString name, QString msg_type, const char* slot)
+void CNodeConfig::addInput(QString name, QString msg_type)
 {
-    m_input_templates.append(SGateTemplate(name, msg_type, slot));
+    m_input_templates.append(SGateTemplate(name, msg_type));
 }
 
 void CNodeConfig::addOutput(QString name, QString msg_type)
 {
-    m_output_templates.append(SGateTemplate(name, msg_type, nullptr));
+    m_output_templates.append(SGateTemplate(name, msg_type));
 }
 
 const CNodeConfig::SParameterTemplate *CNodeConfig::getParameter(QString key)

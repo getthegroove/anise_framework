@@ -8,7 +8,7 @@
 
 class CTableData;
 
-class CFileNode : public CNode
+class CFileNode: public CNode
 {
   Q_OBJECT
 
@@ -26,7 +26,7 @@ class CFileNode : public CNode
     void process();
 
   public slots:
-    void data();
+    virtual void data();
 
   protected:
     virtual void init(const CDataFactory &data_factory);

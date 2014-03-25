@@ -30,10 +30,14 @@ class CNode : public QObject
     // Connect the output of this node to the input of another node.
     bool connect(QString output_name, CNode &target, QString input_name);
 
+  public slots:
+    // Function that will process data sent to the node.
+    virtual void data() = 0;
+
 
   protected:
-    // Functions that must be overwritten by derived nodes.
-    // -----------------------------------------------------------
+    // Let the Node perform some initialization tasks. Data structures must
+    // ... be obtained through the 'data_factory' handle.
     virtual void init(const CDataFactory &data_factory) = 0;
 
   private:
@@ -47,7 +51,8 @@ class CNode : public QObject
     // ... outputs, type of messages received by gates, etc
     void setupGates(const CNodeConfig &config);
     // Find a particular gate by name.
-    QSharedPointer<CGate> findGate(QString name);
+    QSharedPointer<CGate> findInputGate(QString name);
+    QSharedPointer<CGate> findOutputGate(QString name);
 };
 
 #endif // NODE_H

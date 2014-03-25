@@ -34,8 +34,20 @@ void CFramework::main()
     }
     conf.setParameter("file", "/home/boy/test");
 
-    CNode *node = CNodeFactory::instance().createNode("File", conf);
-    delete node;
+    conf.setName("Node1");
+    CNode *node1 = CNodeFactory::instance().createNode("file", conf);
+
+    conf.setName("Node2");
+    CNode *node2 = CNodeFactory::instance().createNode("file", conf);
+
+    if(!node1->connect("out", *node2, "in")) {
+        qDebug() << "CFramework::main() Error:"
+                 << "Could not establish node connection." << endl;
+    }
+
+
+    if(node1 != nullptr) delete node1;
+    if(node2 != nullptr) delete node2;
 
     qDebug() << "CFramework.main() Info:: Exiting the framework." << endl;
     QCoreApplication::exit();
