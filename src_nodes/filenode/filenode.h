@@ -22,7 +22,7 @@ class CFileNode: public CNode
 
   public slots:
     // Data is sent to this function.
-    virtual void data();
+    virtual void data(QSharedPointer<CData> data);
 
   protected:
     // The place where we are able to initialize "Data" data structures which we

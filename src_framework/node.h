@@ -34,7 +34,7 @@ class CNode : public QObject
 
   public slots:
     // Function that will process data sent to the node.
-    virtual void data() = 0;
+    virtual void data(QSharedPointer<CData> data) = 0;
 
 
   protected:

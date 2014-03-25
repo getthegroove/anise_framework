@@ -46,12 +46,6 @@ void CFramework::main()
     }
 
     node1->start();
-
-    if(node1 != nullptr) delete node1;
-    if(node2 != nullptr) delete node2;
-
-    qDebug() << "CFramework.main() Info:: Exiting the framework." << endl;
-    QCoreApplication::exit();
 }
 
 

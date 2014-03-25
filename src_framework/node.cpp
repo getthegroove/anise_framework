@@ -57,6 +57,7 @@ bool CNode::connect(QString output_name, CNode &target, QString input_name)
     return true;
 }
 
+
 //------------------------------------------------------------------------------
 // Protected Functions
 
@@ -72,7 +73,7 @@ bool CNode::commit(QString gate_name, QSharedPointer<CData> data)
     }
 
     // TODO: add the 'data' parameter to the inputData function.
-    output_gate->inputData();
+    output_gate->inputData(data);
 
     return true;
 }
@@ -88,7 +89,7 @@ void CNode::setupGates(const CNodeConfig &config)
     for(auto it = input_templates.begin(); it != input_templates.end(); ++it) {
         CGate *gate = new CGate(it->name, it->msg_type);
         // Point the gate to this object, as it owns the gate.
-        gate->link(this, SLOT(data()));
+        gate->link(this, SLOT(data(QSharedPointer<CData>)));
         m_input_gates.append(QSharedPointer<CGate>(gate));
     }
 

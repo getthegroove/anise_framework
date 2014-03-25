@@ -1,6 +1,7 @@
 #ifndef GATE_H
 #define GATE_H
 
+#include "data.h"
 #include <QObject>
 #include <QString>
 #include <QSharedPointer>
@@ -33,12 +34,12 @@ class CGate: public QObject
   public slots:
     // Receive data structures here. If the data received is what we are
     // ... expecting, forward it to the node for processing.
-    void inputData();
+    void inputData(QSharedPointer<CData> data);
 
   signals:
     // Signal emitted whenever a data object is to be forwarded to the
     // ... object that owns this gate.
-    void forwardData();
+    void forwardData(QSharedPointer<CData> data);
 };
 
 // Inline functions.

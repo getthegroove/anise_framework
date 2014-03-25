@@ -19,7 +19,8 @@ CGate::CGate(QString name, QString msg_type, QObject *parent)
 // Connect the Gate with an internal function of the Node that owns the gate.
 bool CGate::link(CNode *receiver, const char *slot)
 {
-    return QObject::connect(this, SIGNAL(forwardData()), receiver, slot);
+    return QObject::connect(this, SIGNAL(forwardData(QSharedPointer<CData>)),
+        receiver, slot, Qt::QueuedConnection);
 }
 
 // Connect to the gate of another Node.
@@ -31,15 +32,16 @@ bool CGate::link(QSharedPointer<CGate> gate)
         return false;
     }
 
-    return QObject::connect(this, SIGNAL(forwardData()),
-        gate.data(), SLOT(inputData()));
+    return QObject::connect(this, SIGNAL(forwardData(QSharedPointer<CData>)),
+        gate.data(), SLOT(inputData(QSharedPointer<CData>)),
+        Qt::QueuedConnection);
 }
 
 
 //------------------------------------------------------------------------------
 // Public Slots
 
-void CGate::inputData()
+void CGate::inputData(QSharedPointer<CData> data)
 {
     // Compare the message types to see if it's the expected type.
     // if(m_msg_type != msg_type) {
@@ -49,7 +51,7 @@ void CGate::inputData()
     //     return;
     // }
 
-    emit forwardData();
+    emit forwardData(data);
 }
 
 

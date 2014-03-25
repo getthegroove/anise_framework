@@ -27,11 +27,14 @@ void CFileNode::configure(CNodeConfig &config)
     config.addOutput("out", "misc");
 }
 
-void CFileNode::data()
+void CFileNode::data(QSharedPointer<CData> data)
 {
     // Empty because data is not received by this node.
     qDebug() << "CFileNode.data() Info:"  << getConfig().getName()
-             << ": Data received." << endl;
+             << ": Data received.";
+
+    QSharedPointer<CTableData> table_data = data.staticCast<CTableData>();
+    qDebug() << "CFileNode.data() Data:" << table_data->getRow(0);
 }
 
 //------------------------------------------------------------------------------
