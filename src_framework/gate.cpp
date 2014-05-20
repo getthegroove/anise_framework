@@ -2,6 +2,7 @@
 #include "node.h"
 #include <QDebug>
 
+
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
@@ -9,9 +10,11 @@ CGate::CGate(QString name, QString msg_type, QObject *parent)
     : QObject(parent)
     , m_name(name)
     , m_msg_type(msg_type)
+    , m_input_count(0)
 {
 
 }
+
 
 //------------------------------------------------------------------------------
 // Public Functions
@@ -32,6 +35,9 @@ bool CGate::link(QSharedPointer<CGate> gate)
         return false;
     }
 
+    // Register in the target gate that a new input is being linked.
+    gate->m_input_count++;
+
     return QObject::connect(this, SIGNAL(forwardData(QSharedPointer<CData>)),
         gate.data(), SLOT(inputData(QSharedPointer<CData>)),
         Qt::QueuedConnection);
@@ -43,14 +49,6 @@ bool CGate::link(QSharedPointer<CGate> gate)
 
 void CGate::inputData(QSharedPointer<CData> data)
 {
-    // Compare the message types to see if it's the expected type.
-    // if(m_msg_type != msg_type) {
-    //     // Messages do not match.
-    //     qDebug() << "CGate::processMessage() Error:"
-    //              << "Unexpected Message received.";
-    //     return;
-    // }
-
     emit forwardData(data);
 }
 

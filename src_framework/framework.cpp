@@ -35,7 +35,7 @@ void CFramework::main()
     file.open(QFile::ReadOnly | QFile::Text);
     QTextStream stream(&file);
     m_mesh.parseMesh(stream.readAll());
-    m_mesh.start("Node1");
+    m_mesh.start();
 
     // CNodeConfig conf;
     // if(!CNodeFactory::instance().configTemplate("file", conf)) {

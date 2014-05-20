@@ -42,13 +42,9 @@ bool CNodeMesh::parseMesh(QString json_str)
     return true;
 }
 
-void CNodeMesh::start(QString node_name)
+void CNodeMesh::start()
 {
-    QSharedPointer<CNode> node = m_nodes[node_name];
-
-    if(!node.isNull()) {
-        node->start();
-    }
+    startNodes();
 }
 
 
@@ -201,5 +197,14 @@ bool CNodeMesh::addConnection(QVariantMap& connections_json)
     }
 
     return true;
+}
+
+void CNodeMesh::startNodes()
+{
+    QMap<QString, QSharedPointer<CNode>>::iterator i;
+    for(i = m_nodes.begin(); i != m_nodes.end(); ++i) {
+        auto node = i.value();
+        node->start();
+    }
 }
 

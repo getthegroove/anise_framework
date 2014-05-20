@@ -60,6 +60,27 @@ bool CNode::connect(QString output_name, const CNode &target, QString input_name
     return true;
 }
 
+int CNode::inputGatesSize()
+{
+    return m_input_gates.size();
+}
+
+int CNode::outputGatesSize()
+{
+    return m_output_gates.size();
+}
+
+int CNode::inputLinkCount(QString gate_name)
+{
+    auto gate = findInputGate(gate_name);
+    if(gate.isNull()) {
+        return 0;
+    }
+    else {
+        return gate->inputLinks();
+    }
+}
+
 
 //------------------------------------------------------------------------------
 // Protected Functions
@@ -75,7 +96,6 @@ bool CNode::commit(QString gate_name, QSharedPointer<CData> data)
         return false;
     }
 
-    // TODO: add the 'data' parameter to the inputData function.
     output_gate->inputData(data);
 
     return true;
@@ -134,6 +154,4 @@ QSharedPointer<CGate> CNode::findOutputGate(QString name) const
 
 //------------------------------------------------------------------------------
 // Private Slots
-
-
 

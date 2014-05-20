@@ -16,12 +16,13 @@ class CNodeMesh
     // Receive a JSON string to be parsed into Nodes and connections.
     bool parseMesh(QString json_str);
     // Start processing the mesh.
-    void start(QString node_name);
+    void start();
 
   private:
     bool addNode(QVariantMap &node_json);
     bool addConnection(QVariantMap &connections_json);
-
+    // Call the "start" function of all nodes in this mesh.
+    void startNodes();
 };
 
 #endif // NODEMESH_H

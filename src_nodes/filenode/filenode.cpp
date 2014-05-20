@@ -51,6 +51,11 @@ void CFileNode::start()
 {
     // TODO: Read file supplied by the user.
 
+    if(inputLinkCount("in") != 0) {
+        // If someone is connected do not perform anything at the start.
+        return;
+    }
+
     QList<int> list;
     list << 1 << 2 << 3;
     m_table->addRow(list);

@@ -21,16 +21,15 @@ class CFileNode: public CNode
     static void configure(CNodeConfig &config);
 
   public slots:
-    // Data is sent to this function.
+    // Receive data sent by other nodes connected to this node.
     virtual void data(QSharedPointer<CData> data);
 
   protected:
     // The place where we are able to initialize "Data" data structures which we
     // ... would like to use within the Node.
     virtual void init(const CDataFactory &data_factory);
-
-  public: // TODO: Remove this line.
-    // Start reading the file the user selected.
+    // Function called when the simulation is started.
+    // ... Read the file set in the parameters.
     virtual void start();
 };
 

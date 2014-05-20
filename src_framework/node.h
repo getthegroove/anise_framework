@@ -10,12 +10,14 @@
 
 class CNodeFactory;
 class CDataFactory;
+class CNodeMesh;
 
 class CNode : public QObject
 {
   Q_OBJECT
 
   friend CNodeFactory;
+  friend CNodeMesh;
 
   protected:
     // Collection of input gates.
@@ -31,17 +33,20 @@ class CNode : public QObject
     const CNodeConfig &getConfig() const;
     // Connect the output of this node to the input of another node.
     bool connect(QString output_name, const CNode &target, QString input_name);
+    // Return the number of gates.
+    int inputGatesSize();
+    int outputGatesSize();
+    // Return how many input links a gate has.
+    int inputLinkCount(QString gate_name);
 
   public slots:
     // Function that will process data sent to the node.
     virtual void data(QSharedPointer<CData> data) = 0;
 
-
   protected:
     // Let the Node perform some initialization tasks. Data structures must
     // ... be obtained through the 'data_factory' handle.
     virtual void init(const CDataFactory &data_factory) = 0;
-  public: // TODO: Remove this line.
     // Function that signal the Nodes that the simulation is starting. Nodes
     // ... that do not receive messages may start processing information now.
     virtual void start() = 0;
@@ -54,7 +59,6 @@ class CNode : public QObject
     // Do not allow instantiations of this class through the default
     // ... constructor.
     explicit CNode() {}
-
     // Establish the Gate arrangements in the node, e.g., number of inputs,
     // ... outputs, type of messages received by gates, etc
     void setupGates(const CNodeConfig &config);

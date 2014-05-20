@@ -13,23 +13,25 @@ class CGate: public QObject
 {
   Q_OBJECT
 
+  private:
+    // String identifier assigned to this gate.
+    QString m_name;
+    // The type of message this gate is expected to receive.
+    QString m_msg_type;
+    // Number of inputs going into this gate.
+    int m_input_count;
+
   public:
     explicit CGate(QString name, QString msg_type, QObject *parent = 0);
     inline bool operator==(const CGate &gate) const;
     inline bool operator==(const QString gate_name) const;
     inline QString name() const;
     inline QString type() const;
+    inline int inputLinks() const;
     // Connect this gate with an internal Node function.
     bool link(CNode *receiver, const char* slot);
     // Connect two gates together.
     bool link(QSharedPointer<CGate> gate);
-
-  private:
-    // String identifier preassigned to this gate.
-    QString m_name;
-    // The type of message this gate is expected to receive.
-    QString m_msg_type;
-    // Queue of messages waiting to be processed.
 
   public slots:
     // Receive data structures here. If the data received is what we are
@@ -61,6 +63,11 @@ QString CGate::name() const
 QString CGate::type() const
 {
     return m_msg_type;
+}
+
+int CGate::inputLinks() const
+{
+    return m_input_count;
 }
 
 #endif // GATE_H
