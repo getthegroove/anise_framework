@@ -29,11 +29,11 @@ class CNodeFactory: public CDynamicFactory
     // Obtain the configuration template of the supplied node name.
     // ... Return true if the config was created, false if the node
     // ... was not found.
-    bool configTemplate(QString node_name, CNodeConfig &config);
+    bool configTemplate(QString node_class_name, CNodeConfig &config);
     // Create an instance of the supplied node name. Return null
     // ... if the node does not exist. The caller is responsible for
     // ... freeing up the memory after using it.
-    CNode *createNode(QString node_name, const CNodeConfig &config);
+    CNode *createNode(QString node_class_name, const CNodeConfig &config);
 
   private:
     // Singleton class.

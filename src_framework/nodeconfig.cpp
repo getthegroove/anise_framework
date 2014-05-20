@@ -19,7 +19,7 @@ void CNodeConfig::setName(QString name)
     m_name = name;
 }
 
-QString CNodeConfig::getName() const
+const QString CNodeConfig::getName() const
 {
     return m_name;
 }

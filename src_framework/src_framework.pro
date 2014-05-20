@@ -45,7 +45,9 @@ SOURCES += main.cpp \
     nodefactory.cpp \
     dynamicfactory.cpp \
     datafactory.cpp \
-    data.cpp
+    data.cpp \
+    nodemesh.cpp \
+    ../src_common/qt-json/json.cpp
 
 HEADERS += \
     framework.h \
@@ -55,4 +57,6 @@ HEADERS += \
     nodefactory.h \
     dynamicfactory.h \
     datafactory.h \
-    data.h
+    data.h \
+    nodemesh.h \
+    ../src_common/qt-json/json.h

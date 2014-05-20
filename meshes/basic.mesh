@@ -1,0 +1,16 @@
+{
+  "nodes": [
+    {"class": "file", "name": "Node1",
+     "params": [
+          {"file": "/home/boy/test"}
+     ]},
+
+    {"class": "file", "name": "Node2",
+     "params": [
+          {"file": "/home/boy/test"}
+     ]}
+  ],
+  "connections": [
+    {"src_node": "Node1", "src_gate": "out", "dest_node": "Node2", "dest_gate": "in"}
+  ]
+}

@@ -44,7 +44,7 @@ class CNodeConfig
     explicit CNodeConfig();
 
     void setName(QString name);
-    QString getName() const;
+    const QString getName() const;
     bool setParameter(QString key, QVariant value) const;
 
     // Facilities for adding different parameters to the configuration

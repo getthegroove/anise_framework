@@ -17,8 +17,11 @@ CNode::CNode(const CNodeConfig &config, QObject *parent/*= 0*/)
 
 CNode::~CNode()
 {
-
+    qDebug() << "CNode.~CNode():: Info: Node '"
+             << getConfig().getName()
+             << "' destroyed." << endl;
 }
+
 
 //------------------------------------------------------------------------------
 // Public Functions
@@ -28,7 +31,7 @@ const CNodeConfig& CNode::getConfig() const
     return m_config;
 }
 
-bool CNode::connect(QString output_name, CNode &target, QString input_name)
+bool CNode::connect(QString output_name, const CNode &target, QString input_name)
 {
     auto src_gate = findOutputGate(output_name);
     if(src_gate.isNull()) {
@@ -101,7 +104,7 @@ void CNode::setupGates(const CNodeConfig &config)
     }
 }
 
-QSharedPointer<CGate> CNode::findInputGate(QString name)
+QSharedPointer<CGate> CNode::findInputGate(QString name) const
 {
     // Use C++11 for range loops.
     for(auto gate : m_input_gates) {
@@ -115,7 +118,7 @@ QSharedPointer<CGate> CNode::findInputGate(QString name)
     return QSharedPointer<CGate>();
 }
 
-QSharedPointer<CGate> CNode::findOutputGate(QString name)
+QSharedPointer<CGate> CNode::findOutputGate(QString name) const
 {
     // Use C++11 for range loops.
     for(auto gate : m_output_gates) {

@@ -34,31 +34,34 @@ void CNodeFactory::loadLibraries()
     CDynamicFactory::loadLibraries("./nodes", "lib*node.so", RTLD_NOW);
 }
 
-bool CNodeFactory::configTemplate(QString node_name, CNodeConfig &config)
+bool CNodeFactory::configTemplate(QString node_class_name, CNodeConfig &config)
 {
-    if(!m_config_makers.contains(node_name)) {
+    if(!m_config_makers.contains(node_class_name)) {
         return false;
     }
 
-    node_configure_fnc configure = m_config_makers.value(node_name);
+    node_configure_fnc configure = m_config_makers.value(node_class_name);
     configure(config);
 
     return true;
 }
 
-CNode *CNodeFactory::createNode(QString node_name, const CNodeConfig &config)
+CNode *CNodeFactory::createNode(QString node_class_name, const CNodeConfig &config)
 {
-    if(!m_makers.contains(node_name)) {
-        qDebug() << "CNodeFactory::createNode() Error: The node" << node_name
+    if(!m_makers.contains(node_class_name)) {
+        qDebug() << "CNodeFactory::createNode() Error: The node" << node_class_name
                  << "could not be created." << endl;
         return nullptr;
     }
 
-    node_maker_fnc make = m_makers.value(node_name);
+    node_maker_fnc make = m_makers.value(node_class_name);
     CNode *node = make(config);
 
     // Init the Node.
-    node->init(CDataFactory::instance());
+    if(node != nullptr) {
+        // Send the DataFactory so that the Node can instantiate data classes.
+        node->init(CDataFactory::instance());
+    }
 
     return node;
 }
