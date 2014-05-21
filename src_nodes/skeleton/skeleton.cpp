@@ -6,7 +6,7 @@
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
-CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
+CSkeleton::CSkeleton(const CNodeConfig &config, QObject *parent/* = 0*/)
     : CNode(config, parent)
 {
 
@@ -16,7 +16,7 @@ CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
 //------------------------------------------------------------------------------
 // Public Functions
 
-void CFileNode::configure(CNodeConfig &config)
+void CSkeleton::configure(CNodeConfig &config)
 {
     // Add parameters
     //config.addFilename("file", "Input File", "File to be read from disk.");
@@ -26,10 +26,10 @@ void CFileNode::configure(CNodeConfig &config)
     //config.addOutput("out", "misc");
 }
 
-void CFileNode::data(QSharedPointer<CData> data)
+void CSkeleton::data(QSharedPointer<CData> data)
 {
     // Empty because data is not received by this node.
-    qDebug() << "CFileNode.data():: Info:"  << getConfig().getName()
+    qDebug() << "CSkeleton.data():: Info:"  << getConfig().getName()
              << ": Data received.";
 }
 
@@ -37,15 +37,15 @@ void CFileNode::data(QSharedPointer<CData> data)
 //------------------------------------------------------------------------------
 // Protected Functions
 
-void CFileNode::init(const CDataFactory &data_factory)
+void CSkeleton::init(const CDataFactory &data_factory)
 {
-    qDebug() << "CFileNode.init():: Info:" << getConfig().getName()
+    qDebug() << "CSkeleton.init():: Info:" << getConfig().getName()
              << ": Init called.";
 }
 
-void CFileNode::start()
+void CSkeleton::start()
 {
-    qDebug() << "CFileNode.start():: Info:" << getConfig().getName()
+    qDebug() << "CSkeleton.start():: Info:" << getConfig().getName()
              << ": Start called.";
 
     // if(inputLinkCount("in") != 0) {

@@ -5,11 +5,11 @@ extern "C"
 {
     void configure(CNodeConfig &config)
     {
-        Skeleton::configure(config);
+        CSkeleton::configure(config);
     }
 
     CNode *maker(const CNodeConfig &config)
     {
-        return new Skeleton(config);
+        return new CSkeleton(config);
     }
 }
