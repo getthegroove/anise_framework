@@ -1,20 +1,6 @@
-#include "filenode.h"
+#include "skeleton.h"
+#include "datafactory.h"
 #include <QDebug>
-
-const char *name()
-{
-    return "File";
-}
-
-void configure(CNodeConfig &config)
-{
-    CFileNode::configure(config);
-}
-
-CNode *maker(const CNodeConfig &config)
-{
-    return new CFileNode(config);
-}
 
 
 //------------------------------------------------------------------------------
@@ -33,29 +19,40 @@ CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
 void CFileNode::configure(CNodeConfig &config)
 {
     // Add parameters
-    config.addFilename("file", "Input File", "File to be read from disk.");
+    //config.addFilename("file", "Input File", "File to be read from disk.");
 
     // Add the gates.
-    int inputbox = config.addInputBox();
-    config.addInputGate(inputbox, "Start", "start_msg");
-
-    int outputbox = config.addOutputBox();
-    config.addOutputGate(outputbox, "File Table", "table_msg");
+    //config.addInput("in", "misc");
+    //config.addOutput("out", "misc");
 }
 
-
-//------------------------------------------------------------------------------
-// Public Slots
+void CFileNode::data(QSharedPointer<CData> data)
+{
+    // Empty because data is not received by this node.
+    qDebug() << "CFileNode.data():: Info:"  << getConfig().getName()
+             << ": Data received.";
+}
 
 
 //------------------------------------------------------------------------------
 // Protected Functions
 
-void CFileNode::process()
+void CFileNode::init(const CDataFactory &data_factory)
 {
-    qDebug() << "Hello from the deep space of the dynamic library loading thing.";
+    qDebug() << "CFileNode.init():: Info:" << getConfig().getName()
+             << ": Init called.";
 }
 
+void CFileNode::start()
+{
+    qDebug() << "CFileNode.start():: Info:" << getConfig().getName()
+             << ": Start called.";
 
-//------------------------------------------------------------------------------
-// Private Slots
+    // if(inputLinkCount("in") != 0) {
+    //     // If someone is connected do not perform anything at the start.
+    //     return;
+    // }
+
+    // Commit data to a gate.
+    //commit("out", m_table);
+}

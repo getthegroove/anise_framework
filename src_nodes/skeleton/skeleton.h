@@ -1,5 +1,5 @@
-#ifndef FILENODE_H
-#define FILENODE_H
+#ifndef SKELETON_H
+#define SKELETON_H
 
 #include "node.h"
 #include "nodeinfo.h"
@@ -7,24 +7,28 @@
 #include <QObject>
 #include <QString>
 
-extern "C"
-{
-    const char *name();
-    void configure(CNodeConfig &config);
-    CNode *maker(const CNodeConfig &config);
-}
-
-class CFileNode : public CNode, public CNodeInfo<CFileNode>
+class CSkeleton : public CNode
 {
   Q_OBJECT
 
+  private:
+    QSharedPointer<CTableData> m_table;
+
   public:
-    //explicit CFileNode();
+    // Constructor
     explicit CFileNode(const CNodeConfig &config, QObject *parent = 0);
+    // Set the configuration template for this Node.
     static void configure(CNodeConfig &config);
 
+  public slots:
+    // Receive data sent by other nodes connected to this node.
+    virtual void data(QSharedPointer<CData> data);
+
   protected:
-    virtual void process();
+    // Initialize "Data" structures which we would like to use within the Node.
+    virtual void init(const CDataFactory &data_factory);
+    // Function called when the simulation is started.
+    virtual void start();
 };
 
-#endif // FILENODE_H
+#endif // SKELETON_H
