@@ -34,7 +34,7 @@ bool CNodeConfig::setParameter(QString key, QVariant value) const
         return false;
     }
 
-    SParameterTemplate param_template = m_parameter_template_map[key];
+    SParameterTemplate &param_template = m_parameter_template_map[key];
 
     // Verify that the supplied value matches the required value.
     if(value.type() != param_template.type) {
@@ -69,7 +69,7 @@ void CNodeConfig::addOutput(QString name, QString msg_type)
     m_output_templates.append(SGateTemplate(name, msg_type));
 }
 
-const CNodeConfig::SParameterTemplate *CNodeConfig::getParameter(QString key)
+const CNodeConfig::SParameterTemplate *CNodeConfig::getParameter(QString key) const
 {
     if(!m_parameter_template_map.contains(key)) {
         qDebug() << "CNodeConfig::getParameter() Error:"

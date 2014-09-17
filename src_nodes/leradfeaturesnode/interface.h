@@ -1,7 +1,7 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
-#include "nodeconfig.h"
+#include "node/nodeconfig.h"
 
 class CNode;
 

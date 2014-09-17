@@ -56,7 +56,7 @@ class CNodeConfig
     void addOutput(QString name, QString msg_type);
 
     // Getters und Setters.
-    const SParameterTemplate *getParameter(QString key);
+    const SParameterTemplate *getParameter(QString key) const;
     const QList<SGateTemplate> &getInputTemplates() const;
     const QList<SGateTemplate> &getOutputTemplates() const;
 };

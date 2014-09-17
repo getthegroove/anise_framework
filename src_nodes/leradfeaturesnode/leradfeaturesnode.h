@@ -1,22 +1,22 @@
-#ifndef FILENODE_H
-#define FILENODE_H
+#ifndef LERADFEATURES_H
+#define LERADFEATURES_H
 
 #include "node/node.h"
 #include "node/nodeconfig.h"
-#include "tabledata/tabledata.h"
+#include "leradfeaturesdata/leradfeaturesdata.h"
 #include <QObject>
 #include <QString>
 
-class CFileNode: public CNode
+class CLeradFeaturesNode : public CNode
 {
   Q_OBJECT
 
   private:
-    QSharedPointer<CTableData> m_table;
+    QSharedPointer<CLeradFeaturesData> m_leradfeatures;
 
   public:
     // Constructor
-    explicit CFileNode(const CNodeConfig &config, QObject *parent = 0);
+    explicit CLeradFeaturesNode(const CNodeConfig &config, QObject *parent = 0);
     // Set the configuration template for this Node.
     static void configure(CNodeConfig &config);
 
@@ -25,12 +25,10 @@ class CFileNode: public CNode
     virtual void data(QSharedPointer<CData> data);
 
   protected:
-    // The place where we are able to initialize "Data" data structures which we
-    // ... would like to use within the Node.
+    // Initialize "Data" structures which we would like to use within the Node.
     virtual void init(const CDataFactory &data_factory);
     // Function called when the simulation is started.
-    // ... Read the file set in the parameters.
     virtual void start();
 };
 
-#endif // FILENODE_H
+#endif // LERADFEATURES_H

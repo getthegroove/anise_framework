@@ -10,6 +10,8 @@ TEMPLATE = app
 
 LIBS += -ldl -rdynamic
 
+#INCLUDEPATH += ../src_data
+
 #FORMS     += forms/mainwindow.ui
 #RESOURCES += resources/images.qrc
 
@@ -39,24 +41,26 @@ QMAKE_CLEAN += $$DESTDIR/*$$TARGET*
 
 SOURCES += main.cpp \
     framework.cpp \
-    node.cpp \
-    nodeconfig.cpp \
-    gate.cpp \
-    nodefactory.cpp \
+    node/node.cpp \
+    node/nodeconfig.cpp \
+    node/gate.cpp \
+    node/nodefactory.cpp \
     dynamicfactory.cpp \
-    datafactory.cpp \
-    data.cpp \
-    nodemesh.cpp \
-    ../src_common/qt-json/json.cpp
+    data/datafactory.cpp \
+    data/data.cpp \
+    node/nodemesh.cpp \
+    ../src_common/qt-json/json.cpp \
+    data/errordata.cpp
 
 HEADERS += \
     framework.h \
-    node.h \
-    nodeconfig.h \
-    gate.h \
-    nodefactory.h \
+    node/node.h \
+    node/nodeconfig.h \
+    node/gate.h \
+    node/nodefactory.h \
     dynamicfactory.h \
-    datafactory.h \
-    data.h \
-    nodemesh.h \
-    ../src_common/qt-json/json.h
+    data/datafactory.h \
+    data/data.h \
+    node/nodemesh.h \
+    ../src_common/qt-json/json.h \
+    data/errordata.h

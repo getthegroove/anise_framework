@@ -1,22 +1,22 @@
-#ifndef FILENODE_H
-#define FILENODE_H
+#ifndef TCPDUMPNODE_H
+#define TCPDUMPNODE_H
 
 #include "node/node.h"
 #include "node/nodeconfig.h"
-#include "tabledata/tabledata.h"
+#include "tcpdumpdata/tcpdumpdata.h"
 #include <QObject>
 #include <QString>
 
-class CFileNode: public CNode
+class CTcpDumpNode: public CNode
 {
   Q_OBJECT
 
   private:
-    QSharedPointer<CTableData> m_table;
+    QSharedPointer<CTcpDumpData> m_tcpdump;
 
   public:
     // Constructor
-    explicit CFileNode(const CNodeConfig &config, QObject *parent = 0);
+    explicit CTcpDumpNode(const CNodeConfig &config, QObject *parent = 0);
     // Set the configuration template for this Node.
     static void configure(CNodeConfig &config);
 
@@ -33,4 +33,4 @@ class CFileNode: public CNode
     virtual void start();
 };
 
-#endif // FILENODE_H
+#endif // TCPDUMPNODE_H

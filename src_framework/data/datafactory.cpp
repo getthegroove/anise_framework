@@ -1,4 +1,6 @@
 #include "datafactory.h"
+#include "data.h"
+#include "errordata.h"
 #include <dlfcn.h>
 #include <QDebug>
 #include <QRegExp>
@@ -12,8 +14,10 @@ CDataFactory *CDataFactory::m_instance = nullptr;
 
 CDataFactory::CDataFactory()
 {
-
+    // Add builtin data classes to the factory.
+    registerBuiltinData();
 }
+
 
 //------------------------------------------------------------------------------
 // Public Functions
@@ -34,17 +38,19 @@ void CDataFactory::loadLibraries()
 }
 
 
-CData *CDataFactory::createData(QString data_name) const
+CData *CDataFactory::createData(QString data_type_name) const
 {
-    if(!m_makers.contains(data_name)) {
+    if(!m_makers.contains(data_type_name)) {
         return nullptr;
     }
 
-    data_maker_fnc make = m_makers.value(data_name);
-    CData *data = make(data_name);
+    data_maker_fnc make = m_makers.value(data_type_name);
+    CData *data = make();
+    data->setTypeName(data_type_name);
 
     return data;
 }
+
 
 //------------------------------------------------------------------------------
 // Protected Functions
@@ -60,14 +66,14 @@ void CDataFactory::addLibrary(void *library_handle, QString filename)
     }
 
     qDebug() << "CDataFactory::addLibrary() Info:"
-             << "Loaded Data Structure:" << name << endl;
+             << "Loaded Data Structure:" << name;
 
     // Make sure a node with a similar name has not already been loaded.
     if(m_makers.contains(name)) {
         qDebug() << "CDataFactory::addLibrary() Warning:"
                  << "The Data Factory already loaded a structure called '"
                  << name
-                 << "'. Loaded by" << filename << endl;
+                 << "'. Loaded by" << filename;
         return;
     }
 
@@ -75,3 +81,12 @@ void CDataFactory::addLibrary(void *library_handle, QString filename)
     m_makers[name] = (data_maker_fnc)dlsym(library_handle, "maker");
 }
 
+
+//------------------------------------------------------------------------------
+// Private Functions
+
+void  CDataFactory::registerBuiltinData()
+{
+    // Error data class
+    m_makers["error"] = &CErrorData::maker;
+}

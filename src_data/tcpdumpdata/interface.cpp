@@ -1,10 +1,10 @@
 #include "interface.h"
-#include "tabledata.h"
+#include "tcpdumpdata.h"
 
 extern "C"
 {
     CData *maker()
     {
-        return new CTableData();
+        return new CTcpDumpData();
     }
 }

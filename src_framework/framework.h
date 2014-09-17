@@ -1,7 +1,7 @@
 #ifndef CFRAMEWORK_H
 #define CFRAMEWORK_H
 
-#include "nodemesh.h"
+#include "node/nodemesh.h"
 #include <QObject>
 
 class CFramework : public QObject

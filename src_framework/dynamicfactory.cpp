@@ -36,7 +36,7 @@ void CDynamicFactory::loadLibraries(QString folder, QString filter, int flags)
         if(handle == NULL) {
             qDebug() << "CDynamicFactory::loadLibraries() Error:" << endl
                      << "There was an error loading the library '"
-                     << (*it) << "'." << dlerror() << endl;
+                     << (*it) << "'." << dlerror();
             continue;
         }
 

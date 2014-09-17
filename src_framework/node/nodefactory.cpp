@@ -1,6 +1,6 @@
 #include "nodefactory.h"
 #include "node.h"
-#include "datafactory.h"
+#include "../data/datafactory.h"
 #include <dlfcn.h>
 #include <QDebug>
 #include <QRegExp>
@@ -50,7 +50,7 @@ CNode *CNodeFactory::createNode(QString node_class_name, const CNodeConfig &conf
 {
     if(!m_makers.contains(node_class_name)) {
         qDebug() << "CNodeFactory::createNode() Error: The node" << node_class_name
-                 << "could not be created." << endl;
+                 << "could not be created.";
         return nullptr;
     }
 
@@ -81,14 +81,14 @@ void CNodeFactory::addLibrary(void *library_handle, QString filename)
     }
 
     qDebug() << "CNodeFactory::addLibrary() Info:"
-             << "Loaded Node:" << name << endl;
+             << "Loaded Node:" << name;
 
     // Make sure a node with a similar name has not already been loaded.
     if(m_makers.contains(name)) {
         qDebug() << "CNodeFactory::addLibrary() Warning:"
                  << "The Node Factory already loaded a node called '"
                  << name
-                 << "'. Loaded by" << filename << endl;
+                 << "'. Loaded by" << filename;
         return;
     }
 

@@ -1,5 +1,5 @@
 #include "filenode.h"
-#include "datafactory.h"
+#include "data/datafactory.h"
 #include "tabledata/tabledata.h"
 #include <QDebug>
 
@@ -29,9 +29,12 @@ void CFileNode::configure(CNodeConfig &config)
 
 void CFileNode::data(QSharedPointer<CData> data)
 {
-    // Empty because data is not received by this node.
-    qDebug() << "CFileNode.data() Info:"  << getConfig().getName()
-             << ": Data received.";
+    qDebug() << "CFileNode.data() Info: Node "  << getConfig().getName()
+             << "received the data " << data->getType();
+
+    if(data->getType() == "error") {
+        return;
+    }
 
     QSharedPointer<CTableData> table_data = data.staticCast<CTableData>();
     qDebug() << "CFileNode.data() Data:" << table_data->getRow(0);
@@ -42,7 +45,7 @@ void CFileNode::data(QSharedPointer<CData> data)
 
 void CFileNode::init(const CDataFactory &data_factory)
 {
-    qDebug() << "CFileNode.init() Info: Init Called." << endl;
+    qDebug() << "CFileNode.init() Info: Init Called.";
     CTableData *table = static_cast<CTableData *>(data_factory.createData("table"));
     m_table = QSharedPointer<CTableData>(table);
 }
@@ -56,6 +59,9 @@ void CFileNode::start()
         return;
     }
 
+    commitError("out", "There was an error.");
+    return;
+
     QList<int> list;
     list << 1 << 2 << 3;
     m_table->addRow(list);
@@ -65,4 +71,3 @@ void CFileNode::start()
     // Commit the file to the "out" gate.
     commit("out", m_table);
 }
-

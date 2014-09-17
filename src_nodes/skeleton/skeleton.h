@@ -2,7 +2,6 @@
 #define SKELETON_H
 
 #include "node.h"
-#include "nodeinfo.h"
 #include "nodeconfig.h"
 #include <QObject>
 #include <QString>
@@ -16,7 +15,7 @@ class CSkeleton : public CNode
 
   public:
     // Constructor
-    explicit CFileNode(const CNodeConfig &config, QObject *parent = 0);
+    explicit CSkeleton(const CNodeConfig &config, QObject *parent = 0);
     // Set the configuration template for this Node.
     static void configure(CNodeConfig &config);
 

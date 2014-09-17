@@ -2,8 +2,8 @@
 #define NODE_H
 
 #include "nodeconfig.h"
+#include "../data/data.h"
 #include "gate.h"
-#include "data.h"
 #include <QObject>
 #include <QSharedPointer>
 #include <QString>
@@ -37,7 +37,7 @@ class CNode : public QObject
     int inputGatesSize();
     int outputGatesSize();
     // Return how many input links a gate has.
-    int inputLinkCount(QString gate_name);
+    int inputLinkCount(QString gate_name) const;
 
   public slots:
     // Function that will process data sent to the node.
@@ -52,6 +52,8 @@ class CNode : public QObject
     virtual void start() = 0;
     // Forward a message through a particular gate.
     bool commit(QString gate_name, QSharedPointer<CData> data);
+    // Send an Error message through the specified gate.
+    void commitError(QString gate_name, QString error_msg);
 
   private:
     const CNodeConfig m_config;

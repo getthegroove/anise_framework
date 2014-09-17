@@ -1,0 +1,141 @@
+
+src_framework/datafactory.h,301
+#define DATAFACTORY_H2,22
+typedef CData *(*data_maker_fnc)data_maker_fnc10,123
+class CDataFactory:CDataFactory12,167
+    static CDataFactory *m_instance;CDataFactory::m_instance16,257
+    QMap<CDataFactory::QMap17,294
+    QMap<QString, data_maker_fnc> m_makers;CDataFactory::m_makers17,294
+
+src_framework/data.h,78
+#define DATA_H2,15
+class CData8,98
+    QString m_name;CData::m_name11,123
+
+src_framework/dynamicfactory.h,57
+#define DYNAMICFACTORY_H2,25
+class CDynamicFactory7,90
+
+src_framework/framework.h,49
+#define CFRAMEWORK_H2,21
+class CFramework 6,63
+
+src_framework/gate.h,294
+#define GATE_H2,15
+class CGate:CGate12,146
+    QString m_name;CGate::m_name29,697
+    QString m_msg_type;CGate::m_msg_type31,778
+bool CGate::operator==(CGate::operator==46,1248
+bool CGate::operator==(CGate::operator==51,1341
+QString CGate::name(56,1438
+QString CGate::type(61,1490
+
+src_framework/nodeconfig.h,1155
+#define NODECONFIG_H2,21
+class CNodeConfig9,96
+    struct SParameterTemplate CNodeConfig::SParameterTemplate13,188
+        QString name;CNodeConfig::SParameterTemplate::name14,220
+        QVariant::Type type;CNodeConfig::SParameterTemplate::type15,242
+        QVariant value;CNodeConfig::SParameterTemplate::value16,303
+        QString description;CNodeConfig::SParameterTemplate::description17,371
+        SParameterTemplate(CNodeConfig::SParameterTemplate::SParameterTemplate18,400
+    struct SGateTemplate CNodeConfig::SGateTemplate24,548
+        QString name;CNodeConfig::SGateTemplate::name25,575
+        QString msg_type;CNodeConfig::SGateTemplate::msg_type26,597
+        SGateTemplate(CNodeConfig::SGateTemplate::SGateTemplate27,623
+    QString m_name;CNodeConfig::m_name34,816
+    mutable QMap<CNodeConfig::QMap39,1116
+    mutable QMap<QString, SParameterTemplate> m_parameter_template_map;CNodeConfig::m_parameter_template_map39,1116
+    mutable QList<SGateTemplate> m_input_templates;CNodeConfig::m_input_templates40,1188
+    mutable QList<SGateTemplate> m_output_templates;CNodeConfig::m_output_templates41,1240
+
+src_framework/nodefactory.h,491
+#define NODEFACTORY_H2,22
+typedef void *(*node_configure_fnc)node_configure_fnc12,157
+typedef CNode *(*node_maker_fnc)node_maker_fnc13,209
+class CNodeFactory:CNodeFactory15,271
+    static CNodeFactory *m_instance;CNodeFactory::m_instance19,361
+    QMap<CNodeFactory::QMap21,461
+    QMap<QString, node_maker_fnc> m_makers;CNodeFactory::m_makers21,461
+    QMap<CNodeFactory::QMap22,505
+    QMap<QString, node_configure_fnc> m_config_makers;CNodeFactory::m_config_makers22,505
+
+src_framework/node.h,291
+#define NODE_H2,15
+class CNode 14,197
+    QList<QSharedPointer<CGate>> m_input_gates;CNode::m_input_gates22,311
+    QList<QSharedPointer<CGate>> m_output_gates;CNode::m_output_gates24,394
+    const CNodeConfig m_config;CNode::m_config52,1479
+    explicit CNode(CNode::CNode56,1605
+
+src_framework/nodemesh.h,155
+#define NODEMESH_H2,19
+class CNodeMesh8,101
+    QMap<CNodeMesh::QMap12,171
+    QMap<QString, QSharedPointer<CNode>> m_nodes;CNodeMesh::m_nodes12,171
+
+src_framework/data.cpp,20
+CData::CData(6,131
+
+src_framework/datafactory.cpp,318
+CDataFactory *CDataFactory::m_instance CDataFactory::m_instance7,83
+CDataFactory::CDataFactory(13,247
+CDataFactory &CDataFactory::instance(CDataFactory::instance21,384
+void CDataFactory::loadLibraries(30,532
+CData *CDataFactory::createData(CDataFactory::createData37,666
+void CDataFactory::addLibrary(52,1010
+
+src_framework/dynamicfactory.cpp,84
+CDynamicFactory::CDynamicFactory(9,198
+void CDynamicFactory::loadLibraries(18,342
+
+src_framework/framework.cpp,61
+CFramework::CFramework(14,313
+void CFramework::main(23,486
+
+src_framework/gate.cpp,101
+CGate::CGate(8,167
+bool CGate::link(20,483
+bool CGate::link(27,705
+void CGate::inputData(44,1240
+
+src_framework/main.cpp,15
+int main(5,70
+
+src_framework/nodeconfig.cpp,586
+CNodeConfig::CNodeConfig(7,155
+void CNodeConfig::setName(17,312
+const QString CNodeConfig::getName(22,376
+bool CNodeConfig::setParameter(27,443
+void CNodeConfig::addFilename(52,1229
+void CNodeConfig::addInput(62,1539
+void CNodeConfig::addOutput(67,1664
+const CNodeConfig::SParameterTemplate *CNodeConfig::getParameter(CNodeConfig::getParameter72,1791
+const QList<CNodeConfig::SGateTemplate> &CNodeConfig::getInputTemplates(CNodeConfig::getInputTemplates83,2132
+const QList<CNodeConfig::SGateTemplate> &CNodeConfig::getOutputTemplates(CNodeConfig::getOutputTemplates88,2247
+
+src_framework/node.cpp,281
+CNode::CNode(8,177
+CNode::~CNode(18,401
+const CNodeConfig& CNode::getConfig(26,525
+bool CNode::connect(31,595
+bool CNode::commit(64,1750
+void CNode::setupGates(85,2381
+QSharedPointer<CGate> CNode::findInputGate(104,3158
+QSharedPointer<CGate> CNode::findOutputGate(118,3508
+
+src_framework/nodefactory.cpp,361
+CNodeFactory *CNodeFactory::m_instance CNodeFactory::m_instance8,125
+CNodeFactory::CNodeFactory(14,289
+CNodeFactory &CNodeFactory::instance(CNodeFactory::instance23,427
+void CNodeFactory::loadLibraries(32,575
+bool CNodeFactory::configTemplate(37,687
+CNode *CNodeFactory::createNode(CNodeFactory::createNode49,970
+void CNodeFactory::addLibrary(73,1668
+
+src_framework/nodemesh.cpp,166
+CNodeMesh::CNodeMesh(9,218
+bool CNodeMesh::parseMesh(18,350
+void CNodeMesh::start(45,1074
+bool CNodeMesh::addNode(58,1332
+bool CNodeMesh::addConnection(133,3672

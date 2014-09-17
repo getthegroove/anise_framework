@@ -1,4 +1,6 @@
 #include "node.h"
+#include "../data/datafactory.h"
+#include "data/errordata.h"
 #include <QDebug>
 #include <QCoreApplication>
 
@@ -70,7 +72,7 @@ int CNode::outputGatesSize()
     return m_output_gates.size();
 }
 
-int CNode::inputLinkCount(QString gate_name)
+int CNode::inputLinkCount(QString gate_name) const
 {
     auto gate = findInputGate(gate_name);
     if(gate.isNull()) {
@@ -87,7 +89,6 @@ int CNode::inputLinkCount(QString gate_name)
 
 bool CNode::commit(QString gate_name, QSharedPointer<CData> data)
 {
-    // TODO: program me.
     auto output_gate = findOutputGate(gate_name);
     if(output_gate.isNull()) {
         qDebug() << "CNode.commit() Warning: Could not commit data from within"
@@ -99,6 +100,31 @@ bool CNode::commit(QString gate_name, QSharedPointer<CData> data)
     output_gate->inputData(data);
 
     return true;
+}
+
+void CNode::commitError(QString gate_name, QString error_msg)
+{
+    auto output_gate = findOutputGate(gate_name);
+    if(output_gate.isNull()) {
+        qDebug() << "CNode.commitError() Warning: Could not commit Error from within"
+                 << "Node" << m_config.getName() << ". The gate" << gate_name
+                 << "was not found." << endl;
+        // This is a critical error, exit.
+        exit(1);
+    }
+
+    CErrorData *error =
+        static_cast<CErrorData *>(CDataFactory::instance().createData("error"));
+
+    if(error == nullptr) {
+        qDebug() << "CNode.commitError() Error: Could not create CErrorData.";
+        exit(1);
+    }
+
+    error->setMessage(error_msg);
+    QSharedPointer<CData> perror = QSharedPointer<CData>(error);
+
+    output_gate->inputData(perror);
 }
 
 
@@ -154,4 +180,3 @@ QSharedPointer<CGate> CNode::findOutputGate(QString name) const
 
 //------------------------------------------------------------------------------
 // Private Slots
-

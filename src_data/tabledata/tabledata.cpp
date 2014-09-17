@@ -3,8 +3,8 @@
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
-CTableData::CTableData(QString name)
-    : CData(name)
+CTableData::CTableData()
+    : CData()
 {
 
 }

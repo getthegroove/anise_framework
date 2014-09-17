@@ -1,7 +1,7 @@
 #ifndef TABLEDATA_H
 #define TABLEDATA_H
 
-#include "data.h"
+#include "data/data.h"
 #include <QList>
 
 class CTableData: public CData
@@ -11,7 +11,7 @@ class CTableData: public CData
     QList<QList<int>> m_table;
 
   public:
-    explicit CTableData(QString name);
+    explicit CTableData();
 
     void addRow(QList<int> row);
     const QList<int> &getRow(int irow) const;

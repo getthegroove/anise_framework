@@ -1,10 +1,11 @@
-#include "data.h"
+#include "leradfeaturesdata.h"
+
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
-CData::CData(QString name)
-    : m_name(name)
+CLeradFeaturesData::CLeradFeaturesData()
+    : CData()
 {
 
 }
@@ -15,12 +16,4 @@ CData::CData(QString name)
 
 
 //------------------------------------------------------------------------------
-// Public Slots
-
-
-//------------------------------------------------------------------------------
 // Private Functions
-
-
-//------------------------------------------------------------------------------
-// Private Slots

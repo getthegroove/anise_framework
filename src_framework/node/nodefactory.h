@@ -1,7 +1,7 @@
 #ifndef NODEFACTORY_H
 #define NODEFACTORY_H
 
-#include "dynamicfactory.h"
+#include "../dynamicfactory.h"
 #include <QString>
 #include <QMap>
 

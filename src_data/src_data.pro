@@ -1,4 +1,6 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-           tabledata
+            tabledata \
+            tcpdumpdata \
+            leradfeaturesdata \

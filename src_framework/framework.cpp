@@ -1,12 +1,13 @@
 #include "framework.h"
-#include "nodefactory.h"
-#include "datafactory.h"
-#include "nodeconfig.h"
-#include "node.h"
-#include "nodemesh.h"
+#include "node/nodefactory.h"
+#include "data/datafactory.h"
+#include "node/nodeconfig.h"
+#include "node/node.h"
+#include "node/nodemesh.h"
 #include <QDebug>
 #include <QCoreApplication>
 #include <QFile>
+#include <QThreadPool>
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
@@ -24,14 +25,15 @@ CFramework::CFramework(QObject *parent/*= 0*/)
 
 void CFramework::main()
 {
-    qDebug() << "CFramework.main() Info:: Starting the framework." << endl;
+    qDebug() << "CFramework.main() Info:: Starting the framework.";
 
     // Load dynamic nodes and messages into their corresponsing factories.
     // ... The data nodes should be loaded first as the nodes use them.
     CDataFactory::instance().loadLibraries();
     CNodeFactory::instance().loadLibraries();
 
-    QFile file("/home/boy/Documents/CASED/Repos/anids-framework/meshes/basic.mesh");
+     QFile file("/home/boy/Documents/CASED/Repos/anids-framework/meshes/basic.mesh");
+    // QFile file("/home/boy/Documents/CASED/Repos/anids-framework/meshes/tcpdump.mesh");
     file.open(QFile::ReadOnly | QFile::Text);
     QTextStream stream(&file);
     m_mesh.parseMesh(stream.readAll());

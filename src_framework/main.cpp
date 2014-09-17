@@ -1,5 +1,5 @@
 #include "framework.h"
-#include "data.h"
+#include "data/data.h"
 #include <QCoreApplication>
 
 int main(int argc, char *argv[])
