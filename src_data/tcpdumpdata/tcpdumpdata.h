@@ -11,7 +11,6 @@ class CTcpDumpData: public CData
 {
   private:
     // Structures and variables.
-    //QList<QList<int>> m_table;
     QByteArray m_magic_word;
     bool m_little_endian;
     QList<QSharedPointer<CTcpDumpPacket>> m_packets;
@@ -20,7 +19,7 @@ class CTcpDumpData: public CData
     explicit CTcpDumpData();
     virtual ~CTcpDumpData();
     // Parse a byte array into several packets. Extract the tcp dump magic word too.
-    bool parse(QByteArray blob);
+    bool parse(const QByteArray &blob);
     // How many packets are available.
     quint32 availablePackets();
     // If the IP checksum of the specified packet is correct, or if the packet
@@ -36,7 +35,7 @@ class CTcpDumpData: public CData
     // Return 4 bytes as a single number taking into account endianess.
     quint32 get4Bytes(const QByteArray &blob, quint32 offset);
     // Parse the protocol layer.
-    void parseProtocol(QSharedPointer<CTcpDumpPacket> packet);
+    void parseIpProtocol(QSharedPointer<CTcpDumpPacket> packet);
 };
 
 #endif // TCPDUMPDATA_H

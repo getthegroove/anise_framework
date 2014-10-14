@@ -16,7 +16,7 @@ CData::CData()
 //------------------------------------------------------------------------------
 // Public Slots
 
-QString CData::getType()
+QString CData::getType() const
 {
     return m_type_name;
 }

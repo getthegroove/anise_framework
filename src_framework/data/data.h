@@ -8,7 +8,7 @@
 
 class CDataFactory;
 
-class CData: public QSharedData
+class CData
 {
     friend class CDataFactory;
 
@@ -16,9 +16,12 @@ class CData: public QSharedData
     QString m_type_name;
 
   public:
-    CData();
     // Get the type name of this datatype. Setup when instatiated by the data factory.
-    QString getType();
+    QString getType() const;
+
+  protected:
+    // Data objects should be created with the Data Factory class.
+    CData();
 
   private:
     void setTypeName(QString type_name);

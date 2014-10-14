@@ -45,11 +45,13 @@ class CNodeConfig
 
     void setName(QString name);
     const QString getName() const;
+    // Set the value of parameter specified in the template.
     bool setParameter(QString key, QVariant value) const;
 
     // Facilities for adding different parameters to the configuration
     // ... template.
     void addFilename(QString key, QString name, QString description);
+    void addBool(QString key, QString name, QString description);
 
     // Facilities for adding inputs and outputs.
     void addInput(QString name, QString msg_type);

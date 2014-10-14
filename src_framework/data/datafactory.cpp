@@ -1,6 +1,7 @@
 #include "datafactory.h"
 #include "data.h"
 #include "errordata.h"
+#include "messagedata.h"
 #include <dlfcn.h>
 #include <QDebug>
 #include <QRegExp>
@@ -65,15 +66,15 @@ void CDataFactory::addLibrary(void *library_handle, QString filename)
         name = regexp.cap(1);
     }
 
-    qDebug() << "CDataFactory::addLibrary() Info:"
+    qDebug() << "CDataFactory::addLibrary():"
              << "Loaded Data Structure:" << name;
 
     // Make sure a node with a similar name has not already been loaded.
     if(m_makers.contains(name)) {
-        qDebug() << "CDataFactory::addLibrary() Warning:"
-                 << "The Data Factory already loaded a structure called '"
-                 << name
-                 << "'. Loaded by" << filename;
+        qWarning() << "CDataFactory::addLibrary():"
+                   << "The Data Factory already loaded a structure called '"
+                   << name
+                   << "'. Loaded by" << filename;
         return;
     }
 
@@ -89,4 +90,5 @@ void  CDataFactory::registerBuiltinData()
 {
     // Error data class
     m_makers["error"] = &CErrorData::maker;
+    m_makers["message"] = &CMessageData::maker;
 }

@@ -1,19 +1,19 @@
-#include "errordata.h"
+#include "messagedata.h"
 
 
 //------------------------------------------------------------------------------
 // Static Functions
 
-CData *CErrorData::maker()
+CData *CMessageData::maker()
 {
-    return new CErrorData();
+    return new CMessageData();
 }
 
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
-CErrorData::CErrorData()
+CMessageData::CMessageData()
     : CData()
 {
 
@@ -23,12 +23,12 @@ CErrorData::CErrorData()
 //------------------------------------------------------------------------------
 // Public Functions
 
-void CErrorData::setMessage(QString message)
+void CMessageData::setMessage(QString message)
 {
     m_message = message;
 }
 
-QString CErrorData::getMessage() const
+QString CMessageData::getMessage() const
 {
     return m_message;
 }

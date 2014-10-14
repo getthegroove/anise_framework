@@ -1,17 +1,17 @@
-#ifndef ERRORDATA_H
-#define ERRORDATA_H
+#ifndef MESSAGEDATA_H
+#define MESSAGEDATA_H
 
 #include "data.h"
 #include <QList>
 #include <QString>
 
-class CErrorData: public CData
+class CMessageData : public CData
 {
   private:
     QString m_message;
 
   public:
-    explicit CErrorData();
+    CMessageData();
     // Create an instance of this class.
     static CData *maker();
 
@@ -20,4 +20,4 @@ class CErrorData: public CData
     QString getMessage() const;
 };
 
-#endif // ERRORDATA_H
+#endif // MESSAGEDATA_H

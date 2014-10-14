@@ -3,7 +3,7 @@
 
 #include "node/node.h"
 #include "node/nodeconfig.h"
-#include "tabledata/tabledata.h"
+#include "filedata/filedata.h"
 #include <QObject>
 #include <QString>
 
@@ -12,7 +12,7 @@ class CFileNode: public CNode
   Q_OBJECT
 
   private:
-    QSharedPointer<CTableData> m_table;
+    QSharedPointer<CFileData> m_file;
 
   public:
     // Constructor
@@ -20,17 +20,15 @@ class CFileNode: public CNode
     // Set the configuration template for this Node.
     static void configure(CNodeConfig &config);
 
-  public slots:
-    // Receive data sent by other nodes connected to this node.
-    virtual void data(QSharedPointer<CData> data);
-
   protected:
     // The place where we are able to initialize "Data" data structures which we
     // ... would like to use within the Node.
     virtual void init(const CDataFactory &data_factory);
     // Function called when the simulation is started.
     // ... Read the file set in the parameters.
-    virtual void start();
+    virtual bool start();
+    // Receive data sent by other nodes connected to this node.
+    virtual void data(QString gate_name, QSharedPointer<CData> data);
 };
 
 #endif // FILENODE_H

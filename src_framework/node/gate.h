@@ -6,6 +6,7 @@
 #include <QString>
 #include <QSharedPointer>
 #include <QQueue>
+#include <QMutex>
 
 class CNode;
 
@@ -18,6 +19,10 @@ class CGate: public QObject
     QString m_name;
     // The type of message this gate is expected to receive.
     QString m_msg_type;
+    // Node that might be linked to this gate.
+    CNode *m_linked_node;
+    // Gate that might be linked to this gate.
+    QSharedPointer<CGate> m_linked_gate;
     // Number of inputs going into this gate.
     int m_input_count;
 
@@ -29,19 +34,16 @@ class CGate: public QObject
     inline QString type() const;
     inline int inputLinks() const;
     // Connect this gate with an internal Node function.
-    bool link(CNode *receiver, const char* slot);
+    void link(CNode *node);
     // Connect two gates together.
-    bool link(QSharedPointer<CGate> gate);
+    bool link(QSharedPointer<CGate> &gate);
 
   public slots:
-    // Data structures are received here.
-    void inputData(QSharedPointer<CData> data);
-
-  signals:
-    // Signal emitted whenever a data object is to be forwarded to the
-    // ... object that owns this gate.
-    void forwardData(QSharedPointer<CData> data);
+    // Push or put a data structure into this gate so that the processing unit
+    // ... of the node can process the data in a thread.
+    void inputData(QSharedPointer<CData> &data);
 };
+
 
 // Inline functions.
 bool CGate::operator==(const CGate &gate) const

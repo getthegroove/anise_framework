@@ -1,16 +1,17 @@
 {
   "nodes": [
-    {"class": "file", "name": "Node1",
+    {"class": "file",
+     "name": "FileNode",
      "params": [
-          {"file": "/home/boy/test"}
+          {"file": "/home/boy/Documents/CASED/Development/LERAD/dataset/samples/small.tcpdump"},
+          {"binary": true}
      ]},
-
-    {"class": "file", "name": "Node2",
-     "params": [
-          {"file": "/home/boy/test"}
-     ]}
+    {"class": "tcpdump",
+     "name": "TcpDumpNode",
+     "params": []
+    }
   ],
   "connections": [
-    {"src_node": "Node1", "src_gate": "out", "dest_node": "Node2", "dest_gate": "in"}
+    {"src_node": "FileNode", "src_gate": "out", "dest_node": "TcpDumpNode", "dest_gate": "in"}
   ]
 }

@@ -4,3 +4,4 @@ SUBDIRS += \
             tabledata \
             tcpdumpdata \
             leradfeaturesdata \
+            filedata

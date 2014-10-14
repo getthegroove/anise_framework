@@ -1,5 +1,7 @@
 #include "tcpdumpnode.h"
 #include "data/datafactory.h"
+#include "data/messagedata.h"
+#include "filedata/filedata.h"
 #include <QDebug>
 #include <QFile>
 
@@ -20,17 +22,11 @@ CTcpDumpNode::CTcpDumpNode(const CNodeConfig &config, QObject *parent/* = 0*/)
 void CTcpDumpNode::configure(CNodeConfig &config)
 {
     // Add parameters
-    config.addFilename("file", "TCP Dump file", "TCP dump file to be read from disk.");
+    //config.addFilename("file", "TCP Dump file", "TCP dump file to be read from disk.");
 
     // Add inputs and outputs
-    config.addInput("in", "misc");
+    config.addInput("in", "file");
     config.addOutput("out", "tcpdump");
-}
-
-void CTcpDumpNode::data(QSharedPointer<CData> data)
-{
-    // Empty because data is not received by this node.
-    Q_UNUSED(data);
 }
 
 
@@ -39,36 +35,39 @@ void CTcpDumpNode::data(QSharedPointer<CData> data)
 
 void CTcpDumpNode::init(const CDataFactory &data_factory)
 {
-    qDebug() << "CTcpDumpNode.init() Info: Init Called.";
+    qDebug() << "CTcpDumpNode::init(): called.";
 
     // Create the TCP Dump data structure.
-    CTcpDumpData *tcpdump = static_cast<CTcpDumpData *>(data_factory.createData("tcpdump"));
+    CTcpDumpData *tcpdump =
+            static_cast<CTcpDumpData *>(data_factory.createData("tcpdump"));
     m_tcpdump = QSharedPointer<CTcpDumpData>(tcpdump);
 }
 
-void CTcpDumpNode::start()
+bool CTcpDumpNode::start()
 {
-    if(inputLinkCount("in") != 0) {
-        // If someone is connected do not perform anything at the start.
-        return;
+    return true;
+}
+
+void CTcpDumpNode::data(QString gate_name, QSharedPointer<CData> data)
+{
+    // No need to track gates.
+    Q_UNUSED(gate_name);
+
+    QSharedPointer<CFileData> file;
+
+    if(data->getType() == "message") {
+        auto pmsg = data.staticCast<CMessageData>();
+        QString msg = pmsg->getMessage();
+        qDebug() << "CTcpDumpNode::data(): Received message:" << msg;
+        if(msg == "error") {
+            commitError("out", "Could not get tcp file data.");
+            return;
+        }
     }
+    else if(data->getType() == "file") {
+        file = data.staticCast<CFileData>();
+        m_tcpdump->parse(file->getBytes());
 
-    // TODO: perform error checking.
-    QVariant filename = getConfig().getParameter("file")->value;
-    qDebug() << filename;
-    QFile file(filename.toString());
-    if(!file.open(QIODevice::ReadOnly)) {
-        // Error opening the file.
-        commitError("out", "File not found.");
-        return;
+        commit("out", m_tcpdump);
     }
-    QByteArray blob = file.readAll();
-    m_tcpdump->parse(blob);
-
-    // Show how many packets were parsed.
-    qDebug() << "CTcpDumpNode.start() Info: Packets parsed: "
-             << m_tcpdump->availablePackets();
-
-    // Commit the file to the "out" gate.
-    commit("out", m_tcpdump);
 }

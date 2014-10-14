@@ -50,7 +50,11 @@ SOURCES += main.cpp \
     data/data.cpp \
     node/nodemesh.cpp \
     ../src_common/qt-json/json.cpp \
-    data/errordata.cpp
+    data/errordata.cpp \
+    node/nodegatetask.cpp \
+    node/nodestarttask.cpp \
+    data/messagedata.cpp \
+    messagehandler.cpp
 
 HEADERS += \
     framework.h \
@@ -63,4 +67,8 @@ HEADERS += \
     data/data.h \
     node/nodemesh.h \
     ../src_common/qt-json/json.h \
-    data/errordata.h
+    data/errordata.h \
+    node/nodegatetask.h \
+    node/nodestarttask.h \
+    data/messagedata.h \
+    messagehandler.h

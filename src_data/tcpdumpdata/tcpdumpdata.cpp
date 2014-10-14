@@ -23,7 +23,7 @@ CTcpDumpData::~CTcpDumpData()
 //------------------------------------------------------------------------------
 // Public Functions
 
-bool CTcpDumpData::parse(QByteArray blob)
+bool CTcpDumpData::parse(const QByteArray &blob)
 {
     quint32 offset = 0;
 
@@ -33,7 +33,7 @@ bool CTcpDumpData::parse(QByteArray blob)
         // Extract as many packets as we can starting from 'offset'.
         offset = parsePackets(blob, offset);
         if(offset > 0) {
-            qDebug() << "CTcpDumpData::parse() Info:"
+            qDebug() << "CTcpDumpData::parse():"
                      << "Parsed" << offset << "total bytes.";
             return true;
         }
@@ -79,7 +79,7 @@ quint32 CTcpDumpData::parseHeader(const QByteArray &blob)
 {
     // The header of tcp dumps is 24 bytes long.
     if(blob.size() < 24) {
-        qDebug() << "CTcpDumpData::parseHeader() Warning:"
+        qWarning() << "CTcpDumpData::parseHeader():"
                  << "The supplied TCP Dump does not have a valid header length.";
         return 0;
     }
@@ -98,8 +98,8 @@ quint32 CTcpDumpData::parseHeader(const QByteArray &blob)
         m_little_endian = true;
     }
     else {
-        qDebug() << "CTcpDumpData::parseHeader() Warning:"
-                 << "Invalid TCP Dump header.";
+        qWarning() << "CTcpDumpData::parseHeader():"
+                   << "Invalid TCP Dump header.";
         return 0;
     }
 
@@ -124,14 +124,14 @@ quint32 CTcpDumpData::parsePackets(const QByteArray &blob, quint32 offset)
         quint32 len2 = get4Bytes(blob, offset);
         offset += 4;
         if(len1 != len2) {
-            qDebug() << "CTcpDumpData::parsePackets() Warning:"
-                     << "Missmatched length found in TCP packet.";
+            qWarning() << "CTcpDumpData::parsePackets():"
+                       << "Missmatched length found in TCP packet.";
             return offset;
         }
         if(len1 > 65535) {
             // TODO: handle this somehow.
-            qDebug() << "CTcpDumpData::parsePackets() Warning:"
-                     << "Packet size too large.";
+            qWarning() << "CTcpDumpData::parsePackets():"
+                       << "Packet size too large.";
             return offset;
         }
 
@@ -144,8 +144,8 @@ quint32 CTcpDumpData::parsePackets(const QByteArray &blob, quint32 offset)
             }
             else {
                 // Error: the file is not long enough.
-                qDebug() << "CTcpDumpData::parsePackets() Warning:"
-                         << "The TCP dump file is not long enough.";
+                qWarning() << "CTcpDumpData::parsePackets():"
+                           << "The TCP dump file is not long enough.";
                 return offset;
             }
             p->data[i] = byte;
@@ -153,7 +153,8 @@ quint32 CTcpDumpData::parsePackets(const QByteArray &blob, quint32 offset)
 
         p->end = p->data.size();
 
-        // set ip to the offset 14 if this packet is a IPv4 packet.
+        // Parse the EtherType.
+        // Set ip to the offset 14 if this packet is a IPv4 packet.
         if (p->data.size() > 34 &&
             p->get2(12) == 0x800 &&
             (p->get1(14) & 0xf0) == 0x40) {
@@ -163,7 +164,7 @@ quint32 CTcpDumpData::parsePackets(const QByteArray &blob, quint32 offset)
         // Parse the protocol layer if it's a valid IP packet and it's not
         // ... fragmented.
         if(validIp(p) && defrag(p)) {
-            parseProtocol(p);
+            parseIpProtocol(p);
         }
 
         // Save the packet.
@@ -179,8 +180,8 @@ quint32 CTcpDumpData::get4Bytes(const QByteArray &blob, quint32 offset)
     quint32 blob_size = blob.size();
 
     if(offset + 3 >= blob_size) {
-        qDebug() << "CTcpDumpData::parseHeader() Warning:"
-                 << "Binary blob does not have 4 bytes for parsing a number.";
+        qWarning() << "CTcpDumpData::parseHeader():"
+                   << "Binary blob does not have 4 bytes for parsing a number.";
         return 0;
     }
 
@@ -202,7 +203,7 @@ quint32 CTcpDumpData::get4Bytes(const QByteArray &blob, quint32 offset)
     return number;
 }
 
-void CTcpDumpData::parseProtocol(QSharedPointer<CTcpDumpPacket> packet)
+void CTcpDumpData::parseIpProtocol(QSharedPointer<CTcpDumpPacket> packet)
 {
     qint8 protocol = packet->protocol();
 

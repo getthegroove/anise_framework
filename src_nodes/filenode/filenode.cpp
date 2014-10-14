@@ -1,6 +1,7 @@
 #include "filenode.h"
 #include "data/datafactory.h"
 #include "tabledata/tabledata.h"
+#include "data/messagedata.h"
 #include <QDebug>
 
 //------------------------------------------------------------------------------
@@ -8,7 +9,7 @@
 
 CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
     : CNode(config, parent)
-    , m_table(nullptr)
+    , m_file()
 {
 
 }
@@ -20,24 +21,13 @@ CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
 void CFileNode::configure(CNodeConfig &config)
 {
     // Add parameters
-    config.addFilename("file", "Input File", "File to be read from disk.");
+    config.addFilename("file", "Input File",
+                       "Path of the file to read from disk.");
+    config.addBool("binary", "Binary format",
+                   "Parse the file contents as binary data.");
 
     // Add inputs and outputs
-    config.addInput("in", "misc");
-    config.addOutput("out", "misc");
-}
-
-void CFileNode::data(QSharedPointer<CData> data)
-{
-    qDebug() << "CFileNode.data() Info: Node "  << getConfig().getName()
-             << "received the data " << data->getType();
-
-    if(data->getType() == "error") {
-        return;
-    }
-
-    QSharedPointer<CTableData> table_data = data.staticCast<CTableData>();
-    qDebug() << "CFileNode.data() Data:" << table_data->getRow(0);
+    config.addOutput("out", "file");
 }
 
 //------------------------------------------------------------------------------
@@ -45,29 +35,47 @@ void CFileNode::data(QSharedPointer<CData> data)
 
 void CFileNode::init(const CDataFactory &data_factory)
 {
-    qDebug() << "CFileNode.init() Info: Init Called.";
-    CTableData *table = static_cast<CTableData *>(data_factory.createData("table"));
-    m_table = QSharedPointer<CTableData>(table);
+    qDebug() << "CFileNode::init(): called.";
+    CFileData *file = static_cast<CFileData *>(data_factory.createData("file"));
+    m_file = QSharedPointer<CFileData>(file);
 }
 
-void CFileNode::start()
+bool CFileNode::start()
 {
-    // TODO: Read file supplied by the user.
+    qDebug() << "CFileNode::start(): called.";
 
-    if(inputLinkCount("in") != 0) {
-        // If someone is connected do not perform anything at the start.
-        return;
+    QVariant filename = getConfig().getParameter("file")->value;
+    QVariant binary = getConfig().getParameter("binary")->value;
+
+    if(m_file->readFile(filename.toString(), binary.toBool())) {
+        return true;
     }
+    else {
+        qWarning() << "CFileNode::start(): The file"
+                 << filename.toString()
+                 << "could not be opened.";
+        return false;
+    }
+}
 
-    commitError("out", "There was an error.");
-    return;
+void CFileNode::data(QString gate_name, QSharedPointer<CData> data)
+{
+    // No input gates.
+    Q_UNUSED(gate_name);
 
-    QList<int> list;
-    list << 1 << 2 << 3;
-    m_table->addRow(list);
-    qDebug() << "CFileNode.start() Info:"  << getConfig().getName()
-             << "Data processing done" << endl;
+    qDebug() << "CFileNode::data(): called.";
 
-    // Commit the file to the "out" gate.
-    commit("out", m_table);
+    if(data->getType() == "message") {
+        auto pmsg = data.staticCast<CMessageData>();
+        QString msg = pmsg->getMessage();
+        if(msg == "start") {
+            commit("out", m_file);
+        }
+        else if(msg == "error") {
+            qCritical() << "CFileNode::data(): Error found while processing"
+                        << "data().";
+            return;
+        }
+
+    }
 }

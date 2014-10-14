@@ -49,7 +49,7 @@ bool CNodeFactory::configTemplate(QString node_class_name, CNodeConfig &config)
 CNode *CNodeFactory::createNode(QString node_class_name, const CNodeConfig &config)
 {
     if(!m_makers.contains(node_class_name)) {
-        qDebug() << "CNodeFactory::createNode() Error: The node" << node_class_name
+        qCritical() << "CNodeFactory::createNode(): The node" << node_class_name
                  << "could not be created.";
         return nullptr;
     }
@@ -80,15 +80,15 @@ void CNodeFactory::addLibrary(void *library_handle, QString filename)
         name = regexp.cap(1);
     }
 
-    qDebug() << "CNodeFactory::addLibrary() Info:"
+    qDebug() << "CNodeFactory::addLibrary():"
              << "Loaded Node:" << name;
 
     // Make sure a node with a similar name has not already been loaded.
     if(m_makers.contains(name)) {
-        qDebug() << "CNodeFactory::addLibrary() Warning:"
-                 << "The Node Factory already loaded a node called '"
-                 << name
-                 << "'. Loaded by" << filename;
+        qWarning() << "CNodeFactory::addLibrary():"
+                   << "The Node Factory already loaded a node called '"
+                   << name
+                   << "'. Loaded by" << filename;
         return;
     }
 
