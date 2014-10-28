@@ -21,9 +21,6 @@ CTcpDumpNode::CTcpDumpNode(const CNodeConfig &config, QObject *parent/* = 0*/)
 
 void CTcpDumpNode::configure(CNodeConfig &config)
 {
-    // Add parameters
-    //config.addFilename("file", "TCP Dump file", "TCP dump file to be read from disk.");
-
     // Add inputs and outputs
     config.addInput("in", "file");
     config.addOutput("out", "tcpdump");
@@ -67,6 +64,8 @@ void CTcpDumpNode::data(QString gate_name, QSharedPointer<CData> data)
     else if(data->getType() == "file") {
         file = data.staticCast<CFileData>();
         m_tcpdump->parse(file->getBytes());
+        qDebug() << "CTcpDumpNode::data(): Packets parsed:"
+                 << m_tcpdump->availablePackets();
 
         commit("out", m_tcpdump);
     }
