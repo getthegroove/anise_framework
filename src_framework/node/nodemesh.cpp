@@ -140,7 +140,8 @@ bool CNodeMesh::addNode(QVariantMap &node_json)
     // Verify that a Node with the same name does not exist already in the map.
     if(m_nodes.contains(node_name)) {
         qWarning() << "CNodeMesh::addNode():"
-                   << "A node with the name" << node_name;
+                   << "A node with the name" << node_name
+                   << "has already been added to the mesh.";
         return false;
     }
 
@@ -149,7 +150,8 @@ bool CNodeMesh::addNode(QVariantMap &node_json)
         node_class, conf);
     if(!ok) {
         // The template for the desired Node class was not found.
-        qWarning() << "CNodeMesh::addNode(): The node class '";
+        qWarning() << "CNodeMesh::addNode(): The node class"
+                   << node_name << "failed to set its config template.";
         return false;
     }
 
@@ -234,13 +236,13 @@ bool CNodeMesh::addConnection(QVariantMap& connections_json)
     // Make sure the referenced nodes exist.
     if(src_node.isNull()) {
         qWarning() << "CNodeMesh::addConnection():"
-                   << "Connection not established. Source node (" << src_name
-                   << ") was not found.";
+                   << "Connection not established. Source node"
+                   << src_name << "was not found.";
     }
     if(dest_node.isNull()) {
         qWarning() << "CNodeMesh::addConnection():"
-                   << "Connection not established. Destination node (" << dest_name
-                   << ") was not found.";
+                   << "Connection not established. Destination node"
+                   << dest_name << "was not found.";
     }
     if(src_node.isNull() || dest_node.isNull()) {
         return false;
