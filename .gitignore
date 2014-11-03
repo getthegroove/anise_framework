@@ -4,3 +4,6 @@ Makefile
 # Things inside build/ and bin/ are generated automatically by qmake.
 build/
 bin/
+
+# Do not upload user files.
+anids-framework.pro.user*
