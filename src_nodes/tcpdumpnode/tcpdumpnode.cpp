@@ -30,30 +30,36 @@ void CTcpDumpNode::configure(CNodeConfig &config)
 //------------------------------------------------------------------------------
 // Protected Functions
 
-void CTcpDumpNode::init(const CDataFactory &data_factory)
-{
-    qDebug() << "CTcpDumpNode::init(): called.";
-
-    // Create the TCP Dump data structure.
-    CTcpDumpData *tcpdump =
-            static_cast<CTcpDumpData *>(data_factory.createData("tcpdump"));
-    m_tcpdump = QSharedPointer<CTcpDumpData>(tcpdump);
-}
+//void CTcpDumpNode::init(const CDataFactory &data_factory)
+//{
+//    qDebug() << "CTcpDumpNode::init(): called.";
+//
+//    // Create the TCP Dump data structure.
+//    CTcpDumpData *tcpdump =
+//            static_cast<CTcpDumpData *>(data_factory.createData("tcpdump"));
+//    m_tcpdump = QSharedPointer<CTcpDumpData>(tcpdump);
+//}
 
 bool CTcpDumpNode::start()
 {
-    return true;
+    m_tcpdump = QSharedPointer<CTcpDumpData>(
+        static_cast<CTcpDumpData *>(createData("tcpdump")));
+
+    if(!m_tcpdump.isNull()) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
-void CTcpDumpNode::data(QString gate_name, QSharedPointer<CData> data)
+void CTcpDumpNode::data(QString gate_name, const CConstDataPointer &data)
 {
     // No need to track gates.
     Q_UNUSED(gate_name);
 
-    QSharedPointer<CFileData> file;
-
     if(data->getType() == "message") {
-        auto pmsg = data.staticCast<CMessageData>();
+        auto pmsg = data.staticCast<const CMessageData>();
         QString msg = pmsg->getMessage();
         qDebug() << "CTcpDumpNode::data(): Received message:" << msg;
         if(msg == "error") {
@@ -62,7 +68,7 @@ void CTcpDumpNode::data(QString gate_name, QSharedPointer<CData> data)
         }
     }
     else if(data->getType() == "file") {
-        file = data.staticCast<CFileData>();
+        QSharedPointer<const CFileData> file = data.staticCast<const CFileData>();
         m_tcpdump->parse(file->getBytes());
         qDebug() << "CTcpDumpNode::data(): Packets parsed:"
                  << m_tcpdump->availablePackets();

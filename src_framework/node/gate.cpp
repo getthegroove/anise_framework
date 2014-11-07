@@ -65,13 +65,14 @@ bool CGate::link(QSharedPointer<CGate> &gate)
 //------------------------------------------------------------------------------
 // Public Slots
 
-void CGate::inputData(QSharedPointer<CData> &data)
+void CGate::inputData(CConstDataPointer &data)
 {
-    // Verify if this gate was linked to a node or to a gate.
+    // Verify if this gate is linked to a node or a gate.
     if(m_linked_node != nullptr) {
         // The gate is linked to a node. Let the node process the data in
         // ... another thread.
-        m_linked_node->processData(m_name, data);
+        CConstDataPointer cdata(data);
+        m_linked_node->processData(m_name, cdata);
     }
     else if(!m_linked_gate.isNull()) {
         // The node is linked to another gate.

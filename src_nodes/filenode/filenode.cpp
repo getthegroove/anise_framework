@@ -9,7 +9,7 @@
 
 CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
     : CNode(config, parent)
-    , m_file()
+    , m_data_file()
 {
 
 }
@@ -33,21 +33,15 @@ void CFileNode::configure(CNodeConfig &config)
 //------------------------------------------------------------------------------
 // Protected Functions
 
-void CFileNode::init(const CDataFactory &data_factory)
-{
-    qDebug() << "CFileNode::init(): called.";
-    CFileData *file = static_cast<CFileData *>(data_factory.createData("file"));
-    m_file = QSharedPointer<CFileData>(file);
-}
-
 bool CFileNode::start()
 {
-    qDebug() << "CFileNode::start(): called.";
-
     QVariant filename = getConfig().getParameter("file")->value;
     QVariant binary = getConfig().getParameter("binary")->value;
 
-    if(m_file->readFile(filename.toString(), binary.toBool())) {
+    m_data_file = QSharedPointer<CFileData>(
+        static_cast<CFileData *>(createData("file")));
+
+    if(m_data_file->readFile(filename.toString(), binary.toBool())) {
         return true;
     }
     else {
@@ -58,24 +52,20 @@ bool CFileNode::start()
     }
 }
 
-void CFileNode::data(QString gate_name, QSharedPointer<CData> data)
+void CFileNode::data(QString gate_name, const CConstDataPointer &data)
 {
     // No input gates.
     Q_UNUSED(gate_name);
 
-    qDebug() << "CFileNode::data(): called.";
-
     if(data->getType() == "message") {
-        auto pmsg = data.staticCast<CMessageData>();
+        auto pmsg = data.staticCast<const CMessageData>();
         QString msg = pmsg->getMessage();
         if(msg == "start") {
-            commit("out", m_file);
+            commit("out", m_data_file);
         }
         else if(msg == "error") {
             qCritical() << "CFileNode::data(): Error found while processing"
                         << "data().";
-            return;
         }
-
     }
 }

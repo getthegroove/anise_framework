@@ -43,7 +43,7 @@ bool CFileData::isDataBinary()
     return m_binary_data;
 }
 
-const QByteArray &CFileData::getBytes()
+const QByteArray &CFileData::getBytes() const
 {
     return m_bytes;
 }

@@ -4,7 +4,7 @@
 // Constructor and Destructor
 
 CNodeGateTask::CNodeGateTask(CNode &node, QString gate_name,
-    QSharedPointer<CData> &data, QObject *parent /* = 0 */)
+    const CConstDataPointer &data, QObject *parent /* = 0 */)
     : QObject(parent)
     , m_node(node)
     , m_gate_name(gate_name)

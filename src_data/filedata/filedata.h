@@ -10,7 +10,7 @@ class CFileData: public CData
     explicit CFileData();
     bool readFile(QString filename, bool binary);
     bool isDataBinary();
-    const QByteArray &getBytes();
+    const QByteArray &getBytes() const;
 
   private:
     QByteArray m_bytes;

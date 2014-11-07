@@ -52,34 +52,42 @@ class CNode : public QObject
     QString inputGateName(qint8 index) const;
     // Function that will process data sent to the node in another thread. When
     // ... finished, the signal processingFinished() is emitted.
-    void processData(QString gate_name, QSharedPointer<CData> &data);
+    void processData(QString gate_name, const CConstDataPointer &data);
     // Is the node currently processing data?
     bool isProcessing() const;
 
   protected:
-    // Let the Node perform some initialization tasks. Data structures must
-    // ... be obtained through the 'data_factory' handle.
-    virtual void init(const CDataFactory &data_factory) = 0;
+    // ***************************************************
+    // Functions needed to be implemented by any new Node.
+    // ***************************************************
     // Function that signal the Nodes that the simulation is starting.
     // ... Return true on successfull start.
     virtual bool start() = 0;
     // Function that processes data sent to this node. This processing is
     //... performed in another thread.
-    virtual void data(QString gate_name, QSharedPointer<CData> data) = 0;
+    virtual void data(QString gate_name, const CConstDataPointer &data) = 0;
+    //***********************************************************
+    // Helper functions to ease the life of the Node programmers.
+    // **********************************************************
+    // Create a data structure using the data factory obtained when 'init'
+    // ... was called.
+    CData *createData(QString data_name);
     // Forward a message through a particular gate.
-    void commit(QString gate_name, QSharedPointer<CData> data);
+    void commit(QString gate_name, const CConstDataPointer &data);
     // Send an Error message through the specified gate.
     void commitError(QString gate_name, QString error_msg);
 
   private:
     const CNodeConfig m_config;
+    // The Data creation Factory.
+    CDataFactory *m_data_factory;
     // Flag that indicates if the node is in the middle of processing
     // ... something or not.
     bool m_processing;
     // Queue of data structures waiting to be processed.
-    QQueue<QPair<QString,QSharedPointer<CData>>> m_processing_queue;
+    QQueue<QPair<QString,CConstDataPointer>> m_processing_queue;
     // List of commits done by the node while it was processing data.
-    QList<QPair<QString, QSharedPointer<CData>>> m_commit_list;
+    QList<QPair<QString, CConstDataPointer>> m_commit_list;
     // Allow to commit data only inside the "data()" function of the
     // ... node.
     bool m_allow_commit;
@@ -87,13 +95,16 @@ class CNode : public QObject
     // Do not allow instantiations of this class through the default
     // ... constructor.
     explicit CNode() {}
+    // Let the Node perform some initialization tasks. Data structures must
+    // ... be obtained through the 'data_factory' handle.
+    void init(CDataFactory &data_factory);
     // Establish the Gate arrangements in the node, e.g., number of inputs,
     // ... outputs, type of messages received by gates, etc
     void setupGates(const CNodeConfig &config);
     // Find a particular gate by name.
     QSharedPointer<CGate> findInputGate(QString name) const;
     QSharedPointer<CGate> findOutputGate(QString name) const;
-    void startGateTask(QString gate_name, QSharedPointer<CData> &data);
+    void startGateTask(QString gate_name, const CConstDataPointer &data);
     // Safely access and modify the 'm_processing' flag.
     void setProcessing(bool processing);
 

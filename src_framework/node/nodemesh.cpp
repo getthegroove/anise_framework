@@ -52,12 +52,11 @@ bool CNodeMesh::parseMesh(QString json_str)
 
 void CNodeMesh::startNodes()
 {
-    // Set for how many nodes we are going to wait.
+    // Set how many nodes we are going to wait for.
     m_nodes_waiting = m_nodes.size();
 
     QMap<QString, QSharedPointer<CNode>>::iterator i;
     for(i = m_nodes.begin(); i != m_nodes.end(); ++i) {
-
         auto node = i.value();
         // Create a runnable task that will start the nodes in parallel.
         CNodeStartTask *start_task = new CNodeStartTask(*(node.data()));

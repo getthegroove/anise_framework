@@ -27,6 +27,9 @@ class CData
     void setTypeName(QString type_name);
 };
 
+typedef QSharedPointer<CData> CDataPointer;
+typedef QSharedPointer<const CData> CConstDataPointer;
+
 // Register CData objects so that they can be sent through queued connections.
 Q_DECLARE_METATYPE(QSharedPointer<CData>)
 

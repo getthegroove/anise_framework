@@ -41,7 +41,7 @@ class CGate: public QObject
   public slots:
     // Push or put a data structure into this gate so that the processing unit
     // ... of the node can process the data in a thread.
-    void inputData(QSharedPointer<CData> &data);
+    void inputData(CConstDataPointer &data);
 };
 
 

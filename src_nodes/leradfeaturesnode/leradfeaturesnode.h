@@ -22,9 +22,7 @@ class CLeradFeaturesNode : public CNode
 
   protected:
     // Receive data sent by other nodes connected to this node.
-    virtual void data(QString gate_name, QSharedPointer<CData> data);
-    // Initialize "Data" structures which we would like to use within the Node.
-    virtual void init(const CDataFactory &data_factory);
+    virtual void data(QString gate_name, const CConstDataPointer &data);
     // Function called when the simulation is started.
     virtual bool start();
 };

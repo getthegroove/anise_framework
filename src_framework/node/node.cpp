@@ -16,6 +16,7 @@ CNode::CNode(const CNodeConfig &config, QObject *parent/*= 0*/)
  , m_input_gates()
  , m_output_gates()
  , m_config(config)
+ , m_data_factory(nullptr)
  , m_processing(false)
  , m_processing_queue()
  , m_commit_list()
@@ -98,7 +99,7 @@ QString CNode::inputGateName(qint8 index) const
     return m_input_gates.at(index)->name();
 }
 
-void CNode::processData(QString gate_name, QSharedPointer<CData> &data)
+void CNode::processData(QString gate_name, const CConstDataPointer &data)
 {
     // Can we process this message now or should we keep it in a queue for later
     // ... processing?
@@ -108,7 +109,7 @@ void CNode::processData(QString gate_name, QSharedPointer<CData> &data)
                  << "is queuing the data type"
                  << data->getType();
         // Store the name of the gate and the data it is sending in the queue.
-        QPair<QString, QSharedPointer<CData>> gate_and_data;
+        QPair<QString, CConstDataPointer> gate_and_data;
         gate_and_data.first = gate_name;
         gate_and_data.second = data;
         m_processing_queue.enqueue(gate_and_data);
@@ -130,7 +131,18 @@ bool CNode::isProcessing() const
 //------------------------------------------------------------------------------
 // Protected Functions
 
-void CNode::commit(QString gate_name, QSharedPointer<CData> data)
+CData *CNode::createData(QString data_name)
+{
+    if(m_data_factory == nullptr) {
+        qCritical() << "CNode::createData():"
+                    << "Did you forget to call init() on a Node?";
+        return nullptr;
+    }
+
+    return m_data_factory->createData(data_name);
+}
+
+void CNode::commit(QString gate_name, const CConstDataPointer &data)
 {
     if(!m_allow_commit) {
         qWarning() << "CNode::commit(): Data can only be commited"
@@ -139,7 +151,7 @@ void CNode::commit(QString gate_name, QSharedPointer<CData> data)
     }
 
     // Build the commit with the output gate and the data to send.
-    QPair<QString, QSharedPointer<CData>> gate_and_data;
+    QPair<QString, CConstDataPointer> gate_and_data;
     gate_and_data.first = gate_name;
     gate_and_data.second = data;
 
@@ -167,7 +179,7 @@ void CNode::commitError(QString gate_name, QString error_msg)
     QSharedPointer<CData> perror = QSharedPointer<CData>(error);
 
     // Create the pair to add to the commit list.
-    QPair<QString, QSharedPointer<CData>> gate_and_data;
+    QPair<QString, CConstDataPointer> gate_and_data;
     gate_and_data.first = gate_name;
     gate_and_data.second = perror;
     m_commit_list.append(gate_and_data);
@@ -176,6 +188,13 @@ void CNode::commitError(QString gate_name, QString error_msg)
 
 //------------------------------------------------------------------------------
 // Private Functions
+
+void CNode::init(CDataFactory &data_factory)
+{
+    // Store a pointer to the data factory. Derived nodes will be able to create
+    // ... data structures through this member variable.
+    m_data_factory = &data_factory;
+}
 
 void CNode::setupGates(const CNodeConfig &config)
 {
@@ -225,7 +244,7 @@ QSharedPointer<CGate> CNode::findOutputGate(QString name) const
     return QSharedPointer<CGate>();
 }
 
-void CNode::startGateTask(QString gate_name, QSharedPointer<CData> &data)
+void CNode::startGateTask(QString gate_name, const CConstDataPointer &data)
 {
     // Create a NodeTask.
     CNodeGateTask *node_task = new CNodeGateTask(*this, gate_name, data);
@@ -252,7 +271,7 @@ void CNode::onTaskFinished()
 {
     // Process each pair in the commit list.
     while(m_commit_list.size() != 0) {
-        QPair<QString, QSharedPointer<CData>> pair = m_commit_list.takeFirst();
+        QPair<QString, CConstDataPointer> pair = m_commit_list.takeFirst();
 
         auto output_gate = findOutputGate(pair.first);
         if(output_gate.isNull()) {
@@ -268,7 +287,7 @@ void CNode::onTaskFinished()
     // Process one pending data structure in the processing queue.
     if(m_processing_queue.size() > 0) {
         // Process the top most element.
-        QPair<QString, QSharedPointer<CData>> gate_and_data =
+        QPair<QString, CConstDataPointer> gate_and_data =
                 m_processing_queue.dequeue();
         startGateTask(gate_and_data.first, gate_and_data.second);
     }

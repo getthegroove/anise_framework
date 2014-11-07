@@ -31,25 +31,25 @@ void CLeradFeaturesNode::configure(CNodeConfig &config)
 //------------------------------------------------------------------------------
 // Protected Functions
 
-void CLeradFeaturesNode::data(QString gate_name, QSharedPointer<CData> data)
+void CLeradFeaturesNode::data(QString gate_name, const CConstDataPointer &data)
 {
     Q_UNUSED(gate_name);
     qDebug() << "CLeradFeaturesNode::data():"  << getConfig().getName()
              << "Data received.";
 
     // Receive TCP Dump data and extract the LERAD features from it.
-    QSharedPointer<CTcpDumpData> tcpdumpdata = data.staticCast<CTcpDumpData>();
+    QSharedPointer<const CTcpDumpData> tcpdumpdata = data.staticCast<const CTcpDumpData>();
 }
 
-void CLeradFeaturesNode::init(const CDataFactory &data_factory)
-{
-    qDebug() << "CLeradFeaturesNode::init():" << getConfig().getName()
-             << "Init called.";
-
-    // Create the LERAD Features data structure.
-    CLeradFeaturesData *leradfe = static_cast<CLeradFeaturesData *>(data_factory.createData("leradfeatures"));
-    m_leradfeatures = QSharedPointer<CLeradFeaturesData>(leradfe);
-}
+//void CLeradFeaturesNode::init(const CDataFactory &data_factory)
+//{
+//    qDebug() << "CLeradFeaturesNode::init():" << getConfig().getName()
+//             << "Init called.";
+//
+//    // Create the LERAD Features data structure.
+//    CLeradFeaturesData *leradfe = static_cast<CLeradFeaturesData *>(data_factory.createData("leradfeatures"));
+//    m_leradfeatures = QSharedPointer<CLeradFeaturesData>(leradfe);
+//}
 
 bool CLeradFeaturesNode::start()
 {
