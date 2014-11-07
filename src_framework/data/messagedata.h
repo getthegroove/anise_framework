@@ -14,6 +14,7 @@ class CMessageData : public CData
     CMessageData();
     // Create an instance of this class.
     static CData *maker();
+    virtual CDataPointer clone() const { return CDataPointer(); }
 
     // Set the error message.
     void setMessage(QString message);

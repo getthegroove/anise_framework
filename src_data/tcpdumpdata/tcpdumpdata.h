@@ -18,6 +18,7 @@ class CTcpDumpData: public CData
   public:
     explicit CTcpDumpData();
     virtual ~CTcpDumpData();
+    virtual CDataPointer clone() const { return CDataPointer(); }
     // Parse a byte array into several packets. Extract the tcp dump magic word too.
     bool parse(const QByteArray &blob);
     // How many packets are available.

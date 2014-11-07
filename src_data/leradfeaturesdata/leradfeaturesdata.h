@@ -12,6 +12,7 @@ class CLeradFeaturesData: public CData
 
   public:
     explicit CLeradFeaturesData();
+    virtual CDataPointer clone() const { return CDataPointer(); }
 };
 
 #endif // LERADFEATURESDATA_H

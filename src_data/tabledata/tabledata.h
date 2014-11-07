@@ -15,6 +15,7 @@ class CTableData: public CData
 
     void addRow(QList<int> row);
     const QList<int> &getRow(int irow) const;
+    virtual CDataPointer clone() const { return CDataPointer(); }
 };
 
 #endif // TABLEDATA_H

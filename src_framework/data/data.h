@@ -16,6 +16,9 @@ class CData
     QString m_type_name;
 
   public:
+    virtual ~CData();
+    // Create a deep copy of the data.
+    virtual QSharedPointer<CData> clone() const = 0;
     // Get the type name of this datatype. Setup when instatiated by the data factory.
     QString getType() const;
 

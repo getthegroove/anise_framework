@@ -14,9 +14,25 @@ CFileData::CFileData()
 
 }
 
+CFileData::CFileData(bool binary_data, const QByteArray &bytes)
+    : CData()
+    , m_bytes(bytes)
+    , m_binary_data(binary_data)
+{
+
+}
+
 
 //------------------------------------------------------------------------------
 // Public Functions
+
+CDataPointer CFileData::clone() const
+{
+    CDataPointer clone =
+        CDataPointer(new CFileData(m_binary_data, m_bytes));
+
+    return clone;
+}
 
 bool CFileData::readFile(QString filename, bool binary)
 {
@@ -48,7 +64,11 @@ const QByteArray &CFileData::getBytes() const
     return m_bytes;
 }
 
+void CFileData::setByte(int offset, quint8 byte)
+{
+    m_bytes[offset] = byte;
+}
+
 
 //------------------------------------------------------------------------------
 // Private Functions
-
