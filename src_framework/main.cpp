@@ -7,7 +7,10 @@
 int main(int argc, char *argv[])
 {
     // Our own custom message writer.
-    qInstallMsgHandler(customMessageWriter);
+    // QT4:
+    // qInstallMsgHandler(customMessageWriterQt4);
+    // QT5:
+    qInstallMessageHandler(customMessageWriterQt5);
 
     // Register special types.
     // qRegisterMetaType<CDataSharedPointer>();
