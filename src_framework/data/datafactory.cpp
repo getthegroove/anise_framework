@@ -65,6 +65,11 @@ void CDataFactory::addLibrary(void *library_handle, QString filename)
     if(regexp.indexIn(filename) != -1) {
         name = regexp.cap(1);
     }
+    else {
+        qWarning() << "CDataFactory::addLibrary(): "
+                   << "Could not load the data file " << filename;
+        return;
+    }
 
     qDebug() << "CDataFactory::addLibrary():"
              << "Loaded Data Structure:" << name;

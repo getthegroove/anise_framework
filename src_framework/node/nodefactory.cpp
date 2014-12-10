@@ -66,6 +66,16 @@ CNode *CNodeFactory::createNode(QString node_class_name, const CNodeConfig &conf
     return node;
 }
 
+QStringList CNodeFactory::availableNodes()
+{
+    QStringList node_list;
+
+    for(QString name : m_config_makers.keys()) {
+        node_list << name;
+    }
+
+    return node_list;
+}
 
 //------------------------------------------------------------------------------
 // Protected Functions
@@ -78,6 +88,11 @@ void CNodeFactory::addLibrary(void *library_handle, QString filename)
     QRegExp regexp(".*lib(\\w+)node.so$");
     if(regexp.indexIn(filename) != -1) {
         name = regexp.cap(1);
+    }
+    else {
+        qWarning() << "CNodeFactory::addLibrary(): "
+                   << "Could not load the node file " << filename;
+        return;
     }
 
     qDebug() << "CNodeFactory::addLibrary():"

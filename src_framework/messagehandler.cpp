@@ -15,7 +15,7 @@
 #define RED "\033[1;31m"
 
 
-void customMessageWriter(QtMsgType type, const char *msg)
+void humanMessageWriterQt4(QtMsgType type, const char *msg)
 {
     QTextStream err(stderr);
 
@@ -40,5 +40,57 @@ void customMessageWriter(QtMsgType type, const char *msg)
                 << RED    << "    FATAL: " << COLOR_RESET
                 << msg << endl;
             break;
+    }
+}
+
+void humanMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    Q_UNUSED(context);
+    QTextStream err(stderr);
+
+    switch (type) {
+        case QtDebugMsg:
+            err << QTime::currentTime().toString("hh:mm:ss.zzz")
+                << BLUE   << "     Info: " << COLOR_RESET
+                //<< context.function << "::" << context.line << ":: "
+                << msg << endl;
+            break;
+        case QtWarningMsg:
+            err << QTime::currentTime().toString("hh:mm:ss.zzz")
+                << YELLOW << "  Warning: " << COLOR_RESET
+                //<< context.function << "::" << context.line << ":: "
+                << msg << endl;
+            break;
+        case QtCriticalMsg:
+            err << QTime::currentTime().toString("hh:mm:ss.zzz")
+                << RED    << " Critical: " << COLOR_RESET
+                //<< context.function << "::" << context.line << ":: "
+                << msg << endl;
+            break;
+        case QtFatalMsg:
+            err << QTime::currentTime().toString("hh:mm:ss.zzz")
+                << RED    << "    FATAL: " << COLOR_RESET
+                //<< context.function << "::" << context.line << ":: "
+                << msg << endl;
+            break;
+    }
+}
+
+void machineMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    Q_UNUSED(context);
+    QTextStream err(stderr);
+
+    switch (type) {
+        case QtDebugMsg:
+          // Do not print debug messages unless the message starts with a '@'.
+          if(msg.at(0) == '@') {
+              // Chop the '@' sign before printing.
+              err << msg.mid(1) << endl;
+          }
+          break;
+      default:
+        // Print everything else that is not a debug message.
+        err << msg << endl;
     }
 }

@@ -25,6 +25,10 @@ class CFramework : public QObject
     // ... inputs are sent a "start" signal.
     void simulateMesh();
 
+    // Functions called through the command line parameters.
+    // List all the Nodes that have been loaded.
+    void printNodes(bool pretty_print);
+
   private slots:
     // The mesh has finished initializing all nodes.
     void onMeshInit(bool success);

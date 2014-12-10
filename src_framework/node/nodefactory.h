@@ -34,6 +34,8 @@ class CNodeFactory: public CDynamicFactory
     // ... if the node does not exist. The caller is responsible for
     // ... freeing up the memory after using it.
     CNode *createNode(QString node_class_name, const CNodeConfig &config);
+    // Return a list of all the available nodes.
+    QStringList availableNodes();
 
   private:
     // Singleton class.
