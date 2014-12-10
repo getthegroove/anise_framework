@@ -79,6 +79,11 @@ void CNodeFactory::addLibrary(void *library_handle, QString filename)
     if(regexp.indexIn(filename) != -1) {
         name = regexp.cap(1);
     }
+    else {
+        qWarning() << "CNodeFactory::addLibrary(): "
+                   << "Could not load the node file " << filename;
+        return;
+    }
 
     qDebug() << "CNodeFactory::addLibrary():"
              << "Loaded Node:" << name;
