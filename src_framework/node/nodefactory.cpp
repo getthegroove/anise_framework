@@ -66,6 +66,16 @@ CNode *CNodeFactory::createNode(QString node_class_name, const CNodeConfig &conf
     return node;
 }
 
+QStringList CNodeFactory::availableNodes()
+{
+    QStringList node_list;
+
+    for(QString name : m_config_makers.keys()) {
+        node_list << name;
+    }
+
+    return node_list;
+}
 
 //------------------------------------------------------------------------------
 // Protected Functions

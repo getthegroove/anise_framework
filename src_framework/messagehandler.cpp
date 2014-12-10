@@ -15,7 +15,7 @@
 #define RED "\033[1;31m"
 
 
-void customMessageWriterQt4(QtMsgType type, const char *msg)
+void humanMessageWriterQt4(QtMsgType type, const char *msg)
 {
     QTextStream err(stderr);
 
@@ -43,7 +43,7 @@ void customMessageWriterQt4(QtMsgType type, const char *msg)
     }
 }
 
-void customMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+void humanMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     Q_UNUSED(context);
     QTextStream err(stderr);
@@ -73,5 +73,24 @@ void customMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, c
                 //<< context.function << "::" << context.line << ":: "
                 << msg << endl;
             break;
+    }
+}
+
+void machineMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    Q_UNUSED(context);
+    QTextStream err(stderr);
+
+    switch (type) {
+        case QtDebugMsg:
+          // Do not print debug messages unless the message starts with a '@'.
+          if(msg.at(0) == '@') {
+              // Chop the '@' sign before printing.
+              err << msg.mid(1) << endl;
+          }
+          break;
+      default:
+        // Print everything else that is not a debug message.
+        err << msg << endl;
     }
 }
