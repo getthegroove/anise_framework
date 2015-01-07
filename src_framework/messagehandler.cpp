@@ -46,11 +46,12 @@ void humanMessageWriterQt4(QtMsgType type, const char *msg)
 void humanMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     Q_UNUSED(context);
+    QTextStream out(stdout);
     QTextStream err(stderr);
 
     switch (type) {
         case QtDebugMsg:
-            err << QTime::currentTime().toString("hh:mm:ss.zzz")
+            out << QTime::currentTime().toString("hh:mm:ss.zzz")
                 << BLUE   << "     Info: " << COLOR_RESET
                 //<< context.function << "::" << context.line << ":: "
                 << msg << endl;
@@ -79,6 +80,7 @@ void humanMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, co
 void machineMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     Q_UNUSED(context);
+    QTextStream out(stdout);
     QTextStream err(stderr);
 
     switch (type) {
@@ -86,7 +88,7 @@ void machineMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, 
           // Do not print debug messages unless the message starts with a '@'.
           if(msg.at(0) == '@') {
               // Chop the '@' sign before printing.
-              err << msg.mid(1) << endl;
+              out << msg.mid(1) << endl;
           }
           break;
       default:

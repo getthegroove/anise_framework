@@ -39,7 +39,7 @@ void CFramework::main()
     // Parse command line parameters.
     QCommandLineParser parser;
     parser.setApplicationDescription(
-        "The ANISE Framework is an environment for the development and running "
+        "The ANISE Framework is an environment for the development and execution "
         "of machine learning algorithms. It focuses on speed and efficiency.");
     parser.addHelpOption();
     parser.addVersionOption();
@@ -61,7 +61,7 @@ void CFramework::main()
     if(!parser.isSet(machineOption)) {
         // Enable pretty printing with out own custom message writer.
         // QT4:
-        // qInstallMsgHandler(customMessageWriterQt4);
+     // qInstallMsgHandler(customMessageWriterQt4);
         // QT5:
         qInstallMessageHandler(humanMessageWriterQt5);
     }
@@ -144,7 +144,7 @@ void CFramework::printNodes(bool pretty_print)
                  << endl << json_doc.toJson(QJsonDocument::Indented);
     }
     else {
-        // Info messages disabled normally. Force the printing of the following.
+        // Info messages disabled normally. Force printing by stating with '@'.
         qDebug() << "@" << json_doc.toJson(QJsonDocument::Compact);
     }
 }
