@@ -34,8 +34,7 @@ void CDynamicFactory::loadLibraries(QString folder, QString filter, int flags)
         // Open the library file.
         void *handle = dlopen(filename.toLocal8Bit().constData(), flags);
         if(handle == NULL) {
-            qCritical() << "CDynamicFactory::loadLibraries()" << endl
-                     << "There was an error loading the library '"
+            qCritical() << "There was an error loading the library '"
                      << (*it) << "'." << dlerror();
             continue;
         }

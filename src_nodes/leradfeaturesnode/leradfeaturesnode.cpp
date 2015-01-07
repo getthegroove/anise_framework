@@ -34,7 +34,7 @@ void CLeradFeaturesNode::configure(CNodeConfig &config)
 void CLeradFeaturesNode::data(QString gate_name, const CConstDataPointer &data)
 {
     Q_UNUSED(gate_name);
-    qDebug() << "CLeradFeaturesNode::data():"  << getConfig().getName()
+    qDebug() << getConfig().getName()
              << "Data received.";
 
     // Receive TCP Dump data and extract the LERAD features from it.
@@ -43,7 +43,7 @@ void CLeradFeaturesNode::data(QString gate_name, const CConstDataPointer &data)
 
 //void CLeradFeaturesNode::init(const CDataFactory &data_factory)
 //{
-//    qDebug() << "CLeradFeaturesNode::init():" << getConfig().getName()
+//    qDebug() << getConfig().getName()
 //             << "Init called.";
 //
 //    // Create the LERAD Features data structure.
@@ -53,7 +53,7 @@ void CLeradFeaturesNode::data(QString gate_name, const CConstDataPointer &data)
 
 bool CLeradFeaturesNode::start()
 {
-    qDebug() << "CLeradFeaturesNode::start():" << getConfig().getName()
+    qDebug() << getConfig().getName()
              << "Start called.";
 
     // if(inputLinkCount("in") != 0) {

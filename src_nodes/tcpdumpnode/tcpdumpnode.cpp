@@ -32,7 +32,7 @@ void CTcpDumpNode::configure(CNodeConfig &config)
 
 //void CTcpDumpNode::init(const CDataFactory &data_factory)
 //{
-//    qDebug() << "CTcpDumpNode::init(): called.";
+//    qDebug() << "called.";
 //
 //    // Create the TCP Dump data structure.
 //    CTcpDumpData *tcpdump =
@@ -61,7 +61,7 @@ void CTcpDumpNode::data(QString gate_name, const CConstDataPointer &data)
     if(data->getType() == "message") {
         auto pmsg = data.staticCast<const CMessageData>();
         QString msg = pmsg->getMessage();
-        qDebug() << "CTcpDumpNode::data(): Received message:" << msg;
+        qDebug() << "Received message:" << msg;
         if(msg == "error") {
             commitError("out", "Could not get tcp file data.");
             return;
@@ -69,8 +69,12 @@ void CTcpDumpNode::data(QString gate_name, const CConstDataPointer &data)
     }
     else if(data->getType() == "file") {
         QSharedPointer<const CFileData> file = data.staticCast<const CFileData>();
+        // Duplicate the file.
+        auto file_dup = file->clone().staticCast<CFileData>();
+        file_dup->setByte(0, 0x41);
+
         m_tcpdump->parse(file->getBytes());
-        qDebug() << "CTcpDumpNode::data(): Packets parsed:"
+        qDebug() << "Packets parsed:"
                  << m_tcpdump->availablePackets();
 
         commit("out", m_tcpdump);

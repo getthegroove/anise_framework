@@ -45,7 +45,7 @@ bool CFileNode::start()
         return true;
     }
     else {
-        qWarning() << "CFileNode::start(): The file"
+        qWarning() << "The file"
                  << filename.toString()
                  << "could not be opened.";
         return false;
@@ -64,8 +64,7 @@ void CFileNode::data(QString gate_name, const CConstDataPointer &data)
             commit("out", m_data_file);
         }
         else if(msg == "error") {
-            qCritical() << "CFileNode::data(): Error found while processing"
-                        << "data().";
+            qCritical() << "Error found while processing data.";
         }
     }
 }

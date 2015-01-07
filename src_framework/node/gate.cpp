@@ -48,7 +48,7 @@ bool CGate::link(QSharedPointer<CGate> &gate)
     }
 
     if(type() != gate->type()) {
-        qWarning() << "CGate::link(): Uncompatible gates tried to be linked."
+        qWarning() << "Uncompatible gates tried to be linked."
                    << "(" << type() << ") -> (" << gate->type() << ")" << endl;
         return false;
     }

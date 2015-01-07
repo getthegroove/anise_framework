@@ -152,7 +152,7 @@ void CFramework::printNodes(bool pretty_print)
 void CFramework::onMeshInit(bool success)
 {
     if(!success) {
-        qCritical() << "CFramework::onMeshInit(): Simulation not started."
+        qCritical() << "Simulation not started."
                     << "Not all nodes started correctly.";
         QCoreApplication::exit(1);
     }
@@ -164,7 +164,7 @@ void CFramework::onMeshInit(bool success)
 
 void CFramework::onMeshFinish()
 {
-    qDebug() << "CFramework::onMeshFinished(): Simulation finished.";
+    qDebug() << "Simulation finished.";
     QCoreApplication::exit(0);
 }
 
