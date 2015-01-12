@@ -15,6 +15,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QStringList>
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
@@ -44,6 +45,12 @@ void CFramework::main()
     parser.addHelpOption();
     parser.addVersionOption();
 
+    // Set command line arguments
+    // The --mesh argument: Process a user supplied mesh
+    parser.addPositionalArgument("mesh",
+                                 "A mesh that will be executed by the framework.",
+                                 "[mesh]");
+
     // Set the command line options.
     // The --machine option: Output is meant to be processed by a program
     // ... rather than a human.
@@ -51,7 +58,9 @@ void CFramework::main()
         "The output is printed in a more friendly way for the purpose of being parsed.");
     parser.addOption(machineOption);
     // The --nodes option
-    QCommandLineOption nodesOption("nodes", "Print all the nodes the framework recognizes.");
+    QCommandLineOption nodesOption("nodes",
+                                   "Print all the nodes the framework recognizes. "
+                                   "Exit after printing the nodes.");
     parser.addOption(nodesOption);
 
     parser.process(*QCoreApplication::instance());
@@ -77,14 +86,29 @@ void CFramework::main()
 
     // Evaluate the parameters
     if(parser.isSet(nodesOption)) {
+        // Only print the nodes and exit.
         printNodes(!parser.isSet(machineOption));
         QCoreApplication::exit(0);
         return;
     }
 
+    // Evaluate the Arguments
+    const QStringList args = parser.positionalArguments();
+    if(args.size() == 0) {
+        // No arguments supplied, this is a usage error at this point.
+        qCritical() << "A mesh argument must be specified.";
+        parser.showHelp(1);
+        return;
+    }
+    if(args.at(0).isEmpty()) {
+        // The mesh argument was not supplied.
+        qCritical() << "An invalid mesh has been specified.";
+        parser.showHelp(1);
+        return;
+    }
 
     // Create the mesh.
-    initMesh();
+    initMesh(args.at(0));
 }
 
 
@@ -168,11 +192,14 @@ void CFramework::onMeshFinish()
     QCoreApplication::exit(0);
 }
 
-void CFramework::initMesh()
+void CFramework::initMesh(QString mesh)
 {
-    QFile file("/home/boy/Documents/CASED/Repos/anids-framework/meshes/basic.mesh");
-    // QFile file("/home/boy/Documents/CASED/Repos/anids-framework/meshes/tcpdump.mesh");
-    file.open(QFile::ReadOnly | QFile::Text);
+    QFile file(mesh);
+    if(!file.open(QFile::ReadOnly | QFile::Text)) {
+        qCritical() << "The mesh" << mesh << "could not be opened.";
+        QCoreApplication::exit(1);
+        return;
+    }
     QTextStream stream(&file);
     m_mesh.parseMesh(stream.readAll());
 

@@ -30,16 +30,6 @@ void CTcpDumpNode::configure(CNodeConfig &config)
 //------------------------------------------------------------------------------
 // Protected Functions
 
-//void CTcpDumpNode::init(const CDataFactory &data_factory)
-//{
-//    qDebug() << "called.";
-//
-//    // Create the TCP Dump data structure.
-//    CTcpDumpData *tcpdump =
-//            static_cast<CTcpDumpData *>(data_factory.createData("tcpdump"));
-//    m_tcpdump = QSharedPointer<CTcpDumpData>(tcpdump);
-//}
-
 bool CTcpDumpNode::start()
 {
     m_tcpdump = QSharedPointer<CTcpDumpData>(
@@ -69,9 +59,6 @@ void CTcpDumpNode::data(QString gate_name, const CConstDataPointer &data)
     }
     else if(data->getType() == "file") {
         QSharedPointer<const CFileData> file = data.staticCast<const CFileData>();
-        // Duplicate the file.
-        auto file_dup = file->clone().staticCast<CFileData>();
-        file_dup->setByte(0, 0x41);
 
         m_tcpdump->parse(file->getBytes());
         qDebug() << "Packets parsed:"

@@ -20,7 +20,7 @@ class CFramework : public QObject
 
   private:
     // Initialize the nodes' mesh.
-    void initMesh();
+    void initMesh(QString mesh);
     // Start the simulation. All the nodes without connected
     // ... inputs are sent a "start" signal.
     void simulateMesh();

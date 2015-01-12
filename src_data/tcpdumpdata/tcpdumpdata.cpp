@@ -41,9 +41,19 @@ bool CTcpDumpData::parse(const QByteArray &blob)
     return false;
 }
 
-quint32 CTcpDumpData::availablePackets()
+qint32 CTcpDumpData::availablePackets() const
 {
     return m_packets.size();
+}
+
+QSharedPointer<const CTcpDumpPacket> CTcpDumpData::getPacket(int i) const
+{
+    if(i < availablePackets()) {
+        return m_packets.at(i);
+    }
+    else {
+        return QSharedPointer<const CTcpDumpPacket>(nullptr);
+    }
 }
 
 bool CTcpDumpData::validIp(QSharedPointer<CTcpDumpPacket> packet)
@@ -64,9 +74,11 @@ bool CTcpDumpData::validIp(QSharedPointer<CTcpDumpPacket> packet)
 bool CTcpDumpData::defrag(QSharedPointer<CTcpDumpPacket> packet)
 {
     if(packet->fragoffset() == 0 && !packet->fragfollows()) {
+        // Not fragmented.
         return true;
     }
 
+    // Packet is fragmented.
     return false;
 }
 
