@@ -53,26 +53,25 @@ void humanMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, co
         case QtDebugMsg:
             out << QTime::currentTime().toString("hh:mm:ss.zzz")
                 << BLUE   << "     Info: " << GREEN
-                << context.function << " :: " << context.line
-                << endl << COLOR_RESET
-                << msg << endl << endl;
+                << context.function << ":" << context.line << " " << COLOR_RESET
+                << msg << endl;
             break;
         case QtWarningMsg:
             err << QTime::currentTime().toString("hh:mm:ss.zzz")
-                << YELLOW << "  Warning: " << COLOR_RESET
-                << context.function << " :: " << context.line
+                << YELLOW << "  Warning: " << GREEN
+                << context.function << ":" << context.line << " " << COLOR_RESET
                 << msg << endl;
             break;
         case QtCriticalMsg:
             err << QTime::currentTime().toString("hh:mm:ss.zzz")
-                << RED    << " Critical: " << COLOR_RESET
-                << context.function << " :: " << context.line
+                << RED    << " Critical: " << GREEN
+                << context.function << ":" << context.line << " " << COLOR_RESET
                 << msg << endl;
             break;
         case QtFatalMsg:
             err << QTime::currentTime().toString("hh:mm:ss.zzz")
-                << RED    << "    FATAL: " << COLOR_RESET
-                << context.function << " :: " << context.line
+                << RED    << "    FATAL: " << GREEN
+                << context.function << ":" << context.line << " " << COLOR_RESET
                 << msg << endl;
             break;
     }
