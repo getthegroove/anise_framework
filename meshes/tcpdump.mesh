@@ -1,8 +1,22 @@
 {
   "nodes": [
-    {"class": "tcpdump", "name": "TDump",
+    {"class": "file",
+     "name": "File",
      "params": [
-          {"file": "/home/boy/Documents/CASED/Development/LERAD/dataset/samples/small.tcpdump"}
-     ]}
+          {"file": "/home/boy/Documents/CASED/Development/LERAD/dataset/samples/telnet.tcpdump"},
+          {"binary": true}
+     ]},
+    {"class": "tcpdump",
+     "name": "TcpDump",
+     "params": []
+    },
+    {"class": "tcpstreamextractor",
+     "name": "TcpExtr",
+     "params": [ {"payload_size": 102400} ]
+    }
+  ],
+  "connections": [
+    {"src_node": "File", "src_gate": "out", "dest_node": "TcpDump", "dest_gate": "in"},
+    {"src_node": "TcpDump", "src_gate": "out", "dest_node": "TcpExtr", "dest_gate": "in"}
   ]
 }

@@ -3,8 +3,10 @@
 
 #include "node/node.h"
 #include "node/nodeconfig.h"
+#include "tcpstreamsdata/tcpstreamsdata.h"
 #include <QObject>
 #include <QString>
+
 
 class CTcpStreamExtractorNode: public CNode
 {
@@ -12,6 +14,7 @@ class CTcpStreamExtractorNode: public CNode
 
 private:
     // Data Structures
+    QSharedPointer<CTcpStreamsData> m_tcp_streams;
 
 public:
     // Constructor
