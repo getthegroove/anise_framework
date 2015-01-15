@@ -22,7 +22,8 @@ class CTcpDumpData: public CData
     // Parse a byte array into several packets. Extract the tcp dump magic word too.
     bool parse(const QByteArray &blob);
     // How many packets are available.
-    quint32 availablePackets();
+    qint32 availablePackets() const;
+    QSharedPointer<const CTcpDumpPacket> getPacket(int i) const;
     // If the IP checksum of the specified packet is correct, or if the packet
     // ... is not an IP packet return true.
     bool validIp(QSharedPointer<CTcpDumpPacket> packet);

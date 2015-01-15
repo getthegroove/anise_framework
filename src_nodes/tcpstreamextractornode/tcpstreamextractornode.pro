@@ -1,7 +1,7 @@
 QT += core
 QT -= gui
 
-TARGET = leradfeaturesnode
+TARGET = tcpstreamextractornode
 TEMPLATE = lib
 CONFIG += plugin
 QMAKE_CXXFLAGS += -std=c++11
@@ -27,9 +27,10 @@ CONFIG(debug,debug|release) {
 QMAKE_CLEAN += $$DESTDIR/*$$TARGET*
 
 HEADERS += \
-    leradfeaturesnode.h \
+    tcpstreamextractornode.h \
     interface.h
 
 SOURCES += \
-    leradfeaturesnode.cpp \
+    tcpstreamextractornode.cpp \
     interface.cpp
+

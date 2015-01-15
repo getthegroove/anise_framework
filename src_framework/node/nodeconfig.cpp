@@ -28,8 +28,7 @@ bool CNodeConfig::setParameter(QString key, QVariant value) const
 {
     // Key exists?
     if(!m_parameter_template_map.contains(key)) {
-        qWarning() << "CNodeConfig::setParameter():"
-                   << "The parameter" << key << "has not been defined"
+        qWarning() << "The parameter" << key << "has not been defined"
                    << "in the configuration template.";
         return false;
     }
@@ -38,8 +37,7 @@ bool CNodeConfig::setParameter(QString key, QVariant value) const
 
     // Verify that the supplied value matches the required value.
     if(value.type() != param_template.type) {
-        qWarning() << "CNodeConfig::setParameter():"
-                   << "The value specified for" << key
+        qWarning() << "The value specified for" << key
                    << "has an incorrect type.";
         return false;
     }
@@ -52,7 +50,7 @@ bool CNodeConfig::setParameter(QString key, QVariant value) const
 void CNodeConfig::addFilename(QString key, QString name, QString description)
 {
     if(m_parameter_template_map.contains(key)) {
-        qWarning() << "CNodeConfig::addFilename(): Overwriting the parameter"
+        qWarning() << "Overwriting the parameter"
                    << key << "in" << getName();
     }
 
@@ -67,7 +65,7 @@ void CNodeConfig::addFilename(QString key, QString name, QString description)
 void CNodeConfig::addBool(QString key, QString name, QString description)
 {
     if(m_parameter_template_map.contains(key)) {
-        qWarning() << "CNodeConfig::addBool(): Overwriting the parameter"
+        qWarning() << "Overwriting the parameter"
                    << key << "in" << getName();
     }
 
@@ -92,8 +90,7 @@ void CNodeConfig::addOutput(QString name, QString msg_type)
 const CNodeConfig::SParameterTemplate *CNodeConfig::getParameter(QString key) const
 {
     if(!m_parameter_template_map.contains(key)) {
-        qWarning() << "CNodeConfig::getParameter():"
-                 << "The parameter" << key << "has not been found.";
+        qWarning() << "The parameter" << key << "has not been found.";
         return nullptr;
     }
 

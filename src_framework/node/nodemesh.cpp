@@ -29,7 +29,7 @@ bool CNodeMesh::parseMesh(QString json_str)
     QVariant json_variant = QtJson::parse(json_str).toMap();
 
     if(json_variant.isNull()) {
-        qWarning() << "CNodeMesh::parseMesh(): Failed to parse mesh file.";
+        qWarning() << "Failed to parse mesh file.";
         return false;
     }
 
@@ -81,7 +81,7 @@ void CNodeMesh::startSimulation()
     CMessageData *msg =
         static_cast<CMessageData *>(CDataFactory::instance().createData("message"));
     if(msg == nullptr) {
-        qCritical() << "CNodeMesh::startSimulation(): Could not create start"
+        qCritical() << "Could not create start"
                    << "message.";
         return;
     }
@@ -100,7 +100,7 @@ void CNodeMesh::startSimulation()
     }
 
     if(!simulation_started) {
-        qWarning() << "CNodeMesh::startSimulation(): The simulation was"
+        qWarning() << "The simulation was"
                    << "not started because we could not figure out where to start.";
         emit simulationFinished();
     }
@@ -131,15 +131,13 @@ bool CNodeMesh::addNode(QVariantMap &node_json)
 
     // Verify that this Node was defined properly.
     if(node_name.isEmpty() || node_class.isEmpty()) {
-        qWarning() << "CNodeMesh::addNode():"
-                   << "The JSON Node definition did not include class or name.";
+        qWarning() << "The JSON Node definition did not include class or name.";
         return false;
     }
 
     // Verify that a Node with the same name does not exist already in the map.
     if(m_nodes.contains(node_name)) {
-        qWarning() << "CNodeMesh::addNode():"
-                   << "A node with the name" << node_name
+        qWarning() << "A node with the name" << node_name
                    << "has already been added to the mesh.";
         return false;
     }
@@ -149,7 +147,7 @@ bool CNodeMesh::addNode(QVariantMap &node_json)
         node_class, conf);
     if(!ok) {
         // The template for the desired Node class was not found.
-        qWarning() << "CNodeMesh::addNode(): The node class"
+        qWarning() << "The node class"
                    << node_name << "failed to set its config template.";
         return false;
     }
@@ -163,8 +161,7 @@ bool CNodeMesh::addNode(QVariantMap &node_json)
         for(QVariant key : param.keys()) {
             ok = conf.setParameter(key.toString(), param.value(key.toString()));
             if(!ok) {
-                qWarning() << "CNodeMesh::addNode():"
-                           << "Failed to set the parameter" << key.toString()
+                qWarning() << "Failed to set the parameter" << key.toString()
                            << "in Node" << node_name << ".";
                 return false;
             }
@@ -174,8 +171,7 @@ bool CNodeMesh::addNode(QVariantMap &node_json)
     // Create the node we've been asked for.
     CNode *node = CNodeFactory::instance().createNode(node_class, conf);
     if(node == nullptr) {
-        qWarning() << "CNodeMesh::addNode():"
-                   << "Could not create Node" << node_class << ".";
+        qWarning() << "Could not create Node" << node_class << ".";
         return false;
     }
     m_nodes.insert(node_name, QSharedPointer<CNode>(node));
@@ -219,8 +215,7 @@ bool CNodeMesh::addConnection(QVariantMap& connections_json)
     // Check that all parameters are there in the json string.
     if(src_name.isEmpty() || src_gate.isEmpty() ||
         dest_name.isEmpty() || dest_gate.isEmpty()) {
-        qWarning() << "CNodeMesh::addConnection():"
-                   << "Some connection parameters are missing. Connection not created.";
+        qWarning() << "Some connection parameters are missing. Connection not created.";
         return false;
     }
 
@@ -234,13 +229,11 @@ bool CNodeMesh::addConnection(QVariantMap& connections_json)
 
     // Make sure the referenced nodes exist.
     if(src_node.isNull()) {
-        qWarning() << "CNodeMesh::addConnection():"
-                   << "Connection not established. Source node"
+        qWarning() << "Connection not established. Source node"
                    << src_name << "was not found.";
     }
     if(dest_node.isNull()) {
-        qWarning() << "CNodeMesh::addConnection():"
-                   << "Connection not established. Destination node"
+        qWarning() << "Connection not established. Destination node"
                    << dest_name << "was not found.";
     }
     if(src_node.isNull() || dest_node.isNull()) {
@@ -249,8 +242,7 @@ bool CNodeMesh::addConnection(QVariantMap& connections_json)
 
     // Attempt to establish the connection.
     if(!src_node->connect(src_gate, *dest_node, dest_gate)) {
-        qWarning() << "CNodeMesh::addConnection():"
-                   << "Failed to establish a connection.";
+        qWarning() << "Failed to establish a connection.";
         return false;
     }
 

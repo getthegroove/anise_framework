@@ -66,18 +66,15 @@ void CDataFactory::addLibrary(void *library_handle, QString filename)
         name = regexp.cap(1);
     }
     else {
-        qWarning() << "CDataFactory::addLibrary(): "
-                   << "Could not load the data file " << filename;
+        qWarning() << "Could not load the data file " << filename;
         return;
     }
 
-    qDebug() << "CDataFactory::addLibrary():"
-             << "Loaded Data Structure:" << name;
+    qDebug() << "Loaded Data Structure:" << name;
 
     // Make sure a node with a similar name has not already been loaded.
     if(m_makers.contains(name)) {
-        qWarning() << "CDataFactory::addLibrary():"
-                   << "The Data Factory already loaded a structure called '"
+        qWarning() << "The Data Factory already loaded a structure called '"
                    << name
                    << "'. Loaded by" << filename;
         return;

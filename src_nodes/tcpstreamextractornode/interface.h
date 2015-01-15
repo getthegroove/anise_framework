@@ -7,8 +7,8 @@ class CNode;
 
 extern "C"
 {
-    void configure(CNodeConfig &config);
-    CNode *maker(const CNodeConfig &config);
+void configure(CNodeConfig &config);
+CNode *maker(const CNodeConfig &config);
 }
 
 #endif // INTERFACE_H

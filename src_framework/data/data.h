@@ -10,7 +10,7 @@ class CDataFactory;
 
 class CData
 {
-    friend class CDataFactory;
+  friend class CDataFactory;
 
   private:
     QString m_type_name;
@@ -19,7 +19,7 @@ class CData
     virtual ~CData();
     // Create a deep copy of the data.
     virtual QSharedPointer<CData> clone() const = 0;
-    // Get the type name of this datatype. Setup when instatiated by the data factory.
+    // Get the type name of this datatype. Set when instatiated by the data factory.
     QString getType() const;
 
   protected:

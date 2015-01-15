@@ -1,7 +1,7 @@
 QT       += core
 QT       -= gui
 
-TARGET = anids-framework
+TARGET = anise-framework
 CONFIG += console
 CONFIG -= app_bundle
 QMAKE_CXXFLAGS += -std=c++11

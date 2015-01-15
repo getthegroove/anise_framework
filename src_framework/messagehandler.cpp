@@ -46,31 +46,32 @@ void humanMessageWriterQt4(QtMsgType type, const char *msg)
 void humanMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     Q_UNUSED(context);
+    QTextStream out(stdout);
     QTextStream err(stderr);
 
     switch (type) {
         case QtDebugMsg:
-            err << QTime::currentTime().toString("hh:mm:ss.zzz")
-                << BLUE   << "     Info: " << COLOR_RESET
-                //<< context.function << "::" << context.line << ":: "
+            out << QTime::currentTime().toString("hh:mm:ss.zzz")
+                << BLUE   << "     Info: " << GREEN
+                << context.function << ":" << context.line << " " << COLOR_RESET
                 << msg << endl;
             break;
         case QtWarningMsg:
             err << QTime::currentTime().toString("hh:mm:ss.zzz")
-                << YELLOW << "  Warning: " << COLOR_RESET
-                //<< context.function << "::" << context.line << ":: "
+                << YELLOW << "  Warning: " << GREEN
+                << context.function << ":" << context.line << " " << COLOR_RESET
                 << msg << endl;
             break;
         case QtCriticalMsg:
             err << QTime::currentTime().toString("hh:mm:ss.zzz")
-                << RED    << " Critical: " << COLOR_RESET
-                //<< context.function << "::" << context.line << ":: "
+                << RED    << " Critical: " << GREEN
+                << context.function << ":" << context.line << " " << COLOR_RESET
                 << msg << endl;
             break;
         case QtFatalMsg:
             err << QTime::currentTime().toString("hh:mm:ss.zzz")
-                << RED    << "    FATAL: " << COLOR_RESET
-                //<< context.function << "::" << context.line << ":: "
+                << RED    << "    FATAL: " << GREEN
+                << context.function << ":" << context.line << " " << COLOR_RESET
                 << msg << endl;
             break;
     }
@@ -79,6 +80,7 @@ void humanMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, co
 void machineMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     Q_UNUSED(context);
+    QTextStream out(stdout);
     QTextStream err(stderr);
 
     switch (type) {
@@ -86,7 +88,7 @@ void machineMessageWriterQt5(QtMsgType type, const QMessageLogContext &context, 
           // Do not print debug messages unless the message starts with a '@'.
           if(msg.at(0) == '@') {
               // Chop the '@' sign before printing.
-              err << msg.mid(1) << endl;
+              out << msg.mid(1) << endl;
           }
           break;
       default:

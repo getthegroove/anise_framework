@@ -15,6 +15,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QStringList>
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
@@ -39,10 +40,16 @@ void CFramework::main()
     // Parse command line parameters.
     QCommandLineParser parser;
     parser.setApplicationDescription(
-        "The ANISE Framework is an environment for the development and running "
+        "The ANISE Framework is an environment for the development and execution "
         "of machine learning algorithms. It focuses on speed and efficiency.");
     parser.addHelpOption();
     parser.addVersionOption();
+
+    // Set command line arguments
+    // The --mesh argument: Process a user supplied mesh
+    parser.addPositionalArgument("mesh",
+                                 "A mesh that will be executed by the framework.",
+                                 "[mesh]");
 
     // Set the command line options.
     // The --machine option: Output is meant to be processed by a program
@@ -51,7 +58,9 @@ void CFramework::main()
         "The output is printed in a more friendly way for the purpose of being parsed.");
     parser.addOption(machineOption);
     // The --nodes option
-    QCommandLineOption nodesOption("nodes", "Print all the nodes the framework recognizes.");
+    QCommandLineOption nodesOption("nodes",
+                                   "Print all the nodes the framework recognizes. "
+                                   "Exit after printing the nodes.");
     parser.addOption(nodesOption);
 
     parser.process(*QCoreApplication::instance());
@@ -61,7 +70,7 @@ void CFramework::main()
     if(!parser.isSet(machineOption)) {
         // Enable pretty printing with out own custom message writer.
         // QT4:
-        // qInstallMsgHandler(customMessageWriterQt4);
+     // qInstallMsgHandler(customMessageWriterQt4);
         // QT5:
         qInstallMessageHandler(humanMessageWriterQt5);
     }
@@ -77,14 +86,29 @@ void CFramework::main()
 
     // Evaluate the parameters
     if(parser.isSet(nodesOption)) {
+        // Only print the nodes and exit.
         printNodes(!parser.isSet(machineOption));
         QCoreApplication::exit(0);
         return;
     }
 
+    // Evaluate the Arguments
+    const QStringList args = parser.positionalArguments();
+    if(args.size() == 0) {
+        // No arguments supplied, this is a usage error at this point.
+        qCritical() << "A mesh argument must be specified.";
+        parser.showHelp(1);
+        return;
+    }
+    if(args.at(0).isEmpty()) {
+        // The mesh argument was not supplied.
+        qCritical() << "An invalid mesh has been specified.";
+        parser.showHelp(1);
+        return;
+    }
 
     // Create the mesh.
-    initMesh();
+    initMesh(args.at(0));
 }
 
 
@@ -144,7 +168,7 @@ void CFramework::printNodes(bool pretty_print)
                  << endl << json_doc.toJson(QJsonDocument::Indented);
     }
     else {
-        // Info messages disabled normally. Force the printing of the following.
+        // Info messages disabled normally. Force printing by stating with '@'.
         qDebug() << "@" << json_doc.toJson(QJsonDocument::Compact);
     }
 }
@@ -152,7 +176,7 @@ void CFramework::printNodes(bool pretty_print)
 void CFramework::onMeshInit(bool success)
 {
     if(!success) {
-        qCritical() << "CFramework::onMeshInit(): Simulation not started."
+        qCritical() << "Simulation not started."
                     << "Not all nodes started correctly.";
         QCoreApplication::exit(1);
     }
@@ -164,15 +188,18 @@ void CFramework::onMeshInit(bool success)
 
 void CFramework::onMeshFinish()
 {
-    qDebug() << "CFramework::onMeshFinished(): Simulation finished.";
+    qDebug() << "Simulation finished.";
     QCoreApplication::exit(0);
 }
 
-void CFramework::initMesh()
+void CFramework::initMesh(QString mesh)
 {
-    QFile file("/home/boy/Documents/CASED/Repos/anids-framework/meshes/basic.mesh");
-    // QFile file("/home/boy/Documents/CASED/Repos/anids-framework/meshes/tcpdump.mesh");
-    file.open(QFile::ReadOnly | QFile::Text);
+    QFile file(mesh);
+    if(!file.open(QFile::ReadOnly | QFile::Text)) {
+        qCritical() << "The mesh" << mesh << "could not be opened.";
+        QCoreApplication::exit(1);
+        return;
+    }
     QTextStream stream(&file);
     m_mesh.parseMesh(stream.readAll());
 

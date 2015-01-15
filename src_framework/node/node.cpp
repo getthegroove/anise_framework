@@ -28,8 +28,7 @@ CNode::CNode(const CNodeConfig &config, QObject *parent/*= 0*/)
 
 CNode::~CNode()
 {
-    qDebug() << "CNode::~CNode(): Node"
-             << getConfig().getName()
+    qDebug() << getConfig().getName()
              << "destroyed.";
 }
 
@@ -46,14 +45,14 @@ bool CNode::connect(QString output_name, const CNode &target, QString input_name
 {
     auto src_gate = findOutputGate(output_name);
     if(src_gate.isNull()) {
-        qWarning() << "CNode::connect(): Could not find gate"
+        qWarning() << "Could not find gate"
                    << output_name << "in output Node" << m_config.getName() << ".";
         return false;
     }
 
     auto dest_gate = target.findInputGate(input_name);
     if(dest_gate.isNull()) {
-        qWarning() << "CNode::connect(): Could not find gate"
+        qWarning() << "Could not find gate"
                    << input_name << "in input Node"
                    << target.m_config.getName() << ".";
         return false;
@@ -61,7 +60,7 @@ bool CNode::connect(QString output_name, const CNode &target, QString input_name
 
     // Link the output of the src gate with the dest gate of another node.
     if(!src_gate->link(dest_gate)) {
-        qWarning() << "CNode::connect(): Could not connect nodes."
+        qWarning() << "Could not connect nodes."
                    << "(" << m_config.getName() << ") -> ("
                    << target.m_config.getName() << ").";
         return false;
@@ -104,7 +103,7 @@ void CNode::processData(QString gate_name, const CConstDataPointer &data)
     // Can we process this message now or should we keep it in a queue for later
     // ... processing?
     if(isProcessing()) {
-        qDebug() << "CNode::processData(): The node"
+        qDebug() << "The node"
                  << m_config.getName()
                  << "is queuing the data type"
                  << data->getType();
@@ -134,8 +133,7 @@ bool CNode::isProcessing() const
 CData *CNode::createData(QString data_name)
 {
     if(m_data_factory == nullptr) {
-        qCritical() << "CNode::createData():"
-                    << "Did you forget to call init() on a Node?";
+        qCritical() << "Did you forget to call init() on a Node?";
         return nullptr;
     }
 
@@ -145,7 +143,7 @@ CData *CNode::createData(QString data_name)
 void CNode::commit(QString gate_name, const CConstDataPointer &data)
 {
     if(!m_allow_commit) {
-        qWarning() << "CNode::commit(): Data can only be commited"
+        qWarning() << "Data can only be commited"
                    << "inside the 'data' function of a node.";
         return;
     }
@@ -162,7 +160,7 @@ void CNode::commit(QString gate_name, const CConstDataPointer &data)
 void CNode::commitError(QString gate_name, QString error_msg)
 {
     if(!m_allow_commit) {
-        qWarning() << "CNode::commit(): Data can only be commited"
+        qWarning() << "Data can only be commited"
                    << "inside the 'data' function of a node.";
         return;
     }
@@ -171,7 +169,7 @@ void CNode::commitError(QString gate_name, QString error_msg)
         static_cast<CErrorData *>(CDataFactory::instance().createData("error"));
 
     if(error == nullptr) {
-        qCritical() << "CNode::commitError(): Could not create CErrorData.";
+        qCritical() << "Could not create CErrorData.";
         return;
     }
 
@@ -275,7 +273,7 @@ void CNode::onTaskFinished()
 
         auto output_gate = findOutputGate(pair.first);
         if(output_gate.isNull()) {
-            qWarning() << "CNode.commit(): Could not commit data from within"
+            qWarning() << "Could not commit data from within"
                        << "Node" << m_config.getName() << ". The gate" << pair.first
                        << "was not found.";
         }

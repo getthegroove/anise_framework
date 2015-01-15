@@ -30,16 +30,6 @@ void CTcpDumpNode::configure(CNodeConfig &config)
 //------------------------------------------------------------------------------
 // Protected Functions
 
-//void CTcpDumpNode::init(const CDataFactory &data_factory)
-//{
-//    qDebug() << "CTcpDumpNode::init(): called.";
-//
-//    // Create the TCP Dump data structure.
-//    CTcpDumpData *tcpdump =
-//            static_cast<CTcpDumpData *>(data_factory.createData("tcpdump"));
-//    m_tcpdump = QSharedPointer<CTcpDumpData>(tcpdump);
-//}
-
 bool CTcpDumpNode::start()
 {
     m_tcpdump = QSharedPointer<CTcpDumpData>(
@@ -61,7 +51,7 @@ void CTcpDumpNode::data(QString gate_name, const CConstDataPointer &data)
     if(data->getType() == "message") {
         auto pmsg = data.staticCast<const CMessageData>();
         QString msg = pmsg->getMessage();
-        qDebug() << "CTcpDumpNode::data(): Received message:" << msg;
+        qDebug() << "Received message:" << msg;
         if(msg == "error") {
             commitError("out", "Could not get tcp file data.");
             return;
@@ -69,8 +59,9 @@ void CTcpDumpNode::data(QString gate_name, const CConstDataPointer &data)
     }
     else if(data->getType() == "file") {
         QSharedPointer<const CFileData> file = data.staticCast<const CFileData>();
+
         m_tcpdump->parse(file->getBytes());
-        qDebug() << "CTcpDumpNode::data(): Packets parsed:"
+        qDebug() << "Packets parsed:"
                  << m_tcpdump->availablePackets();
 
         commit("out", m_tcpdump);
