@@ -26,10 +26,11 @@ CNodeMesh::CNodeMesh()
 
 bool CNodeMesh::parseMesh(QString json_str)
 {
-    QVariant json_variant = QtJson::parse(json_str).toMap();
+    bool success;
+    QVariant json_variant = QtJson::parse(json_str, success).toMap();
 
-    if(json_variant.isNull()) {
-        qWarning() << "Failed to parse mesh file.";
+    if(!success) {
+        qCritical() << "Failed to parse mesh file.";
         return false;
     }
 

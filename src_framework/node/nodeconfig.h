@@ -52,6 +52,8 @@ class CNodeConfig
     // ... template.
     void addFilename(QString key, QString name, QString description);
     void addBool(QString key, QString name, QString description);
+    void addUInt(QString key, QString name, QString description,
+                 quint32 def_val = 0);
 
     // Facilities for adding inputs and outputs.
     void addInput(QString name, QString msg_type);

@@ -77,6 +77,23 @@ void CNodeConfig::addBool(QString key, QString name, QString description)
     m_parameter_template_map.insert(key, param_template);
 }
 
+void CNodeConfig::addUInt(QString key, QString name, QString description,
+                          quint32 def_val/* = 0*/)
+{
+    if(m_parameter_template_map.contains(key)) {
+            qWarning() << "Overwriting the parameter"
+                       << key << "in" << getName();
+    }
+
+    struct SParameterTemplate param_template;
+    param_template.name = name;
+    param_template.type = QVariant::UInt;
+    param_template.value = def_val;
+    param_template.description = description;
+
+    m_parameter_template_map.insert(key, param_template);
+}
+
 void CNodeConfig::addInput(QString name, QString msg_type)
 {
     m_input_templates.append(SGateTemplate(name, msg_type));

@@ -201,8 +201,15 @@ void CFramework::initMesh(QString mesh)
         return;
     }
     QTextStream stream(&file);
-    m_mesh.parseMesh(stream.readAll());
 
-    // Start the nodes in the mesh.
-    m_mesh.startNodes();
+    if(m_mesh.parseMesh(stream.readAll())) {
+        // Start the nodes in the mesh if we succeeded parcing
+        // ... the mesh.
+        m_mesh.startNodes();
+    }
+    else {
+        qWarning() << "No simulation was started.";
+        QCoreApplication::exit(1);
+        return;
+    }
 }
