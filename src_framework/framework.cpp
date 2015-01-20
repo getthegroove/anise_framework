@@ -129,7 +129,7 @@ void CFramework::printNodes(bool pretty_print)
     for(int i = 0; i < node_names.size(); ++i) {
         QJsonObject json_node;
         CNodeFactory::instance().configTemplate(node_names.at(i), config);
-        json_node["name"] = node_names.at(i);
+        json_node["class"] = node_names.at(i);
 
         QJsonArray json_input_gates;
         QJsonArray json_output_gates;
