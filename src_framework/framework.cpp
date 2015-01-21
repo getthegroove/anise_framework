@@ -123,13 +123,14 @@ void CFramework::simulateMesh()
 void CFramework::printNodes(bool pretty_print)
 {
     QJsonArray json_nodes;
-    QStringList node_names = CNodeFactory::instance().availableNodes();
-    CNodeConfig config;
+    QStringList node_classes = CNodeFactory::instance().availableNodes();
 
-    for(int i = 0; i < node_names.size(); ++i) {
+    for(int i = 0; i < node_classes.size(); ++i) {
         QJsonObject json_node;
-        CNodeFactory::instance().configTemplate(node_names.at(i), config);
-        json_node["class"] = node_names.at(i);
+        CNodeConfig config;
+        CNodeFactory::instance().configTemplate(node_classes.at(i), config);
+        json_node["class"] = node_classes.at(i);
+        json_node["description"] = config.getDescription();
 
         QJsonArray json_input_gates;
         QJsonArray json_output_gates;
