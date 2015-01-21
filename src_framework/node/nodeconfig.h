@@ -32,6 +32,8 @@ class CNodeConfig
   private:
     // The name assigned by the user to this node.
     QString m_name;
+    // A description of the node.
+    QString m_description;
     // The collection of configuration parameters of the Node.
     // ... They're mutable to allow the user of the Node clases to modify
     // ... the value type of the parameters while disallowing the addition
@@ -45,13 +47,18 @@ class CNodeConfig
 
     void setName(QString name);
     const QString getName() const;
+    void setDescription(QString description);
+    const QString getDescription() const;
     // Set the value of parameter specified in the template.
     bool setParameter(QString key, QVariant value) const;
 
     // Facilities for adding different parameters to the configuration
     // ... template.
     void addFilename(QString key, QString name, QString description);
-    void addBool(QString key, QString name, QString description);
+    void addBool(QString key, QString name, QString description,
+                 bool def_val = false);
+    void addInt(QString key, QString name, QString description,
+                qint32 def_val = 0);
     void addUInt(QString key, QString name, QString description,
                  quint32 def_val = 0);
 

@@ -1,11 +1,13 @@
 #include "nodeconfig.h"
 #include <QDebug>
 
+
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
 CNodeConfig::CNodeConfig()
-    : m_name("Node")
+    : m_name("")
+    , m_description("")
 {
 
 }
@@ -24,6 +26,16 @@ const QString CNodeConfig::getName() const
     return m_name;
 }
 
+void CNodeConfig::setDescription(QString description)
+{
+    m_description = description;
+}
+
+const QString CNodeConfig::getDescription() const
+{
+    return m_description;
+}
+
 bool CNodeConfig::setParameter(QString key, QVariant value) const
 {
     // Key exists?
@@ -37,9 +49,16 @@ bool CNodeConfig::setParameter(QString key, QVariant value) const
 
     // Verify that the supplied value matches the required value.
     if(value.type() != param_template.type) {
-        qWarning() << "The value specified for" << key
-                   << "has an incorrect type.";
-        return false;
+        // Allow conversions from uint to int, but not the other way around.
+        if(value.type() == QVariant::UInt &&
+           param_template.type == QVariant::Int) {
+            value = value.toInt();
+        }
+        else {
+            qWarning() << "The value specified for" << key
+                       << "has an incorrect type.";
+            return false;
+        }
     }
 
     param_template.value = value;
@@ -62,7 +81,8 @@ void CNodeConfig::addFilename(QString key, QString name, QString description)
     m_parameter_template_map.insert(key, param_template);
 }
 
-void CNodeConfig::addBool(QString key, QString name, QString description)
+void CNodeConfig::addBool(QString key, QString name, QString description,
+                          bool def_val /* = false*/)
 {
     if(m_parameter_template_map.contains(key)) {
         qWarning() << "Overwriting the parameter"
@@ -72,6 +92,24 @@ void CNodeConfig::addBool(QString key, QString name, QString description)
     struct SParameterTemplate param_template;
     param_template.name = name;
     param_template.type = QVariant::Bool;
+    param_template.value = def_val;
+    param_template.description = description;
+
+    m_parameter_template_map.insert(key, param_template);
+}
+
+void CNodeConfig::addInt(QString key, QString name, QString description,
+                         qint32 def_val/* = 0*/)
+{
+    if(m_parameter_template_map.contains(key)) {
+            qWarning() << "Overwriting the parameter"
+                       << key << "in" << getName();
+    }
+
+    struct SParameterTemplate param_template;
+    param_template.name = name;
+    param_template.type = QVariant::Int;
+    param_template.value = def_val;
     param_template.description = description;
 
     m_parameter_template_map.insert(key, param_template);
