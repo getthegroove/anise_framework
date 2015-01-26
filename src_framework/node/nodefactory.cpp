@@ -68,13 +68,13 @@ CNode *CNodeFactory::createNode(QString node_class_name, const CNodeConfig &conf
 
 QStringList CNodeFactory::availableNodes()
 {
-    QStringList node_list;
+    QStringList node_class_list;
 
-    for(QString name : m_config_makers.keys()) {
-        node_list << name;
+    for(QString node_class : m_config_makers.keys()) {
+        node_class_list << node_class;
     }
 
-    return node_list;
+    return node_class_list;
 }
 
 //------------------------------------------------------------------------------

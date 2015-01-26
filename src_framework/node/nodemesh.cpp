@@ -82,8 +82,7 @@ void CNodeMesh::startSimulation()
     CMessageData *msg =
         static_cast<CMessageData *>(CDataFactory::instance().createData("message"));
     if(msg == nullptr) {
-        qCritical() << "Could not create start"
-                   << "message.";
+        qCritical() << "Could not create start message.";
         return;
     }
     msg->setMessage("start");
@@ -101,8 +100,8 @@ void CNodeMesh::startSimulation()
     }
 
     if(!simulation_started) {
-        qWarning() << "The simulation was"
-                   << "not started because we could not figure out where to start.";
+        qWarning() << "The simulation was not started because "
+                   << "we could not figure out where to start.";
         emit simulationFinished();
     }
 }

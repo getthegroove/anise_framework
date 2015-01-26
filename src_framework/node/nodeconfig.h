@@ -61,6 +61,8 @@ class CNodeConfig
                 qint32 def_val = 0);
     void addUInt(QString key, QString name, QString description,
                  quint32 def_val = 0);
+    void addString(QString key, QString name, QString description,
+                   QString def_val = "");
 
     // Facilities for adding inputs and outputs.
     void addInput(QString name, QString msg_type);

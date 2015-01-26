@@ -53,6 +53,8 @@ void CTcpStreamsData::addTcpPacket(const QSharedPointer<const CTcpDumpPacket> &t
 
     // Store the payload of the packet into the stream.
     if(payload_length > 0) {
+        // Record the payload length.
+        tcp_stream.data_size += payload_length;
         // Where to store the payload.
         qint32 offset = tcp_packet->tcpseq() - tcp_stream.seq;
         if(offset >= 0 && offset < static_cast<qint32>(m_max_payload_size)) {

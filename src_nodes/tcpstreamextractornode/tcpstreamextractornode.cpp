@@ -3,6 +3,7 @@
 #include "data/datafactory.h"
 #include "data/messagedata.h"
 #include <QDebug>
+#include <QHostAddress>
 
 
 //------------------------------------------------------------------------------
@@ -26,6 +27,20 @@ void CTcpStreamExtractorNode::configure(CNodeConfig &config)
                    "The maximum number of bytes that will be stored for "
                    "the contents of a TCP stream.",
                    102400);
+    config.addBool("dest_filter", "Should destination IPs be filtered?",
+                   "Filter specifiying if IP addresses are filtered "
+                   "for analysis.", false);
+    config.addString("dest_ip_filter_from", "Starting Valid Destination IP Address",
+                     "The first IP value which will be considered "
+                     "for the analysis.");
+    config.addString("dest_ip_filter_to", "End Valid Destination IP Address",
+                     "The last IP value which will be taken into account.");
+    config.addUInt("dest_port_filter_from", "Starting Valid Destination Port",
+                   "Packages that target a destination port above this "
+                   "parameter are accepted.",0);
+    config.addUInt("dest_port_filter_to", "Last Valid Destination Port",
+                   "Packages targeting a destination port below this "
+                   "parameter are accepted", 1024);
 
     // Add the gates.
     config.addInput("in", "tcpdump");
@@ -72,10 +87,52 @@ void CTcpStreamExtractorNode::data(QString gate_name,
     }
     else if(data->getType() == "tcpdump") {
         auto tcp_dump = data.staticCast<const CTcpDumpData>();
+
+        // User parameters.
+        QHostAddress addr_from;
+        QHostAddress addr_to;
+        quint32 ip_from = 0;
+        quint32 ip_to = 0;
+        quint16 port_from = 0;
+        quint16 port_to = 0;
+
+        bool dest_filter = getConfig().getParameter("dest_filter")->value.toBool();
+        if(dest_filter) {
+            // Get the destination IP to ranges to filter.
+            QString dest_filter_from = getConfig().
+                    getParameter("dest_ip_filter_from")->value.toString();
+            QString dest_filter_to = getConfig().
+                    getParameter("dest_ip_filter_to")->value.toString();
+            addr_from = dest_filter_from;
+            addr_to = dest_filter_to;
+            ip_from = addr_from.toIPv4Address();
+            ip_to = addr_to.toIPv4Address();
+
+            // Get the destination port range to filter.
+            port_from = getConfig().
+                    getParameter("dest_port_filter_from")->value.toUInt();
+            port_to = getConfig().
+                    getParameter("dest_port_filter_to")->value.toUInt();
+        }
+
         qint32 packet_count = tcp_dump->availablePackets();
         for(qint32 i = 0; i < packet_count; ++i) {
-            m_tcp_streams->addTcpPacket(tcp_dump->getPacket(i));
+            QSharedPointer<const CTcpDumpPacket> packet = tcp_dump->getPacket(i);
+//            if(packet->src() == 3319443781 && packet->src_port() == 4168 && packet->dest() == 2886758706) {
+//                qDebug() << "here I am";
+//            }
+            if(dest_filter) {
+                if(packet->dest() < ip_from || packet->dest() >= ip_to ||
+                   packet->dest_port() < port_from ||
+                   packet->dest_port() > port_to) {
+                    // Skip this package as it's outside the filter range.
+                    continue;
+                }
+            }
+            m_tcp_streams->addTcpPacket(packet);
         }
+
+        qDebug() << "TCP streams left open:" << m_tcp_streams->openStreamsCount();
 
         commit("out", m_tcp_streams);
         return;

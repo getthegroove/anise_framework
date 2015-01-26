@@ -117,6 +117,8 @@ void CFramework::main()
 
 void CFramework::simulateMesh()
 {
+    qDebug() << "Starting the simulation" << endl
+             << "-----------------------";
     m_mesh.startSimulation();
 }
 
@@ -177,8 +179,8 @@ void CFramework::printNodes(bool pretty_print)
 void CFramework::onMeshInit(bool success)
 {
     if(!success) {
-        qCritical() << "Simulation not started."
-                    << "Not all nodes started correctly.";
+        qCritical() << "Simulation not started as "
+                    << "not all nodes started correctly.";
         QCoreApplication::exit(1);
     }
     else {
@@ -189,7 +191,8 @@ void CFramework::onMeshInit(bool success)
 
 void CFramework::onMeshFinish()
 {
-    qDebug() << "Simulation finished.";
+    qDebug() << "Simulation finished" << endl
+             << "-----------------------";
     QCoreApplication::exit(0);
 }
 

@@ -16,15 +16,17 @@ class CTcpStream
     quint16 source_port;
     quint16 destination_port;
     QVector<quint8> data;
+    quint32 data_size;
     quint32 seq; // The initial TCP sequence number.
     double start_time, finish_time; // Time of first and last packet
-    quint8 first_flags, second_to_last_flags, last_flags;
+    quint8 flags_first, flags_before_last, flags_last;
 
   public:
     CTcpStream(): source_addr(0), destination_addr(0),
                   source_port(0), destination_port(0),
-                  seq(0), start_time(0), finish_time(0), first_flags(0),
-                  second_to_last_flags(0), last_flags(0) {}
+                  data_size(0),
+                  seq(0), start_time(0), finish_time(0), flags_first(0),
+                  flags_before_last(0), flags_last(0) {}
 
     bool isNull() const
     {
@@ -33,8 +35,13 @@ class CTcpStream
 
     void init(const QSharedPointer<const CTcpDumpPacket> &tcp_packet)
     {
+        source_addr = tcp_packet->src();
+        destination_addr = tcp_packet->dest();
+        source_port = tcp_packet->src_port();
+        destination_port = tcp_packet->dest_port();
+
         start_time = tcp_packet->time;
-        first_flags = tcp_packet->tcpflags();
+        flags_first = tcp_packet->tcpflags();
         seq = tcp_packet->tcpseq();
     }
 
@@ -42,8 +49,8 @@ class CTcpStream
     {
         finish_time = tcp_packet->time;
         // Update the TCP flags.
-        second_to_last_flags = last_flags;
-        last_flags = tcp_packet->tcpflags();
+        flags_before_last = flags_last;
+        flags_last = tcp_packet->tcpflags();
     }
 
     void copy(const QSharedPointer<const CTcpDumpPacket> &tcp_packet,
@@ -58,9 +65,7 @@ class CTcpStream
         auto begin = tcp_packet->data.begin() + tcp_packet->appl;
         auto end = tcp_packet->data.begin() + tcp_packet->end;
         auto result = data.begin() + offset;
-        qCopy(begin,
-              end,
-              result);
+        qCopy(begin, end, result);
     }
 };
 
