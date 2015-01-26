@@ -33,7 +33,7 @@ CONFIG(debug,debug|release) {
   UI_SOURCES_DIR = forms
   MOC_DIR = build/release/moc
   RCC_DIR = build/release/rcc
-  DEFINES += QT_NO_DEBUG_OUTPUT
+  #DEFINES += QT_NO_DEBUG_OUTPUT
   #QMAKE_CXXFLAGS_RELEASE += -O2
 }
 

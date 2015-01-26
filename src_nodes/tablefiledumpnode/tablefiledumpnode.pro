@@ -1,8 +1,7 @@
 QT += core
-QT += network
 QT -= gui
 
-TARGET = tcpstreamextractornode
+TARGET = tablefiledumpnode
 TEMPLATE = lib
 CONFIG += plugin
 QMAKE_CXXFLAGS += -std=c++11
@@ -22,16 +21,16 @@ CONFIG(debug,debug|release) {
   OBJECTS_DIR = build/release
   MOC_DIR = build/release/moc
   RCC_DIR = build/release/rcc
-  #DEFINES += QT_NO_DEBUG_OUTPUT
+  DEFINES += QT_NO_DEBUG_OUTPUT
 }
 
 QMAKE_CLEAN += $$DESTDIR/*$$TARGET*
 
 HEADERS += \
-    tcpstreamextractornode.h \
+    tablefiledumpnode.h \
     interface.h
 
 SOURCES += \
-    tcpstreamextractornode.cpp \
+    tablefiledumpnode.cpp \
     interface.cpp
 

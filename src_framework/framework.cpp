@@ -117,19 +117,24 @@ void CFramework::main()
 
 void CFramework::simulateMesh()
 {
+    qDebug() << "Starting the simulation" << endl
+             << "-----------------------";
     m_mesh.startSimulation();
 }
 
 void CFramework::printNodes(bool pretty_print)
 {
     QJsonArray json_nodes;
-    QStringList node_names = CNodeFactory::instance().availableNodes();
-    CNodeConfig config;
+    QStringList node_classes = CNodeFactory::instance().availableNodes();
 
-    for(int i = 0; i < node_names.size(); ++i) {
+    for(int i = 0; i < node_classes.size(); ++i) {
         QJsonObject json_node;
-        CNodeFactory::instance().configTemplate(node_names.at(i), config);
-        json_node["class"] = node_names.at(i);
+
+        CNodeConfig config;
+        CNodeFactory::instance().configTemplate(node_classes.at(i), config);
+        json_node["class"] = node_classes.at(i);
+        json_node["description"] = config.getDescription();
+
 
         QJsonArray json_input_gates;
         QJsonArray json_output_gates;
@@ -176,8 +181,8 @@ void CFramework::printNodes(bool pretty_print)
 void CFramework::onMeshInit(bool success)
 {
     if(!success) {
-        qCritical() << "Simulation not started."
-                    << "Not all nodes started correctly.";
+        qCritical() << "Simulation not started as "
+                    << "not all nodes started correctly.";
         QCoreApplication::exit(1);
     }
     else {
@@ -188,7 +193,8 @@ void CFramework::onMeshInit(bool success)
 
 void CFramework::onMeshFinish()
 {
-    qDebug() << "Simulation finished.";
+    qDebug() << "Simulation finished" << endl
+             << "-----------------------";
     QCoreApplication::exit(0);
 }
 

@@ -1,8 +1,7 @@
 QT += core
-QT += network
 QT -= gui
 
-TARGET = tcpstreamextractornode
+TARGET = tcpstreamfeaturesdata
 TEMPLATE = lib
 CONFIG += plugin
 QMAKE_CXXFLAGS += -std=c++11
@@ -12,26 +11,26 @@ INCLUDEPATH += ../../src_framework \
 
 CONFIG(debug,debug|release) {
   # Debug...
-  DESTDIR = ../../bin/debug/nodes
+  DESTDIR = ../../bin/debug/data
   OBJECTS_DIR = build/debug
   MOC_DIR = build/debug/moc
   RCC_DIR = build/debug/rcc
 } else {
   # Release...
-  DESTDIR = ../../bin/release/nodes
+  DESTDIR = ../../bin/release/data
   OBJECTS_DIR = build/release
   MOC_DIR = build/release/moc
   RCC_DIR = build/release/rcc
-  #DEFINES += QT_NO_DEBUG_OUTPUT
+  DEFINES += QT_NO_DEBUG_OUTPUT
 }
 
 QMAKE_CLEAN += $$DESTDIR/*$$TARGET*
 
 HEADERS += \
-    tcpstreamextractornode.h \
+    tcpstreamfeaturesdata.h \
     interface.h
 
 SOURCES += \
-    tcpstreamextractornode.cpp \
+    tcpstreamfeaturesdata.cpp \
     interface.cpp
 
