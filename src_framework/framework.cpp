@@ -136,6 +136,15 @@ void CFramework::printNodes(bool pretty_print)
         json_node["description"] = config.getDescription();
 
 
+
+        const QMap<QString, CNodeConfig::SParameterTemplate> parameters = config.parameter_template_map();
+        QJsonObject json_parameters;
+
+        //get types of parameters
+        foreach(QString key, parameters.keys())
+            json_parameters[key] = parameters[key].value.userType();
+
+
         QJsonArray json_input_gates;
         QJsonArray json_output_gates;
         // Get the input gates as JSON objects.
@@ -159,7 +168,7 @@ void CFramework::printNodes(bool pretty_print)
 
         json_node["input_gates"] = json_input_gates;
         json_node["output_gates"] = json_output_gates;
-
+        json_node["parameters"] = json_parameters;
         json_nodes.append(json_node);
     }
 
