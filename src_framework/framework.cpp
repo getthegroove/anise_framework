@@ -134,6 +134,21 @@ void CFramework::printNodes(bool pretty_print)
         json_node["class"] = node_classes.at(i);
         json_node["description"] = config.getDescription();
 
+        // Print the parameters of the node.
+        QJsonArray json_parameters;
+        QStringList node_parameters = config.getAllParameters();
+        for(QString param : node_parameters) {
+            QJsonObject json_param;
+            const CNodeConfig::SParameterTemplate *param_template =
+                    config.getParameter(param);
+            json_param["key"] = param;
+            json_param["name"] = param_template->name;
+            json_param["type"] = QVariant::typeToName(param_template->type);
+            json_param["description"] = param_template->description;
+            json_parameters.append(json_param);
+        }
+        json_node["parameters"] = json_parameters;
+
         QJsonArray json_input_gates;
         QJsonArray json_output_gates;
         // Get the input gates as JSON objects.

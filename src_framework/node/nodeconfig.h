@@ -3,6 +3,7 @@
 
 #include <QMap>
 #include <QVariant>
+#include <QStringList>
 
 class QObject;
 
@@ -70,6 +71,7 @@ class CNodeConfig
 
     // Getters und Setters.
     const SParameterTemplate *getParameter(QString key) const;
+    QStringList getAllParameters() const;
     const QList<SGateTemplate> &getInputTemplates() const;
     const QList<SGateTemplate> &getOutputTemplates() const;
 };

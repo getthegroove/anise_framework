@@ -169,6 +169,11 @@ const CNodeConfig::SParameterTemplate *CNodeConfig::getParameter(QString key) co
     return &m_parameter_template_map[key];
 }
 
+QStringList CNodeConfig::getAllParameters() const
+{
+    return m_parameter_template_map.keys();
+}
+
 const QList<CNodeConfig::SGateTemplate> &CNodeConfig::getInputTemplates() const
 {
     return m_input_templates;
