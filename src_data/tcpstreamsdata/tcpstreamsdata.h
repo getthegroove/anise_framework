@@ -5,6 +5,7 @@
 #include "data/data.h"
 #include "tcpdumpdata/tcpdumppacket.h"
 #include <QMap>
+#include <QList>
 
 
 class CTcpKey
@@ -45,7 +46,7 @@ class CTcpStreamsData: public CData
 {
   private:
     QMap<CTcpKey, CTcpStream> m_tcp_open_streams;
-    QMap<CTcpKey, CTcpStream> m_tcp_closed_streams;
+    QList<CTcpStream> m_tcp_closed_streams;
     quint32 m_max_payload_size;
 
   public:
@@ -56,7 +57,7 @@ class CTcpStreamsData: public CData
     // Add a TCP packet to a new or existing TCPStream.
     void addTcpPacket(const QSharedPointer<const CTcpDumpPacket> &tcp_packet);
     inline const QMap<CTcpKey, CTcpStream> &getOpenStreams() const;
-    inline const QMap<CTcpKey, CTcpStream> &getClosedStreams() const;
+    inline const QList<CTcpStream> &getClosedStreams() const;
     // The open streams available.
     qint32 openStreamsCount() const { return m_tcp_open_streams.size(); }
     // The closed streams available.
@@ -73,7 +74,7 @@ const QMap<CTcpKey, CTcpStream> &CTcpStreamsData::getOpenStreams() const
     return m_tcp_open_streams;
 }
 
-const QMap<CTcpKey, CTcpStream> &CTcpStreamsData::getClosedStreams() const
+const QList<CTcpStream> &CTcpStreamsData::getClosedStreams() const
 {
     return m_tcp_closed_streams;
 }

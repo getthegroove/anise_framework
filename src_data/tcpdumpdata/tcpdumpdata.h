@@ -7,6 +7,7 @@
 #include <QByteArray>
 #include <QSharedPointer>
 
+
 class CTcpDumpData: public CData
 {
   private:

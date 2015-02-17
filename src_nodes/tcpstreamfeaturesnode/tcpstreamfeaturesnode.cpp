@@ -146,17 +146,17 @@ void CTcpStreamFeaturesNode::data(QString gate_name, const CConstDataPointer &da
         m_table->setRows(tcp_streams->totalStreamsCount());
 
         // Process the closed streams.
-        auto streams_it = tcp_streams->getClosedStreams().constBegin();
-        for(; streams_it != tcp_streams->getClosedStreams().constEnd(); ++streams_it) {
-            extractFeatures(*streams_it);
+        auto closed_streams_it = tcp_streams->getClosedStreams().constBegin();
+        for(; closed_streams_it != tcp_streams->getClosedStreams().constEnd(); ++closed_streams_it) {
+            extractFeatures(*closed_streams_it);
         }
         // Process the open streams.
-        streams_it = tcp_streams->getOpenStreams().constBegin();
-        for(; streams_it != tcp_streams->getOpenStreams().constEnd(); ++streams_it) {
-            extractFeatures(*streams_it);
+        auto open_streams_it = tcp_streams->getOpenStreams().constBegin();
+        for(; open_streams_it != tcp_streams->getOpenStreams().constEnd(); ++open_streams_it) {
+            extractFeatures(*open_streams_it);
         }
 
-        // Sort by date and time (fields 0 and 1).
+        // Sort by date and then time (fields 0 and 1).
         m_table->sort(0, 1);
 
         commit("out", m_table);
