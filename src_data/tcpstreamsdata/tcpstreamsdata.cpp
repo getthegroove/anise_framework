@@ -71,7 +71,7 @@ void CTcpStreamsData::addTcpPacket(const QSharedPointer<const CTcpDumpPacket> &t
     // If this was a FIN or RST marked packet, close the stream.
     if(tcp_packet->fin() || tcp_packet->rst()) {
         // Move the stream to the structure of the closed ones.
-        m_tcp_closed_streams.insert(tcp_key, m_tcp_open_streams.take(tcp_key));
+        m_tcp_closed_streams.append(m_tcp_open_streams.take(tcp_key));
     }
 }
 
