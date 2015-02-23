@@ -73,7 +73,6 @@ void CNodeMesh::startNodes()
 
 void CNodeMesh::startSimulation()
 {
-    // Look for nodes that have no inputs.
     qint8 input_gates = 0;
     // Flag to keep track whether the simulation is started or not.
     bool simulation_started = false;
@@ -187,7 +186,7 @@ bool CNodeMesh::addNode(QVariantMap &node_json)
         return false;
     }
     m_nodes.insert(node_name, QSharedPointer<CNode>(node));
-    // Keep track the processing status of the node.
+    // Keep track of the processing status of the node.
     QObject::connect(node, SIGNAL(processing(bool)),
                      this, SLOT(onNodeProcessing(bool)));
 
@@ -278,6 +277,23 @@ void CNodeMesh::onNodeStarted(bool success)
 
 void CNodeMesh::onNodeProcessing(bool not_idle)
 {
+//    bool simulation_finished = true;
+
+//    // Check if all the nodes are done.
+//    QMap<QString, QSharedPointer<CNode>>::iterator it = m_nodes.begin();
+//    while(it != m_nodes.end()) {
+//        QSharedPointer<CNode> &node = it.value();
+//        if(node->isProcessing()) {
+//            simulation_finished = false;
+//            break;
+//        }
+//        ++it;
+//    }
+
+//    if(simulation_finished) {
+//        emit simulationFinished();
+//    }
+
     if(not_idle) {
         // A node started processing something.
         m_nodes_processing++;
