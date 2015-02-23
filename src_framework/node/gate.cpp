@@ -23,7 +23,7 @@ CGate::CGate(QString name, QString msg_type, QObject *parent)
 //------------------------------------------------------------------------------
 // Public Functions
 
-// Connect the Gate with a Node.
+// Connect with a Node.
 void CGate::link(CNode *node)
 {
     // Remove linked connection to gate if exists.
@@ -35,7 +35,7 @@ void CGate::link(CNode *node)
     m_linked_node = node;
 }
 
-// Connect to the gate of another Node.
+// Connect to another gate.
 bool CGate::link(QSharedPointer<CGate> &gate)
 {
     // Unlink the node that could have been linked to keep the state consistent.
