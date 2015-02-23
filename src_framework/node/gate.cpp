@@ -13,7 +13,7 @@ CGate::CGate(QString name, QString msg_type, QObject *parent)
     , m_name(name)
     , m_msg_type(msg_type)
     , m_linked_node(nullptr)
-    , m_linked_gate(nullptr)
+    , m_linked_gates()
     , m_input_count(0)
 {
 
@@ -27,9 +27,9 @@ CGate::CGate(QString name, QString msg_type, QObject *parent)
 void CGate::link(CNode *node)
 {
     // Remove linked connection to gate if exists.
-    if(m_linked_gate != nullptr) {
-        m_linked_gate->m_input_count--;
-        m_linked_gate.clear();
+    if(m_linked_gates.size() > 0) {
+        qWarning() << "Linking gate to another gate already linked to gates.";
+        m_linked_gates.clear();
     }
 
     m_linked_node = node;
@@ -38,22 +38,21 @@ void CGate::link(CNode *node)
 // Connect to another gate.
 bool CGate::link(QSharedPointer<CGate> &gate)
 {
-    // Unlink the node that could have been linked to keep the state consistent.
-    m_linked_node = nullptr;
-
-    // Remove linked connection to gate if exists.
-    if(!m_linked_gate.isNull()) {
-        m_linked_gate->m_input_count--;
-        m_linked_gate.clear();
-    }
-
+    // Verify the compatibility of the gate types.
     if(type() != gate->type()) {
         qWarning() << "Uncompatible gates tried to be linked."
                    << "(" << type() << ") -> (" << gate->type() << ")" << endl;
         return false;
     }
 
-    m_linked_gate = gate;
+    // Unlink the node that could have been linked to keep the state consistent.
+    if(m_linked_node != nullptr) {
+        qWarning() << "Linking gate to another gate while already linked to a node.";
+    }
+    m_linked_node = nullptr;
+
+    // Add linked gate.
+    m_linked_gates.append(gate);
 
     // Register in the target gate that a new input is being linked.
     gate->m_input_count++;
@@ -74,9 +73,14 @@ void CGate::inputData(CConstDataPointer &data)
         CConstDataPointer cdata(data);
         m_linked_node->processData(m_name, cdata);
     }
-    else if(!m_linked_gate.isNull()) {
-        // The node is linked to another gate.
-        m_linked_gate->inputData(data);
+    else if(m_linked_gates.size() > 0) {
+        // Gate linked to other gates.
+        auto it = m_linked_gates.begin();
+        while(it != m_linked_gates.end()) {
+            QSharedPointer<CGate> &gate = *it;
+            gate->inputData(data);
+            ++it;
+        }
     }
 }
 

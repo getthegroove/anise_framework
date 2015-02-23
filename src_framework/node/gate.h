@@ -21,8 +21,8 @@ class CGate: public QObject
     QString m_msg_type;
     // Node that might be linked to this gate.
     CNode *m_linked_node;
-    // Gate that might be linked to this gate.
-    QSharedPointer<CGate> m_linked_gate;
+    // Gates that we might link against.
+    QList<QSharedPointer<CGate>> m_linked_gates;
     // Number of inputs going into this gate.
     int m_input_count;
 
