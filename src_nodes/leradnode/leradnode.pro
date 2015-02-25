@@ -1,7 +1,7 @@
 QT += core
 QT -= gui
 
-TARGET = tablefiledumpnode
+TARGET = leradnode
 TEMPLATE = lib
 CONFIG += plugin
 QMAKE_CXXFLAGS += -std=c++11
@@ -21,16 +21,19 @@ CONFIG(debug,debug|release) {
   OBJECTS_DIR = build/release
   MOC_DIR = build/release/moc
   RCC_DIR = build/release/rcc
-  #DEFINES += QT_NO_DEBUG_OUTPUT
+  # DEFINES += QT_NO_DEBUG_OUTPUT
 }
 
 QMAKE_CLEAN += $$DESTDIR/*$$TARGET*
 
 HEADERS += \
-    tablefiledumpnode.h \
-    interface.h
+    leradnode.h \
+    interface.h \
+    consequent.h \
+    types.h \
+    rule.h
 
 SOURCES += \
-    tablefiledumpnode.cpp \
+    leradnode.cpp \
     interface.cpp
 

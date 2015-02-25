@@ -6,3 +6,4 @@ SUBDIRS += \
             tcpstreamextractornode \
             tcpstreamfeaturesnode \
             tablefiledumpnode \
+            leradnode \

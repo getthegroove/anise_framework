@@ -64,7 +64,12 @@ void CTableFileDumpNode::data(QString gate_name, const CConstDataPointer &data)
         bool append = getConfig().getParameter("append")->value.toBool();
 
         // Print the table data into the user-supplied filename.
-        printTable(table, filename, append);
+        if(printTable(table, filename, append)) {
+            qDebug() << "Table data written into" << filename;
+        }
+        else {
+            qWarning() << "Table data was NOT able to be written into" << filename;
+        }
     }
 }
 

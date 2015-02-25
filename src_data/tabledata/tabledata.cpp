@@ -13,6 +13,15 @@ CTableData::CTableData()
 
 }
 
+qint32 CTableData::getColCount() const
+{
+    if(m_table.size() > 0) {
+        return m_table[0].size();
+    }
+
+    return 0;
+}
+
 void CTableData::addHeader(QString attr)
 {
     m_header.append(attr);

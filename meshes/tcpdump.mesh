@@ -40,12 +40,19 @@
            {"filename": "dump.anise"},
            {"append": false}
      ]
+    },
+    {"class": "lerad",
+     "name": "Lerad",
+     "params" : [
+
+     ]
     }
   ],
   "connections": [
     {"src_node": "File", "src_gate": "out", "dest_node": "TcpDump", "dest_gate": "in"},
     {"src_node": "TcpDump", "src_gate": "out", "dest_node": "TcpExtr", "dest_gate": "in"},
     {"src_node": "TcpExtr", "src_gate": "out", "dest_node": "TcpFeatures", "dest_gate": "in"},
-    {"src_node": "TcpFeatures", "src_gate": "out", "dest_node": "FeaturesDump", "dest_gate": "in"}
+    {"src_node": "TcpFeatures", "src_gate": "out", "dest_node": "FeaturesDump", "dest_gate": "in"},
+    {"src_node": "TcpFeatures", "src_gate": "out", "dest_node": "Lerad", "dest_gate": "in"}
   ]
 }

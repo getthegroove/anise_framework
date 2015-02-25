@@ -23,6 +23,7 @@ class CTableData: public CData
     void setRows(qint32 rows) { m_rows = rows; }
     void setCols(qint32 cols) { m_columns = cols; }
     qint32 getRowCount() const { return m_table.size(); }
+    qint32 getColCount() const;
     void addHeader(QString attr);
     const QList<QString> &getHeader() const;
     qint32 headerSize() const;
