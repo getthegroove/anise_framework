@@ -62,6 +62,9 @@ void CFileNode::data(QString gate_name, const CConstDataPointer &data)
         QString msg = pmsg->getMessage();
         if(msg == "start") {
             commit("out", m_data_file);
+            // We can now clear the file data so that the file is freed
+            // ... when it is no longer being used by any node.
+            m_data_file.clear();
         }
         else if(msg == "error") {
             qCritical() << "Error found while processing data.";

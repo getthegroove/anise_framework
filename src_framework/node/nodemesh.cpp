@@ -39,13 +39,17 @@ bool CNodeMesh::parseMesh(QString json_str)
     // Create and add all the Nodes to our collection of nodes.
     for(QVariant variant : json_map["nodes"].toList()) {
         QVariantMap map = variant.toMap();
-        addNode(map);
+        if(!addNode(map)) {
+            return false;
+        }
     }
 
     // Create the links between the nodes.
     for(QVariant variant : json_map["connections"].toList()) {
         QVariantMap conn = variant.toMap();
-        addConnection(conn);
+        if(!addConnection(conn)) {
+            return false;
+        }
     }
 
     return true;
@@ -148,6 +152,15 @@ bool CNodeMesh::addNode(QVariantMap &node_json)
         return false;
     }
 
+    // Verify that the requested node class is available.
+    ok = CNodeFactory::instance().nodeAvailable(node_class);
+    if(!ok) {
+        qCritical() << "Cannot create node" << node_name << "."
+                    << "The node class" << node_class
+                    << "does not exist.";
+        return false;
+    }
+
     // Get the configuration template of the requested node.
     ok = CNodeFactory::instance().configTemplate(
         node_class, conf);
@@ -226,7 +239,7 @@ bool CNodeMesh::addConnection(QVariantMap& connections_json)
     // Check that all parameters are there in the json string.
     if(src_name.isEmpty() || src_gate.isEmpty() ||
         dest_name.isEmpty() || dest_gate.isEmpty()) {
-        qWarning() << "Some connection parameters are missing. Connection not created.";
+        qCritical() << "Some connection parameters are missing. Connection not created.";
         return false;
     }
 
@@ -240,12 +253,12 @@ bool CNodeMesh::addConnection(QVariantMap& connections_json)
 
     // Make sure the referenced nodes exist.
     if(src_node.isNull()) {
-        qWarning() << "Connection not established. Source node"
-                   << src_name << "was not found.";
+        qCritical() << "Connection failed: Source node"
+                    << src_name << "was not found.";
     }
     if(dest_node.isNull()) {
-        qWarning() << "Connection not established. Destination node"
-                   << dest_name << "was not found.";
+        qCritical() << "Connection failed: Destination node"
+                    << dest_name << "was not found.";
     }
     if(src_node.isNull() || dest_node.isNull()) {
         return false;
@@ -253,7 +266,7 @@ bool CNodeMesh::addConnection(QVariantMap& connections_json)
 
     // Attempt to establish the connection.
     if(!src_node->connect(src_gate, *dest_node, dest_gate)) {
-        qWarning() << "Failed to establish a connection.";
+        qCritical() << "Failed to establish a connection.";
         return false;
     }
 

@@ -17,6 +17,8 @@ class CTcpStreamFeaturesNode: public CNode
   private:
     // Data Structures
     QSharedPointer<CTableData> m_table;
+    // How many streams have we processed.
+    qint32 m_processed_streams;
 
   public:
     // Constructor
@@ -31,6 +33,7 @@ class CTcpStreamFeaturesNode: public CNode
     virtual void data(QString gate_name, const CConstDataPointer &data);
 
   private:
+    bool createFeaturesTable();
     void extractFeatures(const CTcpStream &tcp_stream);
     QString buildFlagsString(quint8 flags);
     QStringList extractStrings(const QVector<quint8> &data);

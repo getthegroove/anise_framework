@@ -34,6 +34,11 @@ void CNodeFactory::loadLibraries()
     CDynamicFactory::loadLibraries("./nodes", "lib*node.so", RTLD_NOW);
 }
 
+bool CNodeFactory::nodeAvailable(QString node_class)
+{
+    return m_makers.contains(node_class);
+}
+
 bool CNodeFactory::configTemplate(QString node_class_name, CNodeConfig &config)
 {
     if(!m_config_makers.contains(node_class_name)) {
@@ -41,6 +46,11 @@ bool CNodeFactory::configTemplate(QString node_class_name, CNodeConfig &config)
     }
 
     node_configure_fnc configure = m_config_makers.value(node_class_name);
+    if(configure == nullptr) {
+        return false;
+    }
+
+    // Call the configure function of the loaded node.
     configure(config);
 
     return true;

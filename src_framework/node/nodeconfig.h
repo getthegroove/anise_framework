@@ -55,7 +55,8 @@ class CNodeConfig
 
     // Facilities for adding different parameters to the configuration
     // ... template.
-    void addFilename(QString key, QString name, QString description);
+    void addFilename(QString key, QString name, QString description,
+                     QString def_val = "");
     void addBool(QString key, QString name, QString description,
                  bool def_val = false);
     void addInt(QString key, QString name, QString description,
@@ -74,7 +75,6 @@ class CNodeConfig
     QStringList getAllParameters() const;
     const QList<SGateTemplate> &getInputTemplates() const;
     const QList<SGateTemplate> &getOutputTemplates() const;
-    QMap<QString, SParameterTemplate> parameter_template_map() const;
 };
 
 #endif // NODECONFIG_H

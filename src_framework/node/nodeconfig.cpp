@@ -5,13 +5,6 @@
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
-
-QMap<QString, CNodeConfig::SParameterTemplate> CNodeConfig::parameter_template_map() const
-{
-    return m_parameter_template_map;
-}
-
-
 CNodeConfig::CNodeConfig()
     : m_name("")
     , m_description("")
@@ -73,7 +66,8 @@ bool CNodeConfig::setParameter(QString key, QVariant value) const
     return true;
 }
 
-void CNodeConfig::addFilename(QString key, QString name, QString description)
+void CNodeConfig::addFilename(QString key, QString name, QString description,
+                              QString def_val)
 {
     if(m_parameter_template_map.contains(key)) {
         qWarning() << "Overwriting the parameter"
@@ -83,6 +77,7 @@ void CNodeConfig::addFilename(QString key, QString name, QString description)
     struct SParameterTemplate param_template;
     param_template.name = name;
     param_template.type = QVariant::String;
+    param_template.value = def_val;
     param_template.description = description;
 
     m_parameter_template_map.insert(key, param_template);

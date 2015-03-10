@@ -8,7 +8,6 @@
 CTableData::CTableData()
     : CData()
     , m_columns(1)
-    , m_rows(1)
 {
 
 }
@@ -25,6 +24,13 @@ qint32 CTableData::getColCount() const
 void CTableData::addHeader(QString attr)
 {
     m_header.append(attr);
+}
+
+void CTableData::addHeader(const QList<QString> &attrs)
+{
+    for(const QString &attr : attrs) {
+        m_header.append(attr);
+    }
 }
 
 const QList<QString> &CTableData::getHeader() const

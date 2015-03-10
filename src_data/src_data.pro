@@ -5,4 +5,4 @@ SUBDIRS += \
             tcpdumpdata \
             filedata \
             tcpstreamsdata \
-
+            rulesetdata \

@@ -13,18 +13,18 @@ class CTableData: public CData
     QList<QList<QVariant>> m_table;
     // Size hints to improve memory allocation efficiency.
     qint32 m_columns;
-    qint32 m_rows;
     // String representations of the table columns.
     QList<QString> m_header;
 
   public:
     explicit CTableData();
 
-    void setRows(qint32 rows) { m_rows = rows; }
+    void reserveRows(qint32 size) { m_table.reserve(size); }
     void setCols(qint32 cols) { m_columns = cols; }
     qint32 getRowCount() const { return m_table.size(); }
     qint32 getColCount() const;
     void addHeader(QString attr);
+    void addHeader(const QList<QString> &attrs);
     const QList<QString> &getHeader() const;
     qint32 headerSize() const;
     QList<QVariant> &newRow();

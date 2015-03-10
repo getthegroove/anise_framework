@@ -183,6 +183,17 @@ void CNode::commitError(QString gate_name, QString error_msg)
     m_commit_list.append(gate_and_data);
 }
 
+qint32 CNode::getInputCount(QString gate_name)
+{
+    QSharedPointer<CGate> gate = findInputGate(gate_name);
+    if(!gate.isNull()) {
+        return gate->inputLinks();
+    }
+    else {
+        return 0;
+    }
+}
+
 
 //------------------------------------------------------------------------------
 // Private Functions

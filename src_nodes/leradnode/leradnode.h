@@ -3,12 +3,14 @@
 
 #include "node/node.h"
 #include "node/nodeconfig.h"
-#include "types.h"
-#include "consequent.h"
-#include "rule.h"
+#include "rulesetdata/ruletypes.h"
+#include "rulesetdata/consequent.h"
+#include "rulesetdata/rule.h"
+#include "rulesetdata/rulesetdata.h"
 #include "tabledata/tabledata.h"
 #include <QObject>
 #include <QString>
+
 
 class CLeradNode: public CNode
 {
@@ -18,6 +20,7 @@ class CLeradNode: public CNode
 
   private:
     // Data Structures
+    QSharedPointer<CRulesetData> m_ruleset;
 
   public:
     // Constructor
@@ -34,6 +37,9 @@ class CLeradNode: public CNode
     // The LERAD algorithm
     void lerad(const QSharedPointer<const CTableData> &table);
     inline qint32 rnd() const;
+    // Write rules to a file.
+    void dumpRules(const QList<QString> &header,
+                   const QString &filename);
 };
 
 qint32 CLeradNode::rnd() const

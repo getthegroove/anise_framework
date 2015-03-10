@@ -17,7 +17,7 @@
           {"payload_size": 102400},
           {"dest_filter": true},
           {"dest_ip_filter_from": "172.16.112.0"},
-          {"dest_ip_filter_to": "172.16.118.255"}
+          {"dest_ip_filter_to": "172.16.118.255"},
           {"dest_port_filter_from": 0},
           {"dest_port_filter_to": 1023}
      ]

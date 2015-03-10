@@ -7,3 +7,4 @@ SUBDIRS += \
             tcpstreamfeaturesnode \
             tablefiledumpnode \
             leradnode \
+            ruleevalnode \
