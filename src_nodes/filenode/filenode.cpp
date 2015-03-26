@@ -21,7 +21,7 @@ CFileNode::CFileNode(const CNodeConfig &config, QObject *parent/* = 0*/)
 void CFileNode::configure(CNodeConfig &config)
 {
     // Add parameters
-    config.addFilename("file", "Input File",
+    config.addFilename("input_file", "Input File",
                        "Path of the file to read from disk.");
     config.addBool("binary", "Binary format",
                    "Parse the file contents as binary data.");
