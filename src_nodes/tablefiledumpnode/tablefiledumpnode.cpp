@@ -24,7 +24,7 @@ void CTableFileDumpNode::configure(CNodeConfig &config)
     config.setDescription("Write any received table data to a file.");
 
     // Add parameters
-    config.addFilename("filename", "Output File", "File to be written.");
+    config.addFilename("output_filename", "Output File", "File to be written.");
     config.addBool("append", "Append the table data",
                    "Append the data to the output file instead of replacing it.",
                    false);
